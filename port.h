@@ -307,6 +307,18 @@ typedef int					pint;
 #endif
 #endif
 
+/*
+#include <strings.h> // strcasecmp*/
+inline char* strdup(const char* p)
+{
+    char* ret = (char*)malloc(strlen(p));
+    if (ret)
+        strcpy(ret, p);
+    return ret;
+}
+#define fileno(x) (-1)
+#define fdopen(f,m) nullptr
+
 #ifndef __WIN32__
 void _splitpath (const char *, char *, char *, char *, char *);
 void _makepath (char *, const char *, const char *, const char *, const char *);
