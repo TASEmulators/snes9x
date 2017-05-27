@@ -9,7 +9,7 @@ CCFLAGS:= -I.. -I../apu/bapu \
 	-std=c++0x \
 	-D__WIN32_LIBSNES__ -DNDEBUG \
 	-DHAVE_STRINGS_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -D__LIBRETRO__ \
-	-O0 -g
+	-O2
 
 TARGET = snes9x.exe
 
