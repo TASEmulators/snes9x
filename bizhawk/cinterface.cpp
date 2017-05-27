@@ -63,17 +63,6 @@ EXPORT void biz_set_layers(int layers)
 	Settings.Transparency = !!(layers & 0x40);
 }
 
-static void S9xAudioCallback(void *)
-{
-	// Just pick a big buffer. We won't use it all.
-	static int16_t audio_buf[0x10000];
-
-	S9xFinalizeSamples();
-	size_t avail = S9xGetSampleCount();
-	S9xMixSamples((uint8 *)audio_buf, avail);
-	//audio_batch_cb(audio_buf, avail >> 1);
-}
-
 /*void retro_get_system_info(struct retro_system_info *info)
 {
 	 memset(info,0,sizeof(retro_system_info));
@@ -348,6 +337,18 @@ EXPORT int biz_load_rom(const void *data, int size)
 	return rom_loaded;
 }*/
 
+struct frame_info
+{
+	void* vptr;
+	int vpitch;
+	int vwidth;
+	int vheight;
+	short* sptr;
+	int slen;
+};
+
+static frame_info av_info;
+
 static void map_buttons();
 
 EXPORT int biz_init()
@@ -361,8 +362,9 @@ EXPORT int biz_init()
 	Settings.FrameTimeNTSC = 16667;
 	Settings.SixteenBitSound = TRUE;
 	Settings.Stereo = TRUE;
-	Settings.SoundPlaybackRate = 32040;
+	Settings.SoundPlaybackRate = 44100;
 	Settings.SoundInputRate = 32040;
+	Settings.SoundSync = TRUE;
 	Settings.SupportHiRes = TRUE;
 	Settings.Transparency = TRUE;
 	Settings.AutoDisplayMessages = TRUE;
@@ -388,7 +390,7 @@ EXPORT int biz_init()
 
 	S9xInitSound(24, 0); // 16, 0)
 	S9xSetSoundMute(FALSE);
-	S9xSetSamplesAvailableCallback(S9xAudioCallback, NULL);
+	//S9xSetSamplesAvailableCallback(S9xAudioCallback, NULL);
 
 	GFX.Pitch = MAX_SNES_WIDTH * sizeof(uint16);
 	GFX.Screen = (uint16 *)alloc_invisible(GFX.Pitch * MAX_SNES_HEIGHT);
@@ -403,6 +405,8 @@ EXPORT int biz_init()
 
 	S9xUnmapAllControls();
 	map_buttons();
+
+	av_info.sptr = (short*)alloc_invisible(16384);
 
 	return 1;
 }
@@ -625,21 +629,15 @@ static void report_buttons()
 	}
 }
 
-struct frame_info
-{
-	void *ptr;
-	int pitch;
-	int width;
-	int height;
-};
-
-static frame_info video_info;
-
 EXPORT void biz_run(frame_info* info)
 {
 	report_buttons();
 	S9xMainLoop();
-	*info = video_info;
+	S9xFinalizeSamples();
+	size_t avail = S9xGetSampleCount();
+	S9xMixSamples((uint8 *)av_info.sptr, avail);
+	av_info.slen = avail / 2;
+	*info = av_info;
 }
 
 EXPORT int biz_is_ntsc()
@@ -715,10 +713,10 @@ bool8 S9xDeinitUpdate(int width, int height)
 		}
 	}
 
-	video_info.ptr = GFX.Screen;
-	video_info.width = width;
-	video_info.height = height;
-	video_info.pitch = GFX.Pitch;
+	av_info.vptr = GFX.Screen;
+	av_info.vwidth = width;
+	av_info.vheight = height;
+	av_info.vpitch = GFX.Pitch;
 	return TRUE;
 }
 
