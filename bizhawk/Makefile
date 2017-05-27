@@ -5,7 +5,7 @@ CC = x86_64-nt64-midipix-g++
 CCFLAGS:= -I.. -I../apu/bapu \
 	-I../../emulibc \
 	-Wall -Werror=implicit-function-declaration \
-	-fno-exceptions -fno-rtti -fpermissive \
+	-fno-exceptions -fno-rtti -fpermissive -fvisibility=hidden \
 	-std=c++0x \
 	-D__WIN32_LIBSNES__ -DNDEBUG \
 	-DHAVE_STRINGS_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -D__LIBRETRO__ \

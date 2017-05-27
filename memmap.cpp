@@ -218,6 +218,8 @@
 #include "movie.h"
 #include "display.h"
 
+#include <emulibc.h>
+
 #ifndef SET_UI_COLOR
 #define SET_UI_COLOR(r, g, b) ;
 #endif
@@ -986,9 +988,7 @@ static void S9xDeinterleaveType1 (int size, uint8 *base)
 		blocks[i * 2 + 1] = i;
 	}
 
-	uint8	*tmp = (uint8 *) malloc(0x8000);
-	if (tmp)
-	{
+	uint8 tmp[0x8000];
 		for (int i = 0; i < nblocks * 2; i++)
 		{
 			for (int j = i; j < nblocks * 2; j++)
@@ -1005,9 +1005,6 @@ static void S9xDeinterleaveType1 (int size, uint8 *base)
 				}
 			}
 		}
-
-		free(tmp);
-	}
 }
 
 static void S9xDeinterleaveType2 (int size, uint8 *base)
@@ -1027,9 +1024,7 @@ static void S9xDeinterleaveType2 (int size, uint8 *base)
 	for (int i = 0; i < nblocks * 2; i++)
 		blocks[i] = (i & ~0xf) | ((i & 3) << 2) | ((i & 12) >> 2);
 
-	uint8	*tmp = (uint8 *) malloc(0x10000);
-	if (tmp)
-	{
+	uint8 tmp[0x10000];
 		for (int i = 0; i < nblocks * 2; i++)
 		{
 			for (int j = i; j < nblocks * 2; j++)
@@ -1045,9 +1040,6 @@ static void S9xDeinterleaveType2 (int size, uint8 *base)
 					break;
 				}
 			}
-		}
-
-		free(tmp);
 	}
 }
 
@@ -1060,44 +1052,44 @@ static void S9xDeinterleaveGD24 (int size, uint8 *base)
 	Settings.DisplayColor = BUILD_PIXEL(0, 31, 31);
 	SET_UI_COLOR(0, 255, 255);
 
-	uint8	*tmp = (uint8 *) malloc(0x80000);
-	if (tmp)
-	{
+	uint8 tmp[0x80000];
+
 		memmove(tmp, &base[0x180000], 0x80000);
 		memmove(&base[0x180000], &base[0x200000], 0x80000);
 		memmove(&base[0x200000], &base[0x280000], 0x80000);
 		memmove(&base[0x280000], tmp, 0x80000);
 
-		free(tmp);
-
 		S9xDeinterleaveType1(size, base);
-	}
+
 }
 
 // allocation and deallocation
+static uint8 z_ram[0x20000];
+static uint8 z_sram[0x20000];
+static uint8 z_vram[0x10000];
 
 bool8 CMemory::Init (void)
 {
-    RAM	 = (uint8 *) malloc(0x20000);
-    SRAM = (uint8 *) malloc(0x20000);
-    VRAM = (uint8 *) malloc(0x10000);
-    ROM  = (uint8 *) malloc(MAX_ROM_SIZE + 0x200 + 0x8000);
+    RAM	 = (uint8 *) z_ram;
+    SRAM = (uint8 *) z_sram;
+    VRAM = (uint8 *) z_vram;
+    ROM  = (uint8 *) alloc_sealed(MAX_ROM_SIZE + 0x200 + 0x8000);
 
-	IPPU.TileCache[TILE_2BIT]       = (uint8 *) malloc(MAX_2BIT_TILES * 64);
-	IPPU.TileCache[TILE_4BIT]       = (uint8 *) malloc(MAX_4BIT_TILES * 64);
-	IPPU.TileCache[TILE_8BIT]       = (uint8 *) malloc(MAX_8BIT_TILES * 64);
-	IPPU.TileCache[TILE_2BIT_EVEN]  = (uint8 *) malloc(MAX_2BIT_TILES * 64);
-	IPPU.TileCache[TILE_2BIT_ODD]   = (uint8 *) malloc(MAX_2BIT_TILES * 64);
-	IPPU.TileCache[TILE_4BIT_EVEN]  = (uint8 *) malloc(MAX_4BIT_TILES * 64);
-	IPPU.TileCache[TILE_4BIT_ODD]   = (uint8 *) malloc(MAX_4BIT_TILES * 64);
+	IPPU.TileCache[TILE_2BIT]       = (uint8 *) alloc_invisible(MAX_2BIT_TILES * 64);
+	IPPU.TileCache[TILE_4BIT]       = (uint8 *) alloc_invisible(MAX_4BIT_TILES * 64);
+	IPPU.TileCache[TILE_8BIT]       = (uint8 *) alloc_invisible(MAX_8BIT_TILES * 64);
+	IPPU.TileCache[TILE_2BIT_EVEN]  = (uint8 *) alloc_invisible(MAX_2BIT_TILES * 64);
+	IPPU.TileCache[TILE_2BIT_ODD]   = (uint8 *) alloc_invisible(MAX_2BIT_TILES * 64);
+	IPPU.TileCache[TILE_4BIT_EVEN]  = (uint8 *) alloc_invisible(MAX_4BIT_TILES * 64);
+	IPPU.TileCache[TILE_4BIT_ODD]   = (uint8 *) alloc_invisible(MAX_4BIT_TILES * 64);
 
-	IPPU.TileCached[TILE_2BIT]      = (uint8 *) malloc(MAX_2BIT_TILES);
-	IPPU.TileCached[TILE_4BIT]      = (uint8 *) malloc(MAX_4BIT_TILES);
-	IPPU.TileCached[TILE_8BIT]      = (uint8 *) malloc(MAX_8BIT_TILES);
-	IPPU.TileCached[TILE_2BIT_EVEN] = (uint8 *) malloc(MAX_2BIT_TILES);
-	IPPU.TileCached[TILE_2BIT_ODD]  = (uint8 *) malloc(MAX_2BIT_TILES);
-	IPPU.TileCached[TILE_4BIT_EVEN] = (uint8 *) malloc(MAX_4BIT_TILES);
-	IPPU.TileCached[TILE_4BIT_ODD]  = (uint8 *) malloc(MAX_4BIT_TILES);
+	IPPU.TileCached[TILE_2BIT]      = (uint8 *) alloc_invisible(MAX_2BIT_TILES);
+	IPPU.TileCached[TILE_4BIT]      = (uint8 *) alloc_invisible(MAX_4BIT_TILES);
+	IPPU.TileCached[TILE_8BIT]      = (uint8 *) alloc_invisible(MAX_8BIT_TILES);
+	IPPU.TileCached[TILE_2BIT_EVEN] = (uint8 *) alloc_invisible(MAX_2BIT_TILES);
+	IPPU.TileCached[TILE_2BIT_ODD]  = (uint8 *) alloc_invisible(MAX_2BIT_TILES);
+	IPPU.TileCached[TILE_4BIT_EVEN] = (uint8 *) alloc_invisible(MAX_4BIT_TILES);
+	IPPU.TileCached[TILE_4BIT_ODD]  = (uint8 *) alloc_invisible(MAX_4BIT_TILES);
 
 	if (!RAM || !SRAM || !VRAM || !ROM ||
 		!IPPU.TileCache[TILE_2BIT]       ||
@@ -1168,7 +1160,7 @@ bool8 CMemory::Init (void)
 
 void CMemory::Deinit (void)
 {
-	if (RAM)
+	/*if (RAM)
 	{
 		free(RAM);
 		RAM = NULL;
@@ -1191,7 +1183,7 @@ void CMemory::Deinit (void)
 		ROM -= 0x8000;
 		free(ROM);
 		ROM = NULL;
-	}
+	}*/
 
 	for (int t = 0; t < 7; t++)
 	{

@@ -36,7 +36,7 @@
 #define RETRO_LOG_ERROR 1
 #define RETRO_LOG_INFO 0
 
-#define EXPORT extern "C"
+#define EXPORT extern "C" ECL_EXPORT
 
 static void log_cb(int level, const char *fmt, ...)
 {
@@ -391,7 +391,7 @@ EXPORT int biz_init()
 	S9xSetSamplesAvailableCallback(S9xAudioCallback, NULL);
 
 	GFX.Pitch = MAX_SNES_WIDTH * sizeof(uint16);
-	GFX.Screen = (uint16 *)calloc(1, GFX.Pitch * MAX_SNES_HEIGHT);
+	GFX.Screen = (uint16 *)alloc_invisible(GFX.Pitch * MAX_SNES_HEIGHT);
 	S9xGraphicsInit();
 
 	S9xInitInputDevices();

@@ -199,6 +199,8 @@
 #include "font.h"
 #include "display.h"
 
+#include <emulibc.h>
+
 extern struct SCheatData		Cheat;
 extern struct SLineData			LineData[240];
 extern struct SLineMatrixData	LineMatrixData[240];
@@ -243,13 +245,13 @@ bool8 S9xGraphicsInit (void)
 	Settings.BG_Forced = 0;
 	S9xFixColourBrightness();
 
-	GFX.X2   = (uint16 *) malloc(sizeof(uint16) * 0x10000);
-	GFX.ZERO = (uint16 *) malloc(sizeof(uint16) * 0x10000);
+	GFX.X2   = (uint16 *) alloc_invisible(sizeof(uint16) * 0x10000);
+	GFX.ZERO = (uint16 *) alloc_invisible(sizeof(uint16) * 0x10000);
 
 	GFX.ScreenSize = GFX.Pitch / 2 * SNES_HEIGHT_EXTENDED * (Settings.SupportHiRes ? 2 : 1);
-	GFX.SubScreen  = (uint16 *) malloc(GFX.ScreenSize * sizeof(uint16));
-	GFX.ZBuffer    = (uint8 *)  malloc(GFX.ScreenSize);
-	GFX.SubZBuffer = (uint8 *)  malloc(GFX.ScreenSize);
+	GFX.SubScreen  = (uint16 *) alloc_invisible(GFX.ScreenSize * sizeof(uint16));
+	GFX.ZBuffer    = (uint8 *)  alloc_invisible(GFX.ScreenSize);
+	GFX.SubZBuffer = (uint8 *)  alloc_invisible(GFX.ScreenSize);
 
 	if (!GFX.X2 || !GFX.ZERO || !GFX.SubScreen || !GFX.ZBuffer || !GFX.SubZBuffer)
 	{
@@ -320,11 +322,11 @@ bool8 S9xGraphicsInit (void)
 
 void S9xGraphicsDeinit (void)
 {
-	if (GFX.X2)         { free(GFX.X2);         GFX.X2         = NULL; }
+	/*if (GFX.X2)         { free(GFX.X2);         GFX.X2         = NULL; }
 	if (GFX.ZERO)       { free(GFX.ZERO);       GFX.ZERO       = NULL; }
 	if (GFX.SubScreen)  { free(GFX.SubScreen);  GFX.SubScreen  = NULL; }
 	if (GFX.ZBuffer)    { free(GFX.ZBuffer);    GFX.ZBuffer    = NULL; }
-	if (GFX.SubZBuffer) { free(GFX.SubZBuffer); GFX.SubZBuffer = NULL; }
+	if (GFX.SubZBuffer) { free(GFX.SubZBuffer); GFX.SubZBuffer = NULL; }*/
 }
 
 void S9xBuildDirectColourMaps (void)
