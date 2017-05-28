@@ -56,9 +56,9 @@ EXPORT void biz_set_layers(int layers)
 {
 	// bits 0..3: bg 0..3
 	// bit 4: sprite
-	Settings.BG_Forced = layers & 0x1f;
+	Settings.BG_Forced = ~layers & 0x1f;
 	// bit 5: window
-	Settings.DisableGraphicWindows = !!(layers & 0x20);
+	Settings.DisableGraphicWindows = !(layers & 0x20);
 	// bit 6: transparency
 	Settings.Transparency = !!(layers & 0x40);
 }
@@ -166,40 +166,6 @@ EXPORT void biz_set_port_devices(unsigned left, unsigned right)
 	retro_set_controller_port_device(0, left);
 	retro_set_controller_port_device(1, right);
 }
-
-/*
-void retro_cheat_reset()
-{
-	S9xDeleteCheats();
-	S9xApplyCheats();
-}
-
-void retro_cheat_set(unsigned index, bool enabled, const char *code)
-{
-	uint32 address;
-	uint8 val;
-
-	bool8 sram;
-	uint8 bytes[3];//used only by GoldFinger, ignored for now
-
-	if (S9xGameGenieToRaw(code, address, val)!=NULL &&
-		 S9xProActionReplayToRaw(code, address, val)!=NULL &&
-		 S9xGoldFingerToRaw(code, address, sram, val, bytes)!=NULL)
-	{ // bad code, ignore
-		return;
-	}
-	if (index>Cheat.num_cheats) return; // cheat added in weird order, ignore
-	if (index==Cheat.num_cheats) Cheat.num_cheats++;
-
-	Cheat.c[index].address = address;
-	Cheat.c[index].byte = val;
-	Cheat.c[index].enabled = enabled;
-
-	Cheat.c[index].saved = FALSE; // it'll be saved next time cheats run anyways
-
-	Settings.ApplyCheats=true;
-	S9xApplyCheats();
-}*/
 
 /*static void init_descriptors(void)
 {
@@ -548,28 +514,40 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_5, BTN_DOWN), "Joypad5 Down");
 }
 
-#define RETRO_DEVICE_LIGHTGUN 32
+//#define RETRO_DEVICE_LIGHTGUN 32
 
-#define RETRO_DEVICE_ID_MOUSE_X 32
-#define RETRO_DEVICE_ID_MOUSE_Y 33
-#define RETRO_DEVICE_ID_LIGHTGUN_X 34
-#define RETRO_DEVICE_ID_LIGHTGUN_Y 35
+#define RETRO_DEVICE_ID_MOUSE_X 0
+#define RETRO_DEVICE_ID_MOUSE_Y 1
+#define RETRO_DEVICE_ID_LIGHTGUN_X 0
+#define RETRO_DEVICE_ID_LIGHTGUN_Y 1
+
+static int16_t input_state_values[16 * 8];
 
 static int16_t input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id)
 {
-	// port: 0, 1, or maybe up to 4 for multitap
+	// port: 0, 1, or up to 4 for multitap
 
-	// device:
-	// RETRO_DEVICE_JOYPAD - regular joypad inputs
-	// RETRO_DEVICE_MOUSE - everything a mouse does
-	// RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE - x and y coordinates for lightguns
-	// RETRO_DEVICE_LIGHTGUN - lightgun buttons
+	// devices:
+
+	// RETRO_DEVICE_JOYPAD (1) - regular joypad inputs, multitap or otherwise
+	// id: B = 0, Y, Select, Start, Up, Down, Left, Right, A, X, L, R = 11
+
+	// RETRO_DEVICE_MOUSE (3) - everything a mouse does
+	// id: xpos = 0, ypos, Left Button, Right Button = 3
+
+	// RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE (4) - everything a lightgun does
+	// id: xpos = 0, ypos, trigger, cursor, turbo, pause = 5
+
+	// RETRO_DEVICE_LIGHTGUN_JUSTIFIER (5) - everything a justifier does
+	// id: xpos = 0, ypos, trigger, offscreen, start = 4
 
 	// index: always 0
 
-	// id: button id
+	//char buff[512];
+	//sprintf(buff, "port %u device %u index %u id %u", port, device, index, id);
+	//_debug_puts(buff);
 
-	return 0;
+	return input_state_values[port * 16 + id];
 }
 
 // libretro uses relative values for analogue devices.
@@ -620,7 +598,7 @@ static void report_buttons()
 				snes_scope_state[1] = SNES_HEIGHT - 1;
 			S9xReportPointer(BTN_POINTER, snes_scope_state[0], snes_scope_state[1]);
 			for (int i = SCOPE_TRIGGER; i <= SCOPE_LAST; i++)
-				S9xReportButton(MAKE_BUTTON(2, i), input_state_cb(port, RETRO_DEVICE_LIGHTGUN, 0, i));
+				S9xReportButton(MAKE_BUTTON(2, i), input_state_cb(port, RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE, 0, i));
 			break;
 
 		case RETRO_DEVICE_LIGHTGUN_JUSTIFIER:
@@ -636,7 +614,7 @@ static void report_buttons()
 				snes_justifier_state[port][1] = SNES_HEIGHT - 1;
 			S9xReportPointer(BTN_POINTER, snes_justifier_state[port][0], snes_justifier_state[port][1]);
 			for (int i = JUSTIFIER_TRIGGER; i <= JUSTIFIER_LAST; i++)
-				S9xReportButton(MAKE_BUTTON(2, i), input_state_cb(port, RETRO_DEVICE_LIGHTGUN, 0, i));
+				S9xReportButton(MAKE_BUTTON(2, i), input_state_cb(port, RETRO_DEVICE_LIGHTGUN_JUSTIFIER, 0, i));
 			break;
 
 		default:
@@ -645,8 +623,9 @@ static void report_buttons()
 	}
 }
 
-EXPORT void biz_run(frame_info* info)
+EXPORT void biz_run(frame_info* info, const int16_t* input)
 {
+	memcpy(input_state_values, input, sizeof(input_state_values));
 	report_buttons();
 	S9xMainLoop();
 	S9xFinalizeSamples();

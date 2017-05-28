@@ -9,9 +9,9 @@ CCFLAGS:= -I.. -I../apu/bapu \
 	-std=c++0x \
 	-D__WIN32_LIBSNES__ -DNDEBUG \
 	-DHAVE_STRINGS_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -D__LIBRETRO__ \
-	-O2
+	-O3 -flto
 
-TARGET = snes9x.exe
+TARGET = snes9x.wbx
 
 LDFLAGS = -Wl,--dynamicbase,--export-all-symbols
 
@@ -79,11 +79,16 @@ all: $(TARGET)
 
 .PHONY: clean all
 
-$(TARGET) : $(OBJS)
+$(TARGET).in: $(OBJS)
 	@$(CC) -o $@ $(LDFLAGS) $(CCFLAGS) $(OBJS) ../../emulibc/libemuhost.so
+
+$(TARGET): $(TARGET).in
+	strip $< -o $@ -R /4 -R /14 -R /29 -R /41 -R /55 -R /67 -R /78 -R /89 -R /104
+
 
 clean:
 	rm -rf $(OBJ_DIR)
+	rm -f $(TARGET).in
 	rm -f $(TARGET)
 
 print-%:
