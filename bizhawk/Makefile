@@ -8,7 +8,7 @@ CCFLAGS:= -I.. -I../apu/bapu \
 	-fno-exceptions -fno-rtti -fpermissive -fvisibility=hidden \
 	-std=c++0x \
 	-D__WIN32_LIBSNES__ -DNDEBUG \
-	-DHAVE_STRINGS_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -D__LIBRETRO__ \
+	-DHAVE_STRINGS_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -D__LIBRETRO__ -DSNES_JOY_READ_CALLBACKS \
 	-O3 -flto
 
 TARGET = snes9x.wbx

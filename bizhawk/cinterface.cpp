@@ -316,6 +316,7 @@ struct frame_info
 	int vheight;
 	short* sptr;
 	int slen;
+	int padread;
 };
 
 static frame_info av_info;
@@ -623,12 +624,27 @@ static void report_buttons()
 	}
 }
 
+static void (*InputCallback)();
+extern bool8 pad_read;
+void S9xOnSNESPadRead()
+{
+	if (InputCallback)
+		InputCallback();
+}
+
+EXPORT void biz_set_input_callback(void (*callback)())
+{
+	InputCallback = callback;
+}
+
 EXPORT void biz_run(frame_info* info, const int16_t* input)
 {
+	pad_read = FALSE;
 	memcpy(input_state_values, input, sizeof(input_state_values));
 	report_buttons();
 	S9xMainLoop();
 	S9xFinalizeSamples();
+	av_info.padread = pad_read;
 	size_t avail = S9xGetSampleCount();
 	S9xMixSamples((uint8 *)av_info.sptr, avail);
 	av_info.slen = avail / 2;
