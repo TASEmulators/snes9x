@@ -1067,6 +1067,7 @@ static void S9xDeinterleaveGD24 (int size, uint8 *base)
 static uint8 z_ram[0x20000];
 static uint8 z_sram[0x20000];
 static uint8 z_vram[0x10000];
+static uint8 f_ram[0x8000];
 
 bool8 CMemory::Init (void)
 {
@@ -1135,7 +1136,7 @@ bool8 CMemory::Init (void)
 	// FillRAM uses first 32K of ROM image area, otherwise space just
 	// wasted. Might be read by the SuperFX code.
 
-	FillRAM = ROM;
+	FillRAM = f_ram; // move to its own place because ROM is read only
 
 	// Add 0x8000 to ROM image pointer to stop SuperFX code accessing
 	// unallocated memory (can cause crash on some ports).
