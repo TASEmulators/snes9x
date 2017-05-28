@@ -92,6 +92,11 @@ EXPORT void biz_soft_reset()
 	S9xSoftReset();
 }
 
+EXPORT void biz_hard_reset()
+{
+	S9xReset();
+}
+
 /*
 
 available devices for each port
@@ -409,6 +414,17 @@ EXPORT int biz_init()
 	av_info.sptr = (short*)alloc_invisible(16384);
 
 	return 1;
+}
+
+EXPORT void biz_post_load_state()
+{
+	memset(IPPU.TileCached[TILE_2BIT], 0, MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT], 0, MAX_4BIT_TILES);
+	memset(IPPU.TileCached[TILE_8BIT], 0, MAX_8BIT_TILES);
+	memset(IPPU.TileCached[TILE_2BIT_EVEN], 0, MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_2BIT_ODD], 0,  MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT_EVEN], 0, MAX_4BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT_ODD], 0,  MAX_4BIT_TILES);
 }
 
 #define MAP_BUTTON(id, name) S9xMapButton((id), S9xGetCommandT((name)), false)
