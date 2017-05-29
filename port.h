@@ -311,7 +311,7 @@ typedef int					pint;
 #include <strings.h> // strcasecmp*/
 inline char* strdup(const char* p)
 {
-    char* ret = (char*)malloc(strlen(p));
+    char* ret = (char*)malloc(strlen(p) + 1);
     if (ret)
         strcpy(ret, p);
     return ret;
