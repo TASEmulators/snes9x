@@ -409,6 +409,7 @@ struct SSettings
 	bool8	SupportHiRes;
 	bool8	Transparency;
 	uint8	BG_Forced;
+	uint8	OBJ_Displayed;
 	bool8	DisableGraphicWindows;
 
 	bool8	DisplayFrameRate;

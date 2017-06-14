@@ -55,12 +55,14 @@ EXPORT void biz_set_sound_channels(int channels)
 EXPORT void biz_set_layers(int layers)
 {
 	// bits 0..3: bg 0..3
-	// bit 4: sprite
-	Settings.BG_Forced = ~layers & 0x1f;
+	// bit 4: NOT USED (check bits 8..11)
+	Settings.BG_Forced = ~layers & 0x0f;
 	// bit 5: window
 	Settings.DisableGraphicWindows = !(layers & 0x20);
 	// bit 6: transparency
 	Settings.Transparency = !!(layers & 0x40);
+
+	Settings.OBJ_Displayed = (layers>>8)&0xF;
 }
 
 /*void retro_get_system_info(struct retro_system_info *info)

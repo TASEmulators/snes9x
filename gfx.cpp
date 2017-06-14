@@ -243,6 +243,7 @@ bool8 S9xGraphicsInit (void)
 	IPPU.OBJChanged = TRUE;
 	IPPU.DirectColourMapsNeedRebuild = TRUE;
 	Settings.BG_Forced = 0;
+	Settings.OBJ_Displayed = 0x0F;
 	S9xFixColourBrightness();
 
 	GFX.X2   = (uint16 *) alloc_invisible(sizeof(uint16) * 0x10000);
@@ -1017,6 +1018,8 @@ static void DrawOBJS (int D)
 			}
 
 			GFX.Z2 = D + PPU.OBJ[S].Priority * 4;
+			if(Settings.OBJ_Displayed & (1<<PPU.OBJ[S].Priority)) {}
+			else continue;
 
 			int	DrawMode = 3;
 			int	clip = 0, next_clip = -1000;
