@@ -3333,7 +3333,7 @@ void S9xControlEOF (void)
 	S9xMovieUpdate();
 
 	pad_read_last = pad_read;
-	pad_read      = false;
+	//pad_read      = false;
 }
 
 void S9xSetControllerCrosshair (enum crosscontrols ctl, int8 idx, const char *fg, const char *bg)
