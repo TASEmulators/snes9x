@@ -1,4 +1,5 @@
 #include <emulibc.h>
+#include <waterboxcore.h>
 
 #include "snes9x.h"
 #include "memmap.h"
@@ -62,7 +63,7 @@ EXPORT void biz_set_layers(int layers)
 	// bit 6: transparency
 	Settings.Transparency = !!(layers & 0x40);
 
-	Settings.OBJ_Displayed = (layers>>8)&0xF;
+	Settings.OBJ_Displayed = (layers >> 8) & 0xF;
 }
 
 /*void retro_get_system_info(struct retro_system_info *info)
@@ -310,19 +311,6 @@ EXPORT int biz_load_rom(const void *data, int size)
 	return rom_loaded;
 }*/
 
-struct frame_info
-{
-	void* vptr;
-	int vpitch;
-	int vwidth;
-	int vheight;
-	short* sptr;
-	int slen;
-	int padread;
-};
-
-static frame_info av_info;
-
 static void map_buttons();
 
 EXPORT int biz_init()
@@ -380,8 +368,6 @@ EXPORT int biz_init()
 	S9xUnmapAllControls();
 	map_buttons();
 
-	av_info.sptr = (short*)alloc_invisible(16384);
-
 	return 1;
 }
 
@@ -391,9 +377,9 @@ EXPORT void biz_post_load_state()
 	memset(IPPU.TileCached[TILE_4BIT], 0, MAX_4BIT_TILES);
 	memset(IPPU.TileCached[TILE_8BIT], 0, MAX_8BIT_TILES);
 	memset(IPPU.TileCached[TILE_2BIT_EVEN], 0, MAX_2BIT_TILES);
-	memset(IPPU.TileCached[TILE_2BIT_ODD], 0,  MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_2BIT_ODD], 0, MAX_2BIT_TILES);
 	memset(IPPU.TileCached[TILE_4BIT_EVEN], 0, MAX_4BIT_TILES);
-	memset(IPPU.TileCached[TILE_4BIT_ODD], 0,  MAX_4BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT_ODD], 0, MAX_4BIT_TILES);
 }
 
 #define MAP_BUTTON(id, name) S9xMapButton((id), S9xGetCommandT((name)), false)
@@ -524,7 +510,7 @@ static void map_buttons()
 #define RETRO_DEVICE_ID_LIGHTGUN_X 0
 #define RETRO_DEVICE_ID_LIGHTGUN_Y 1
 
-static int16_t input_state_values[16 * 8];
+static int16_t *input_state_values;
 
 static int16_t input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id)
 {
@@ -634,23 +620,52 @@ void S9xOnSNESPadRead()
 		InputCallback();
 }
 
-EXPORT void biz_set_input_callback(void (*callback)())
+EXPORT void SetInputCallback(void (*callback)())
 {
 	InputCallback = callback;
 }
 
-EXPORT void biz_run(frame_info* info, const int16_t* input)
+static int actual_width;
+static int actual_height;
+
+static void Blit(const uint16_t *src, uint8_t *dst)
+{
+	const int vinc = GFX.Pitch / sizeof(uint16_t) - actual_width;
+	for (int j = 0; j < actual_height; j++)
+	{
+		for (int i = 0; i < actual_width; i++)
+		{
+			auto c = *src++;
+			*dst++ = c << 3 & 0xf8 | c >> 2 & 7;
+			*dst++ = c >> 3 & 0xfa | c >> 9 & 3;
+			*dst++ = c >> 8 & 0xf8 | c >> 13 & 7;
+			*dst++ = 0xff;
+		}
+		src += vinc;
+	}
+}
+
+EXPORT void SetButtons(int16_t* buttons)
+{
+	input_state_values = buttons;
+	report_buttons();
+	input_state_values = nullptr;
+}
+
+EXPORT void FrameAdvance(FrameInfo *frame)
 {
 	pad_read = FALSE;
-	memcpy(input_state_values, input, sizeof(input_state_values));
-	report_buttons();
 	S9xMainLoop();
 	S9xFinalizeSamples();
-	av_info.padread = pad_read;
+	frame->Lagged = !pad_read;
+
 	size_t avail = S9xGetSampleCount();
-	S9xMixSamples((uint8 *)av_info.sptr, avail);
-	av_info.slen = avail / 2;
-	*info = av_info;
+	S9xMixSamples((uint8 *)frame->SoundBuffer, avail);
+	frame->Samples = avail / 2;
+
+	frame->Width = actual_width;
+	frame->Height = actual_height;
+	Blit(GFX.Screen, (uint8_t*)frame->VideoBuffer);
 }
 
 EXPORT int biz_is_ntsc()
@@ -658,43 +673,35 @@ EXPORT int biz_is_ntsc()
 	return !Settings.PAL;
 }
 
-struct memory_area
-{
-	void *ptr;
-	int size;
-};
 
-EXPORT void biz_get_memory_area(int which, memory_area *m)
+EXPORT void GetMemoryAreas(MemoryArea* m)
 {
-	switch (which)
-	{
-	case 0: // sram, or sufami A sram
-		m->ptr = Memory.SRAM;
-		m->size = (unsigned)(Memory.SRAMSize ? (1 << (Memory.SRAMSize + 3)) * 128 : 0);
-		if (m->size > 0x20000)
-			m->size = 0x20000;
-		return;
-	case 1: // sufami B sram
-		m->ptr = Multi.sramB;
-		m->size = (unsigned)(Multi.cartType && Multi.sramSizeB ? (1 << (Multi.sramSizeB + 3)) * 128 : 0);
-		return;
-	case 2: // RTC
-		m->ptr = RTCData.reg;
-		m->size = (Settings.SRTC || Settings.SPC7110RTC) ? 20 : 0;
-		return;
-	case 3: // main ram
-		m->ptr = Memory.RAM;
-		m->size = 128 * 1024;
-		return;
-	case 4: // video ram
-		m->ptr = Memory.VRAM;
-		m->size = 64 * 1024;
-		return;
-	default:
-		m->ptr = nullptr;
-		m->size = 0;
-		return;
-	}
+	m[0].Data = Memory.SRAM; // sram, or sufami A sram
+	m[0].Name = "CARTRAM";
+	m[0].Size = (unsigned)(Memory.SRAMSize ? (1 << (Memory.SRAMSize + 3)) * 128 : 0);
+	if (m[0].Size > 0x20000)
+		m[0].Size = 0x20000;
+	m[0].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2 | MEMORYAREA_FLAGS_SAVERAMMABLE;
+
+	m[1].Data = Multi.sramB; // sufami B sram
+	m[1].Name = "CARTRAM B";
+	m[1].Size = (unsigned)(Multi.cartType && Multi.sramSizeB ? (1 << (Multi.sramSizeB + 3)) * 128 : 0);
+	m[1].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2 | MEMORYAREA_FLAGS_SAVERAMMABLE;
+
+	m[2].Data = RTCData.reg;
+	m[2].Name = "RTC";
+	m[2].Size = (Settings.SRTC || Settings.SPC7110RTC) ? 20 : 0;
+	m[2].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE1 | MEMORYAREA_FLAGS_SAVERAMMABLE;
+
+	m[3].Data = Memory.RAM;
+	m[3].Name = "WRAM";
+	m[3].Size = 128 * 1024;
+	m[3].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2 | MEMORYAREA_FLAGS_PRIMARY;
+
+	m[4].Data = Memory.VRAM;
+	m[4].Name = "VRAM";
+	m[4].Size = 64 * 1024;
+	m[4].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2;
 }
 
 bool8 S9xDeinitUpdate(int width, int height)
@@ -726,10 +733,8 @@ bool8 S9xDeinitUpdate(int width, int height)
 		}
 	}
 
-	av_info.vptr = GFX.Screen;
-	av_info.vwidth = width;
-	av_info.vheight = height;
-	av_info.vpitch = GFX.Pitch;
+	actual_width = width;
+	actual_height = height;
 	return TRUE;
 }
 
