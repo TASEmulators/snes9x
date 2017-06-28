@@ -17,5 +17,10 @@
     "win32": true,
     "server.cpp": true,
     "netplay.cpp": true
+  },
+  "files.associations": {
+    "vector": "cpp",
+    "xstring": "cpp",
+    "xutility": "cpp"
   }
 }
