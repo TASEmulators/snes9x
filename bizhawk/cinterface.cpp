@@ -702,6 +702,11 @@ EXPORT void GetMemoryAreas(MemoryArea* m)
 	m[4].Name = "VRAM";
 	m[4].Size = 64 * 1024;
 	m[4].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2;
+
+	m[5].Data = Memory.ROM;
+	m[5].Name = "CARTROM";
+	m[5].Size = Memory.CalculatedSize;
+	m[5].Flags = MEMORYAREA_FLAGS_WORDSIZE2;
 }
 
 bool8 S9xDeinitUpdate(int width, int height)
