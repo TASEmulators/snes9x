@@ -1,4 +1,4 @@
-CCFLAGS := -I. -I./apu/bapu \
+CXXFLAGS := -I. -I./apu/bapu \
 	-fpermissive \
 	-std=c++0x \
 	-D__WIN32_LIBSNES__ -DNDEBUG \
