@@ -1074,7 +1074,7 @@ bool8 CMemory::Init (void)
     RAM	 = (uint8 *) z_ram;
     SRAM = (uint8 *) z_sram;
     VRAM = (uint8 *) z_vram;
-    ROM  = (uint8 *) alloc_sealed(MAX_ROM_SIZE + 0x200 + 0x8000);
+    ROM  = (uint8 *) alloc_plain(MAX_ROM_SIZE + 0x200 + 0x8000);
 
 	IPPU.TileCache[TILE_2BIT]       = (uint8 *) alloc_invisible(MAX_2BIT_TILES * 64);
 	IPPU.TileCache[TILE_4BIT]       = (uint8 *) alloc_invisible(MAX_4BIT_TILES * 64);
