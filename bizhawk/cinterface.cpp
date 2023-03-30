@@ -37,8 +37,6 @@
 #define RETRO_LOG_ERROR 1
 #define RETRO_LOG_INFO 0
 
-#define EXPORT extern "C" ECL_EXPORT
-
 static void log_cb(int level, const char *fmt, ...)
 {
 	_debug_puts(fmt);
@@ -47,13 +45,13 @@ static void log_cb(int level, const char *fmt, ...)
 static bool use_overscan = false;
 static bool rom_loaded = false;
 
-EXPORT void biz_set_sound_channels(int channels)
+ECL_EXPORT void biz_set_sound_channels(int channels)
 {
 	// bits 0..7: channels 1..8
 	S9xSetSoundControl(channels & 0xff);
 }
 
-EXPORT void biz_set_layers(int layers)
+ECL_EXPORT void biz_set_layers(int layers)
 {
 	// bits 0..3: bg 0..3
 	// bit 4: NOT USED (check bits 8..11)
@@ -90,12 +88,12 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 	 info->timing.fps = retro_get_region() == RETRO_REGION_NTSC ? 21477272.0 / 357366.0 : 21281370.0 / 425568.0;
 }*/
 
-EXPORT void biz_soft_reset()
+ECL_EXPORT void biz_soft_reset()
 {
 	S9xSoftReset();
 }
 
-EXPORT void biz_hard_reset()
+ECL_EXPORT void biz_hard_reset()
 {
 	S9xReset();
 }
@@ -164,7 +162,7 @@ static void retro_set_controller_port_device(unsigned port, unsigned device)
 	}
 }
 
-EXPORT void biz_set_port_devices(unsigned left, unsigned right)
+ECL_EXPORT void biz_set_port_devices(unsigned left, unsigned right)
 {
 	retro_set_controller_port_device(0, left);
 	retro_set_controller_port_device(1, right);
@@ -244,7 +242,7 @@ EXPORT void biz_set_port_devices(unsigned left, unsigned right)
 	environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
 }*/
 
-EXPORT int biz_load_rom(const void *data, int size)
+ECL_EXPORT int biz_load_rom(const void *data, int size)
 {
 	rom_loaded = Memory.LoadROMMem((const uint8_t *)data, size);
 
@@ -313,7 +311,7 @@ EXPORT int biz_load_rom(const void *data, int size)
 
 static void map_buttons();
 
-EXPORT int biz_init()
+ECL_EXPORT int biz_init()
 {
 	memset(&Settings, 0, sizeof(Settings));
 	Settings.MouseMaster = TRUE;
@@ -371,7 +369,7 @@ EXPORT int biz_init()
 	return 1;
 }
 
-EXPORT void biz_post_load_state()
+ECL_EXPORT void biz_post_load_state()
 {
 	memset(IPPU.TileCached[TILE_2BIT], 0, MAX_2BIT_TILES);
 	memset(IPPU.TileCached[TILE_4BIT], 0, MAX_4BIT_TILES);
@@ -419,14 +417,15 @@ EXPORT void biz_post_load_state()
 #define SCOPE_CURSOR 3
 #define SCOPE_TURBO 4
 #define SCOPE_PAUSE 5
+#define SCOPE_OFFSCREEN 6
 #define SCOPE_FIRST 0
-#define SCOPE_LAST 5
+#define SCOPE_LAST 6
 
 #define JUSTIFIER_X 0
 #define JUSTIFIER_Y 1
 #define JUSTIFIER_TRIGGER 2
-#define JUSTIFIER_OFFSCREEN 3
-#define JUSTIFIER_START 4
+#define JUSTIFIER_START 3
+#define JUSTIFIER_OFFSCREEN 4
 #define JUSTIFIER_FIRST 0
 #define JUSTIFIER_LAST 4
 
@@ -458,7 +457,7 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_START), "{Joypad2 Start,Mouse2 R,Superscope Cursor,Justifier1 Start}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_L), "Joypad2 L");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_R), "Joypad2 R");
-	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_LEFT), "Joypad2 Left");
+	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_LEFT), "Joypad2 Left,Superscope AimOffscreen");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_RIGHT), "Joypad2 Right");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_UP), "{Joypad2 Up,Superscope ToggleTurbo,Justifier1 AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_DOWN), "{Joypad2 Down,Superscope Pause}");
@@ -525,10 +524,10 @@ static int16_t input_state_cb(unsigned port, unsigned device, unsigned index, un
 	// id: xpos = 0, ypos, Left Button, Right Button = 3
 
 	// RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE (4) - everything a lightgun does
-	// id: xpos = 0, ypos, trigger, cursor, turbo, pause = 5
+	// id: xpos = 0, ypos, trigger, cursor, turbo, pause, offscreen = 6
 
 	// RETRO_DEVICE_LIGHTGUN_JUSTIFIER (5) - everything a justifier does
-	// id: xpos = 0, ypos, trigger, offscreen, start = 4
+	// id: xpos = 0, ypos, trigger, start, offscreen = 4
 
 	// index: always 0
 
@@ -543,8 +542,6 @@ static int16_t input_state_cb(unsigned port, unsigned device, unsigned index, un
 // S9x seems to use absolute values, but do convert these into relative values in the core. (Why?!)
 // Hack around it. :)
 static int16_t snes_mouse_state[2][2] = {{0}, {0}};
-static int16_t snes_scope_state[2] = {0};
-static int16_t snes_justifier_state[2][2] = {{0}, {0}};
 static void report_buttons()
 {
 	int _x, _y;
@@ -575,33 +572,17 @@ static void report_buttons()
 			break;
 
 		case RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE:
-			snes_scope_state[0] += input_state_cb(port, RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE, 0, RETRO_DEVICE_ID_LIGHTGUN_X);
-			snes_scope_state[1] += input_state_cb(port, RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE, 0, RETRO_DEVICE_ID_LIGHTGUN_Y);
-			if (snes_scope_state[0] < 0)
-				snes_scope_state[0] = 0;
-			else if (snes_scope_state[0] > (SNES_WIDTH - 1))
-				snes_scope_state[0] = SNES_WIDTH - 1;
-			if (snes_scope_state[1] < 0)
-				snes_scope_state[1] = 0;
-			else if (snes_scope_state[1] > (SNES_HEIGHT - 1))
-				snes_scope_state[1] = SNES_HEIGHT - 1;
-			S9xReportPointer(BTN_POINTER, snes_scope_state[0], snes_scope_state[1]);
+			_x = input_state_cb(port, RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE, 0, RETRO_DEVICE_ID_LIGHTGUN_X);
+			_y = input_state_cb(port, RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE, 0, RETRO_DEVICE_ID_LIGHTGUN_Y);
+			S9xReportPointer(BTN_POINTER, _x, _y);
 			for (int i = SCOPE_TRIGGER; i <= SCOPE_LAST; i++)
 				S9xReportButton(MAKE_BUTTON(2, i), input_state_cb(port, RETRO_DEVICE_LIGHTGUN_SUPER_SCOPE, 0, i));
 			break;
 
 		case RETRO_DEVICE_LIGHTGUN_JUSTIFIER:
-			snes_justifier_state[port][0] += input_state_cb(port, RETRO_DEVICE_LIGHTGUN_JUSTIFIER, 0, RETRO_DEVICE_ID_LIGHTGUN_X);
-			snes_justifier_state[port][1] += input_state_cb(port, RETRO_DEVICE_LIGHTGUN_JUSTIFIER, 0, RETRO_DEVICE_ID_LIGHTGUN_Y);
-			if (snes_justifier_state[port][0] < 0)
-				snes_justifier_state[port][0] = 0;
-			else if (snes_justifier_state[port][0] > (SNES_WIDTH - 1))
-				snes_justifier_state[port][0] = SNES_WIDTH - 1;
-			if (snes_justifier_state[port][1] < 0)
-				snes_justifier_state[port][1] = 0;
-			else if (snes_justifier_state[port][1] > (SNES_HEIGHT - 1))
-				snes_justifier_state[port][1] = SNES_HEIGHT - 1;
-			S9xReportPointer(BTN_POINTER, snes_justifier_state[port][0], snes_justifier_state[port][1]);
+			_x = input_state_cb(port, RETRO_DEVICE_LIGHTGUN_JUSTIFIER, 0, RETRO_DEVICE_ID_LIGHTGUN_X);
+			_y = input_state_cb(port, RETRO_DEVICE_LIGHTGUN_JUSTIFIER, 0, RETRO_DEVICE_ID_LIGHTGUN_Y);
+			S9xReportPointer(BTN_POINTER, _x, _y);
 			for (int i = JUSTIFIER_TRIGGER; i <= JUSTIFIER_LAST; i++)
 				S9xReportButton(MAKE_BUTTON(2, i), input_state_cb(port, RETRO_DEVICE_LIGHTGUN_JUSTIFIER, 0, i));
 			break;
@@ -620,7 +601,7 @@ void S9xOnSNESPadRead()
 		InputCallback();
 }
 
-EXPORT void SetInputCallback(void (*callback)())
+ECL_EXPORT void SetInputCallback(void (*callback)())
 {
 	InputCallback = callback;
 }
@@ -645,14 +626,14 @@ static void Blit(const uint16_t *src, uint8_t *dst)
 	}
 }
 
-EXPORT void SetButtons(int16_t* buttons)
+ECL_EXPORT void SetButtons(int16_t* buttons)
 {
 	input_state_values = buttons;
 	report_buttons();
 	input_state_values = nullptr;
 }
 
-EXPORT void FrameAdvance(FrameInfo *frame)
+ECL_EXPORT void FrameAdvance(FrameInfo *frame)
 {
 	pad_read = FALSE;
 	S9xMainLoop();
@@ -668,13 +649,13 @@ EXPORT void FrameAdvance(FrameInfo *frame)
 	Blit(GFX.Screen, (uint8_t*)frame->VideoBuffer);
 }
 
-EXPORT int biz_is_ntsc()
+ECL_EXPORT int biz_is_ntsc()
 {
 	return !Settings.PAL;
 }
 
 
-EXPORT void GetMemoryAreas(MemoryArea* m)
+ECL_EXPORT void GetMemoryAreas(MemoryArea* m)
 {
 	m[0].Data = Memory.SRAM; // sram, or sufami A sram
 	m[0].Name = "CARTRAM";
