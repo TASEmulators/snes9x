@@ -1,6 +1,9 @@
 CXXFLAGS := -I. -I./apu/bapu \
 	-fpermissive \
 	-std=c++0x \
+	-Wno-delete-abstract-non-virtual-dtor -Wno-misleading-indentation \
+	-Wno-user-defined-warnings -Wno-empty-body -Wno-unused -Wno-deprecated \
+	-Wno-int-to-pointer-cast -Wno-unsequenced -Wno-bitwise-op-parentheses \
 	-D__WIN32_LIBSNES__ -DNDEBUG \
 	-DHAVE_STRINGS_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -D__LIBRETRO__ -DSNES_JOY_READ_CALLBACKS
 
