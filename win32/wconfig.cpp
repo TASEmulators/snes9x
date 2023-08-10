@@ -1,192 +1,8 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 // all windows-specific command line and config file parsing/saving/loading
 // this stuff was moved out of wsnes.cpp, to keep things a little tidier
@@ -219,9 +35,16 @@ void WinDeleteRecentGamesList ();
 
 HANDLE configMutex = NULL;
 
+extern TCHAR multiRomA[MAX_PATH]; // lazy, should put in sGUI and add init to {0} somewhere
+extern TCHAR multiRomB[MAX_PATH];
+
 void S9xParseArg (char **argv, int &i, int argc)
 {
-	if (strcasecmp (argv [i], "-restore") == 0)
+	if (strcasecmp (argv [i], "-removeregistrykeys") == 0)
+	{
+		S9xWinRemoveRegistryKeys();
+	}
+	else if (strcasecmp (argv [i], "-restore") == 0)
 	{
 		WinDeleteRegistryEntries ();
 		WinSetDefaultValues	();
@@ -234,10 +57,15 @@ void S9xParseArg (char **argv, int &i, int argc)
 	{
 		GUI.FullScreen = true;
 	}
+	else if (!strcasecmp(argv[i], "-cartb"))
+	{
+		Settings.Multi = TRUE; // only used to signal winmain
+		if (i + 1 < argc)
+		{
+			lstrcpyn(multiRomB, _tFromChar(argv[++i]), MAX_PATH);
+		}
+	}
 }
-
-extern TCHAR multiRomA [MAX_PATH]; // lazy, should put in sGUI and add init to {0} somewhere
-extern TCHAR multiRomB [MAX_PATH];
 
 void WinSetDefaultValues ()
 {
@@ -255,10 +83,11 @@ void WinSetDefaultValues ()
 	GUI.Stretch	= false;
 	GUI.FlipCounter	= 0;
 	GUI.NumFlipFrames =	1;
-	GUI.BilinearFilter	= false;
+	Settings.BilinearFilter	= false;
 	GUI.LockDirectories = false;
 	GUI.window_maximized = false;
 	GUI.EmulatedFullscreen = false;
+	GUI.FullscreenOnOpen = false;
 
 	WinDeleteRecentGamesList ();
 
@@ -291,6 +120,8 @@ void WinSetDefaultValues ()
 	Settings.TakeScreenshot=false;
 
 	GUI.Language=0;
+    GUI.AllowSoundSync = true;
+	GUI.CurrentSaveBank = 0;
 }
 
 
@@ -449,6 +280,13 @@ const TCHAR*	WinParseCommandLineAndLoadConfigFile (TCHAR *line)
 	ReleaseMutex(configMutex);
 	CloseHandle(configMutex);
 
+	// check some additional common help switches
+	for (int i = 0; i < count; i++)
+	{
+		if(!strcasecmp(parameters[i], "/?") || !strcasecmp(parameters[i], "-h"))
+			S9xUsage();
+	}
+
 	const char* rf = S9xParseArgs (parameters, count);
 
     if(rf) // save rom_filename as TCHAR if available
@@ -559,16 +397,16 @@ struct ConfigItem
 				if(size	== 8) *(uint64*)addr = (uint64)conf.GetBool(name, def!=0);
 				break;
 			case CIT_INT:
-				if(size	== 1) *(uint8 *)addr = (uint8) conf.GetInt(name, reinterpret_cast<int32>(def));
-				if(size	== 2) *(uint16*)addr = (uint16)conf.GetInt(name, reinterpret_cast<int32>(def));
-				if(size	== 4) *(uint32*)addr = (uint32)conf.GetInt(name, reinterpret_cast<int32>(def));
-				if(size	== 8) *(uint64*)addr = (uint64)conf.GetInt(name, reinterpret_cast<int32>(def));
+				if(size	== 1) *(uint8 *)addr = (uint8) conf.GetInt(name, PtrToInt(def));
+				if(size	== 2) *(uint16*)addr = (uint16)conf.GetInt(name, PtrToInt(def));
+				if(size	== 4) *(uint32*)addr = (uint32)conf.GetInt(name, PtrToInt(def));
+				if(size	== 8) *(uint64*)addr = (uint64)conf.GetInt(name, PtrToInt(def));
 				break;
 			case CIT_UINT:
-				if(size	== 1) *(uint8 *)addr = (uint8) conf.GetUInt(name, reinterpret_cast<uint32>(def));
-				if(size	== 2) *(uint16*)addr = (uint16)conf.GetUInt(name, reinterpret_cast<uint32>(def));
-				if(size	== 4) *(uint32*)addr = (uint32)conf.GetUInt(name, reinterpret_cast<uint32>(def));
-				if(size	== 8) *(uint64*)addr = (uint64)conf.GetUInt(name, reinterpret_cast<uint32>(def));
+				if(size	== 1) *(uint8 *)addr = (uint8) conf.GetUInt(name, PtrToUint(def));
+				if(size	== 2) *(uint16*)addr = (uint16)conf.GetUInt(name, PtrToUint(def));
+				if(size	== 4) *(uint32*)addr = (uint32)conf.GetUInt(name, PtrToUint(def));
+				if(size	== 8) *(uint64*)addr = (uint64)conf.GetUInt(name, PtrToUint(def));
 				break;
 			case CIT_STRING:
 				lstrcpyn((TCHAR*)addr, _tFromChar(conf.GetString(name, reinterpret_cast<const char*>(def))), size-1);
@@ -583,7 +421,7 @@ struct ConfigItem
 				break;
 			case CIT_VKEY:
 				{
-					uint16 keyNum = (uint16)conf.GetUInt(name, reinterpret_cast<uint32>(def));
+					uint16 keyNum = (uint16)conf.GetUInt(name, PtrToUint(def));
 					const char* keyStr = conf.GetString(name);
 					if(keyStr)
 					{
@@ -634,7 +472,7 @@ struct ConfigItem
 						if(strstr(modStr, "lt") || strstr(modStr, "LT")) modNum |= CUSTKEY_ALT_MASK;
 					}
 					if(!modNum && (!modStr || strcasecmp(modStr, "none")))
-						modNum = conf.GetUInt(name, reinterpret_cast<uint32>(def));
+						modNum = conf.GetUInt(name, PtrToUint(def));
 					if(size	== 1) *(uint8 *)addr = (uint8) modNum;
 					if(size	== 2) *(uint16*)addr = (uint16)modNum;
 					if(size	== 4) *(uint32*)addr = (uint32)modNum;
@@ -796,6 +634,9 @@ void WinPreSave(ConfigFile& conf)
 	if(GUI.window_size.bottom < 10) GUI.window_size.bottom = 10;
 	if(GUI.window_size.right < 10) GUI.window_size.right = 10;
 
+	GUI.customRomDlgSettings.window_size.right -= GUI.customRomDlgSettings.window_size.left;
+	GUI.customRomDlgSettings.window_size.bottom -= GUI.customRomDlgSettings.window_size.top;
+
 	conf.DeleteKey("Sound::Mono");
 	if(configSort == 2)
 		conf.ClearLines();
@@ -815,6 +656,9 @@ void WinPostSave(ConfigFile& conf)
 	GUI.window_size.bottom += GUI.window_size.top;
 	GUI.window_size.right += extra_width;
 	GUI.window_size.bottom += extra_height;
+
+	GUI.customRomDlgSettings.window_size.right += GUI.customRomDlgSettings.window_size.left;
+	GUI.customRomDlgSettings.window_size.bottom += GUI.customRomDlgSettings.window_size.top;
 }
 void WinPostLoad(ConfigFile& conf)
 {
@@ -837,7 +681,34 @@ void WinPostLoad(ConfigFile& conf)
 			i = -1;
 		}
 	}
-	if(conf.Exists("Sound::Mono")) Settings.Stereo = !conf.GetBool("Sound::Mono"); // special case
+
+    if (Settings.MaxSpriteTilesPerLine != 34 && Settings.MaxSpriteTilesPerLine != 128)
+        Settings.MaxSpriteTilesPerLine = 34;
+
+    switch (Settings.OverclockMode)
+    {
+        default:
+        case 0:
+            Settings.OneClockCycle = 6;
+            Settings.OneSlowClockCycle = 8;
+            Settings.TwoClockCycles = 12;
+            break;
+        case 1:
+            Settings.OneClockCycle = 6;
+            Settings.OneSlowClockCycle = 6;
+            Settings.TwoClockCycles = 12;
+            break;
+        case 2:
+            Settings.OneClockCycle = 4;
+            Settings.OneSlowClockCycle = 5;
+            Settings.TwoClockCycles = 8;
+            break;
+        case 3:
+            Settings.OneClockCycle = 3;
+            Settings.OneSlowClockCycle = 4;
+            Settings.TwoClockCycles = 6;
+            break;
+    }
 
 	ConfigFile::SetNiceAlignment(niceAlignment);
 	ConfigFile::SetShowComments(showComments);
@@ -879,7 +750,6 @@ void WinRegisterConfigItems()
 	AddBoolC("Lock", readOnlyConfig, false, "if true, prevents Snes9x from editing this configuration file (or making it read-only while it is running)");
 #undef CATEGORY
 #define CATEGORY "Display"
-	AddBool2C("HiRes", Settings.SupportHiRes, true, "on to support the hi-res mode that a few games use, off to render them in low-res");
 	AddBool2("Transparency", Settings.Transparency, true);
 	AddBoolC("MessagesInImage", Settings.AutoDisplayMessages, false, "true to draw text inside the SNES image (will get into AVIs, screenshots, and filters)");
 	AddBool2C("FrameRate", Settings.DisplayFrameRate, false, "on to display the framerate (will be inaccurate if AutoMaxSkipFrames is too small)");
@@ -891,21 +761,32 @@ void WinRegisterConfigItems()
 	AddUIntC("FilterType", GUI.Scale, 0, filterString);
 	AddUIntC("FilterHiRes", GUI.ScaleHiRes, 0, filterString2);
 	AddBoolC("BlendHiRes", GUI.BlendHiRes, true, "true to horizontally blend Hi-Res images (better transparency effect on filters that do not account for this)");
+	AddBoolC("NTSCScanlines", GUI.NTSCScanlines, true, "true to use scanlines with Blargg's NTSC filters");
 	AddBoolC("ShaderEnabled", GUI.shaderEnabled, false, "true to use pixel shader (if supported by output method)");
 	AddStringC("Direct3D:D3DShader", GUI.D3DshaderFileName, MAX_PATH, "", "shader filename for Direct3D mode (HLSL effect file or CG shader");
 	AddStringC("OpenGL:OGLShader", GUI.OGLshaderFileName, MAX_PATH, "", "shader filename for OpenGL mode (bsnes-style XML shader or CG shader)");
-	AddBoolC("OpenGL:DisablePBOs", GUI.OGLdisablePBOs, false, "do not use PBOs in OpenGL mode, even if the video card supports them");
-	AddBoolC("ExtendHeight", GUI.HeightExtend, false, "true to display an extra 15 pixels at the bottom, which few games use. Also increases AVI output size from 256x224 to 256x240.");
+	AddBoolC("OpenGL:DisablePBOs", GUI.OGLdisablePBOs, true, "do not use PBOs in OpenGL mode, even if the video card supports them");
+	AddBoolC("ExtendHeight", Settings.ShowOverscan, false, "true to display an extra 15 pixels at the bottom, which few games use. Also increases AVI output size from 256x224 to 256x240.");
 	AddBoolC("AlwaysCenterImage", GUI.AlwaysCenterImage,false, "true to center the image even if larger than window");
 	AddIntC("Window:Width", GUI.window_size.right, 512, "256=1x, 512=2x, 768=3x, 1024=4x, etc. (usually)");
 	AddIntC("Window:Height", GUI.window_size.bottom, 448, "224=1x, 448=2x, 672=3x,  896=4x, etc. (usually)");
 	AddIntC("Window:Left", GUI.window_size.left, 0, "in pixels from left edge of screen");
 	AddIntC("Window:Top", GUI.window_size.top, 0, "in pixels from top edge of screen");
 	AddBool("Window:Maximized", GUI.window_maximized, false);
+	AddIntC("CustomRomDialog:Width", GUI.customRomDlgSettings.window_size.right, 660, "");
+	AddIntC("CustomRomDialog:Height", GUI.customRomDlgSettings.window_size.bottom, 400, "");
+	AddIntC("CustomRomDialog:Left", GUI.customRomDlgSettings.window_size.left, 50, "in pixels from left edge of screen");
+	AddIntC("CustomRomDialog:Top", GUI.customRomDlgSettings.window_size.top, 50, "in pixels from top edge of screen");
+	AddBool("CustomRomDialog:Maximized", GUI.customRomDlgSettings.window_maximized, false);
+	AddIntC("CustomRomDialog:FolderPaneWidth", GUI.customRomDlgSettings.folderPaneWidth, 230, "");
+	AddIntC("CustomRomDialog:DescColumnWidth", GUI.customRomDlgSettings.columnDescription, 112, "");
+	AddIntC("CustomRomDialog:FilenameColumnWidth", GUI.customRomDlgSettings.columnFilename, 196, "");
+	AddIntC("CustomRomDialog:SizeColumnWidth", GUI.customRomDlgSettings.columnSize, 67, "");
 	AddBoolC("Stretch:Enabled", GUI.Stretch, true, "true to stretch the game image to fill the window or screen");
 	AddBoolC("Stretch:MaintainAspectRatio", GUI.AspectRatio, true, "prevents stretching from changing the aspect ratio");
+	AddBoolC("Stretch:IntegerScaling", GUI.IntegerScaling, false, "scales image height to exact integer multiples");
 	AddUIntC("Stretch:AspectRatioBaseWidth", GUI.AspectWidth, 256, "base width for aspect ratio calculation (AR=AspectRatioBaseWidth/224), default is 256 - set to 299 for 4:3 aspect ratio");
-	AddBoolC("Stretch:BilinearFilter", GUI.BilinearFilter, true, "allows bilinear filtering of stretching. Depending on your video card and the window size, this may result in a lower framerate.");
+	AddBoolC("Stretch:BilinearFilter", Settings.BilinearFilter, true, "allows bilinear filtering of stretching. Depending on your video card and the window size, this may result in a lower framerate.");
 	AddBoolC("Stretch:LocalVidMem", GUI.LocalVidMem, true, "determines the location of video memory in DirectDraw mode. May increase or decrease rendering performance, depending on your setup and which filter and stretching options are active.");
 	AddBool("Fullscreen:Enabled", GUI.FullScreen, false);
 	AddUInt("Fullscreen:Width", GUI.FullscreenMode.width, 640);
@@ -913,9 +794,13 @@ void WinRegisterConfigItems()
 	AddUInt("Fullscreen:Depth", GUI.FullscreenMode.depth, 16);
 	AddUInt("Fullscreen:RefreshRate", GUI.FullscreenMode.rate, 60);
 	AddBool("Fullscreen:DoubleBuffered", GUI.DoubleBuffered, false);
+	AddBoolC("Fullscreen:FullscreenOnOpen", GUI.FullscreenOnOpen, false, "Change to fullscreen when opening a ROM.");
 	AddBoolC("Fullscreen:EmulateFullscreen", GUI.EmulateFullscreen, true,"true makes snes9x create a window that spans the entire screen when going fullscreen");
 	AddBoolC("HideMenu", GUI.HideMenu, false, "true to auto-hide the menu bar on startup.");
 	AddBoolC("Vsync", GUI.Vsync, false, "true to enable Vsync");
+	AddBoolC("ReduceInputLag", GUI.ReduceInputLag, false, "true to reduce input lag by hard synchronization");
+    AddBoolC("DWMSync", GUI.DWMSync, false, "sync to DWM compositor if it is running");
+	AddUIntC("OSDSize", GUI.OSDSize, 24, "Size of On-Screen Display");
 #undef CATEGORY
 #define CATEGORY "Settings"
 	AddUIntC("FrameSkip", Settings.SkipFrames, AUTO_FRAMERATE, "200=automatic (limits at 50/60 fps), 0=none, 1=skip every other, ...");
@@ -935,7 +820,9 @@ void WinRegisterConfigItems()
     AddUIntC("RewindGranularity", GUI.rewindGranularity, 1, "rewind granularity - rewind takes a snapshot each x frames");
 	AddBoolC("PauseWhenInactive", GUI.InactivePause, TRUE, "true to pause Snes9x when it is not the active window");
 	AddBoolC("CustomRomOpenDialog", GUI.CustomRomOpen, false, "false to use standard Windows open dialog for the ROM open dialog");
+	AddBoolC("AddToRegistry", GUI.AddToRegistry, true, "true to ask to add entries to registry for file type associations");
 	AddBoolC("AVIHiRes", GUI.AVIHiRes, false, "true to record AVI in Hi-Res scale");
+	AddBoolC("ConfirmSaveLoad", GUI.ConfirmSaveLoad, false, "true to ask for confirmation when saving/loading");
 //	AddUIntC("Language", GUI.Language, 0, "0=English, 1=Nederlands"); // NYI
 	AddBoolC("FrameAdvanceSkipsNonInput", GUI.FASkipsNonInput, false, "causes frame advance to fast-forward past frames where the game is definitely not checking input, such as during lag or loading time. EXPERIMENTAL");
 	AddBool("MovieDefaultClearSRAM", GUI.MovieClearSRAM, false);
@@ -951,7 +838,8 @@ void WinRegisterConfigItems()
 	AddStringC("Dir:SPCs", GUI.SPCDir, _MAX_PATH, ".\\SPCs", "directory where SPCs will be saved");
 	AddStringC("Dir:Savestates", GUI.FreezeFileDir, _MAX_PATH, ".\\Saves", "directory where savestates will be created and loaded from");
 	AddStringC("Dir:SRAM", GUI.SRAMFileDir, _MAX_PATH, ".\\Saves", "directory where battery saves will be created and loaded from");
-	AddStringC("Dir:Patches", GUI.PatchDir, _MAX_PATH, ".\\Cheats", "directory in which ROM patches (.ips files) and cheats (.cht files) will be looked for");
+	AddStringC("Dir:Cheats", GUI.CheatDir, _MAX_PATH, ".\\Cheats", "directory in which cheats (.cht files) will be looked for");
+	AddStringC("Dir:Patches", GUI.PatchDir, _MAX_PATH, ".\\Patches", "directory in which ROM patches (.ips/.bps/.ups files) will be looked for");
 	AddStringC("Dir:Bios", GUI.BiosDir, _MAX_PATH, ".\\BIOS", "directory where BIOS files (such as \"BS-X.bios\") will be located");
 	AddStringC("Dir:SatData", GUI.SatDir, _MAX_PATH, ".\\SatData", "directory where Satellaview Signal Data files will be located");
 	AddBoolC("Dir:Lock", GUI.LockDirectories, false, "true to prevent Snes9x from changing configured directories when you browse to a new location");
@@ -967,17 +855,20 @@ void WinRegisterConfigItems()
 #undef CATEGORY
 #define	CATEGORY "Sound"
 	AddIntC("Sync", Settings.SoundSync, 1, "1 to sync emulation to sound output, 0 to disable.");
-	AddBool2("Stereo", Settings.Stereo, true);
-	AddBool("SixteenBitSound", Settings.SixteenBitSound, true);
-	AddUIntC("Rate", Settings.SoundPlaybackRate, 32000, "sound playback quality, in Hz");
-	AddUIntC("InputRate", Settings.SoundInputRate, 31900, "for each 'Input rate' samples generated by the SNES, 'Playback rate' samples will produced. If you experience crackling you can try to lower this setting.");
-	AddBoolC("ReverseStereo", Settings.ReverseStereo, false, "true to swap speaker outputs");
+	AddUIntC("Rate", Settings.SoundPlaybackRate, 48000, "sound playback quality, in Hz");
+	AddUIntC("InputRate", Settings.SoundInputRate, 31950, "for each 'Input rate' samples generated by the SNES, 'Playback rate' samples will produced. If you experience crackling you can try to lower this setting.");
 	AddBoolC("Mute", GUI.Mute, false, "true to mute sound output (does not disable the sound CPU)");
+	AddBool("DynamicRateControl", Settings.DynamicRateControl, false);
+	AddBool("AutomaticInputRate", GUI.AutomaticInputRate, true);
+	AddIntC("InterpolationMethod", Settings.InterpolationMethod, 2, "0 = None, 1 = Linear, 2 = Gaussian (accurate), 3 = Cubic, 4 = Sinc");
 #undef CATEGORY
 #define	CATEGORY "Sound\\Win"
-	AddUIntC("SoundDriver", GUI.SoundDriver, 4, "0=Snes9xDirectSound, 4=XAudio2 (recommended)");
+	AddUIntC("SoundDriver", GUI.SoundDriver, 4, "4=XAudio2 (recommended), 8=WaveOut");
 	AddUIntC("BufferSize", GUI.SoundBufferSize, 64, "sound buffer size in ms - determines the internal and output sound buffer sizes. actual mixing is done every SoundBufferSize/4 samples");
 	AddBoolC("MuteFrameAdvance", GUI.FAMute, false, "true to prevent Snes9x from outputting sound when the Frame Advance command is in use");
+	AddUIntC("VolumeRegular", GUI.VolumeRegular, 100, "volume during regular play (percentage between 0 and 100)");
+	AddUIntC("VolumeTurbo", GUI.VolumeTurbo, 100, "volume during turbo mode (percentage between 0 and 100)");
+    AddStringC("OutputDevice", GUI.AudioDevice, MAX_AUDIO_NAME_LENGTH, "Default", "Name of the output audio device (substring matching, XAudio2 only atm), set to 'Default' for default audio device");
 #undef CATEGORY
 #define	CATEGORY "Controls"
 	AddBoolC("AllowLeftRight", Settings.UpAndDown, false, "true to allow left+right and up+down");
@@ -985,6 +876,7 @@ void WinRegisterConfigItems()
 #define	CATEGORY "ROM"
 	AddBoolC("Cheat", Settings.ApplyCheats, true, "true to allow enabled cheats to be applied");
 	AddInvBoolC("Patch", Settings.NoPatch, true, "true to allow IPS/UPS patches to be applied (\"soft patching\")");
+	AddBoolC("IgnorePatchChecksum", Settings.IgnorePatchChecksum, false, "true to allow BPS patches to be applied even if the checksum fails");
 	AddBoolC("BS", Settings.BS, false, "Broadcast Satellaview emulation");
 #undef CATEGORY
 #ifdef NETPLAY_SUPPORT
@@ -1026,6 +918,7 @@ void WinRegisterConfigItems()
 #undef ADDTN
 #undef ADD2T2
 	AddBool2C("Input:Background", GUI.BackgroundInput, false, "on to detect game keypresses and hotkeys while window is inactive, if PauseWhenInactive = FALSE.");
+	AddBool2C("Input:BackgroundKeyHotkeys", GUI.BackgroundKeyHotkeys, true, "on to also detect keyboard hotkeys when backgroundinput is active");
 #undef CATEGORY
 #define	CATEGORY "Controls\\Win\\Hotkeys"
 	AddBool2C("Handler:Joystick", GUI.JoystickHotkeys, true, "on to detect game controller buttons assigned to hotkeys. May impact performance.");
@@ -1037,16 +930,24 @@ void WinRegisterConfigItems()
 	ADDN(Save[0],SaveSlot0); ADDN(Save[1],SaveSlot1); ADDN(Save[2],SaveSlot2); ADDN(Save[3],SaveSlot3); ADDN(Save[4],SaveSlot4); ADDN(Save[5],SaveSlot5); ADDN(Save[6],SaveSlot6); ADDN(Save[7],SaveSlot7); ADDN(Save[8],SaveSlot8); ADDN(Save[9],SaveSlot9);
 	ADDN(Load[0],LoadSlot0); ADDN(Load[1],LoadSlot1); ADDN(Load[2],LoadSlot2); ADDN(Load[3],LoadSlot3); ADDN(Load[4],LoadSlot4); ADDN(Load[5],LoadSlot5); ADDN(Load[6],LoadSlot6); ADDN(Load[7],LoadSlot7); ADDN(Load[8],LoadSlot8); ADDN(Load[9],LoadSlot9);
 	ADDN(SelectSave[0],SelectSlot0); ADDN(SelectSave[1],SelectSlot1); ADDN(SelectSave[2],SelectSlot2); ADDN(SelectSave[3],SelectSlot3); ADDN(SelectSave[4],SelectSlot4); ADDN(SelectSave[5],SelectSlot5); ADDN(SelectSave[6],SelectSlot6); ADDN(SelectSave[7],SelectSlot7); ADDN(SelectSave[8],SelectSlot8); ADDN(SelectSave[9],SelectSlot9);
-	ADD(SaveScreenShot); ADD(SlotPlus); ADD(SlotMinus); ADD(SlotSave); ADD(SlotLoad);
+    ADD(SaveScreenShot); ADD(SlotPlus); ADD(SlotMinus); ADD(SlotSave); ADD(SlotLoad); ADD(DialogSave); ADD(DialogLoad);
 	ADD(BGL1); ADD(BGL2); ADD(BGL3); ADD(BGL4); ADD(BGL5);
 	ADD(ClippingWindows); /*ADD(BGLHack);*/ ADD(Transparency); /*ADD(HDMA)*/; /*ADD(GLCube);*/
 	/*ADD(InterpMode7);*/ ADD(JoypadSwap); ADD(SwitchControllers); ADD(ResetGame); ADD(ToggleCheats);
 	ADD(TurboA); ADD(TurboB); ADD(TurboY); ADD(TurboX); ADD(TurboL); ADD(TurboR); ADD(TurboStart); ADD(TurboSelect); ADD(TurboUp); ADD(TurboDown); ADD(TurboLeft); ADD(TurboRight);
 	ADD(QuitS9X);ADD(Rewind);
+	ADD(SaveFileSelect); ADD(LoadFileSelect);
+	ADD(Mute);
+	ADD(ToggleBackdrop);
 #undef ADD
 #undef ADDN
 #undef CATEGORY
-
+#define	CATEGORY "Hack"
+    AddUIntC("CPUOverclockMode", Settings.OverclockMode, 0, "CPU Overclock: 0=none, 1=min, 2=medium, 3=max");
+    AddUIntC("MaxSpriteTilesPerLine", Settings.MaxSpriteTilesPerLine, 34, "Max sprite tiles rendered per line. Default = 34, Unlimited ~= 128");
+	AddUIntC("SuperFXClockMultiplier", Settings.SuperFXClockMultiplier, 100, "SuperFX speed, in percent (default 100)");
+    AddBoolC("SeparateEchoBuffer", Settings.SeparateEchoBuffer, false, "Separate echo buffer from APU ram. For old hacks only.");
+#undef CATEGORY
 }
 
 

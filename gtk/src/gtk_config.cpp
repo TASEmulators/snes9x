@@ -1,1280 +1,730 @@
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/xmlwriter.h>
-#include <gdk/gdkx.h>
-#include <gtk/gtk.h>
-#include <gdk/gdk.h>
-#include <gdk/gdkkeysyms.h>
+#include <filesystem>
 
+#include "fmt/format.h"
 #include "gtk_config.h"
 #include "gtk_s9x.h"
-#include "gtk_sound.h"
 #include "gtk_display.h"
+#include "conffile.h"
+#include "cheats.h"
+#include "apu/apu.h"
+#include "netplay.h"
+#include "controls.h"
 
-static int
-directory_exists (const char *directory)
+namespace fs = std::filesystem;
+
+std::string get_config_dir()
 {
-    DIR *dir;
+    // Find config directory
+    char *env_home = getenv("HOME");
+    char *env_xdg_config_home = getenv("XDG_CONFIG_HOME");
 
-    dir = opendir (directory);
-
-    if (dir)
+    if (!env_home && !env_xdg_config_home)
     {
-        closedir (dir);
-        return TRUE;
+        return std::string{".snes9x"};
     }
 
-    return FALSE;
-}
+    fs::path config = env_home;
+    fs::path legacy = config;
 
-char *
-get_config_dir (void)
-{
-    char *home_dir = NULL,
-         *classic_config_dir = NULL,
-         *xdg_config_dir = NULL,
-         *xdg_snes9x_dir = NULL;
-
-    /* Find config directory */
-    home_dir = getenv ("HOME");
-    xdg_config_dir = getenv ("XDG_CONFIG_HOME");
-
-    if (!home_dir && !xdg_config_dir)
+    // If XDG_CONFIG_HOME is set, use that, otherwise guess default
+    if (!env_xdg_config_home)
     {
-        return strdup (".snes9x");
-    }
-
-    if (!xdg_config_dir)
-    {
-        xdg_snes9x_dir = (char *) malloc (strlen (home_dir) + 16);
-        sprintf (xdg_snes9x_dir, "%s/.config/snes9x", home_dir);
+        config /= ".config/snes9x";
+        legacy /= ".snes9x";
     }
     else
     {
-        xdg_snes9x_dir = (char *) malloc (strlen (xdg_config_dir) + 9);
-        sprintf (xdg_snes9x_dir, "%s/snes9x", xdg_config_dir);
+        config = env_xdg_config_home;
+        config /= "snes9x";
     }
+    if (fs::exists(legacy) && !fs::exists(config))
+        return legacy;
 
-    classic_config_dir =  (char *) malloc (strlen (home_dir) + 9);
-    sprintf (classic_config_dir, "%s/.snes9x", home_dir);
-
-    char *config_dir;
-
-    if (directory_exists (classic_config_dir) && !directory_exists(xdg_snes9x_dir))
-    {
-        free (xdg_snes9x_dir);
-        config_dir =  classic_config_dir;
-    }
-    else
-    {
-        free (classic_config_dir);
-        config_dir = xdg_snes9x_dir;
-    }
-
-    return config_dir;
+    return config;
 }
 
-char *
-get_config_file_name (void)
+std::string get_config_file_name()
 {
-    char *filename;
-
-    filename = get_config_dir ();
-
-    filename = (char *) realloc (filename, strlen (filename) + 12);
-    strcat (filename, "/snes9x.xml");
-
-    return filename;
+    return get_config_dir() + "/snes9x.conf";
 }
 
-static void
-xml_out_string (xmlTextWriterPtr xml, const char *name, const char *value)
+void S9xParsePortConfig(ConfigFile &conf, int pass)
 {
-    xmlTextWriterStartElement (xml, BAD_CAST ("option"));
-    xmlTextWriterWriteAttribute (xml, BAD_CAST ("name"), BAD_CAST (name));
-    xmlTextWriterWriteAttribute (xml, BAD_CAST ("value"), BAD_CAST (value));
-    xmlTextWriterEndElement (xml);
 }
 
-static void
-xml_out_int (xmlTextWriterPtr xml, const char *name, int value)
+Snes9xConfig::Snes9xConfig()
 {
-    char string[1024];
-    snprintf (string, 1024, "%d", value);
-
-    xmlTextWriterStartElement (xml, BAD_CAST "option");
-    xmlTextWriterWriteAttribute (xml, BAD_CAST "name", BAD_CAST name);
-    xmlTextWriterWriteAttribute (xml, BAD_CAST "value", BAD_CAST string);
-    xmlTextWriterEndElement (xml);
-}
-
-static void
-xml_out_float (xmlTextWriterPtr xml, const char *name, float value)
-{
-    char string[1024];
-    snprintf (string, 1024, "%f", value);
-
-    xmlTextWriterStartElement (xml, BAD_CAST "option");
-    xmlTextWriterWriteAttribute (xml, BAD_CAST "name", BAD_CAST name);
-    xmlTextWriterWriteAttribute (xml, BAD_CAST "value", BAD_CAST string);
-    xmlTextWriterEndElement (xml);
-}
-
-static void
-xml_out_binding (xmlTextWriterPtr xml, const char *name, unsigned int value)
-{
-    char string[1024];
-    snprintf (string, 1024, "%u", value);
-
-    xmlTextWriterStartElement (xml, BAD_CAST ("binding"));
-    xmlTextWriterWriteAttribute (xml, BAD_CAST ("name"), BAD_CAST (name));
-    xmlTextWriterWriteAttribute (xml, BAD_CAST ("binding"), BAD_CAST (string));
-    xmlTextWriterEndElement (xml);
-}
-
-void
-S9xParsePortConfig (ConfigFile &conf, int pass)
-{
-    return;
-}
-
-Snes9xConfig::Snes9xConfig (void)
-{
-#ifdef USE_JOYSTICK
-    joystick = NULL;
     joystick_threshold = 40;
-#endif
-
-#ifdef USE_OPENGL
-    opengl_activated = FALSE;
-#endif
-
-    return;
+    xrr_crtc_info = nullptr;
+    xrr_screen_resources = nullptr;
 }
 
-int
-Snes9xConfig::load_defaults (void)
+Snes9xConfig::~Snes9xConfig()
 {
-    full_screen_on_open = 0;
-    change_display_resolution = 0;
+    if (xrr_crtc_info)
+        XRRFreeCrtcInfo(xrr_crtc_info);
+    if (xrr_screen_resources)
+        XRRFreeScreenResources(xrr_screen_resources);
+}
+
+int Snes9xConfig::load_defaults()
+{
+    full_screen_on_open = false;
+    change_display_resolution = false;
     xrr_index = 0;
-    xrr_width = 0;
-    xrr_height = 0;
-    scale_to_fit = 1;
-    maintain_aspect_ratio = 0;
-    aspect_ratio = 0;
+    scale_to_fit = true;
+    maintain_aspect_ratio = true;
+    aspect_ratio = 2;
     scale_method = 0;
-    overscan = 0;
+    overscan = false;
     save_sram_after_secs = 0;
-    rom_loaded = 0;
-    multithreading = 0;
-    hw_accel = 0;
-    allow_opengl = 0;
-    allow_xv = 0;
-    allow_xrandr = 0;
-    force_inverted_byte_order = FALSE;
+    rom_loaded = false;
+    multithreading = false;
+    splash_image = SPLASH_IMAGE_STARFIELD;
+    display_driver = "opengl";
+    allow_opengl = false;
+    allow_xv = false;
+    allow_xrandr = false;
+    auto_vrr = false;
+    osd_size = 24;
+    force_inverted_byte_order = false;
     hires_effect = HIRES_NORMAL;
-    pause_emulation_on_switch = 0;
+    pause_emulation_on_switch = false;
     num_threads = 2;
-    mute_sound = FALSE;
-    mute_sound_turbo = FALSE;
-    fullscreen = FALSE;
-    ui_visible = TRUE;
-    statusbar_visible = FALSE;
+    mute_sound = false;
+    mute_sound_turbo = false;
+    fullscreen = false;
+    ui_visible = true;
     default_esc_behavior = 1;
-    prevent_screensaver = FALSE;
+    prevent_screensaver = false;
     sound_driver = 0;
-    sound_buffer_size = 32;
-    sound_playback_rate = 5;
+    sound_buffer_size = 48;
+    sound_playback_rate = 7;
     sound_input_rate = 31950;
-    last_directory[0] = '\0';
+    auto_input_rate = true;
+    last_directory.clear();
+    last_shader_directory.clear();
     window_width = -1;
     window_height = -1;
     preferences_width = -1;
     preferences_height = -1;
-    sram_directory[0] = '\0';
-    export_directory[0] = '\0';
-    savestate_directory[0] = '\0';
-    cheat_directory[0] = '\0';
-    patch_directory[0] = '\0';
-    screensaver_needs_reset = FALSE;
+    shader_parameters_width = -1;
+    shader_parameters_height = -1;
+    enable_icons = true;
+    current_display_tab = 0;
+    sram_directory.clear();
+    export_directory.clear();
+    savestate_directory.clear();
+    cheat_directory.clear();
+    patch_directory.clear();
+    screensaver_needs_reset = false;
     ntsc_setup = snes_ntsc_composite;
     ntsc_scanline_intensity = 1;
     scanline_filter_intensity = 0;
-    bilinear_filter = 0;
-    netplay_activated = FALSE;
-    netplay_server_up = FALSE;
-    netplay_is_server = FALSE;
-    netplay_sync_reset = TRUE;
-    netplay_send_rom = FALSE;
+    Settings.BilinearFilter = false;
+    netplay_activated = false;
+    netplay_server_up = false;
+    netplay_is_server = false;
+    netplay_sync_reset = true;
+    netplay_send_rom = false;
     netplay_default_port = 6096;
     netplay_max_frame_loss = 10;
-    netplay_last_rom [0] = '\0';
-    netplay_last_host [0] = '\0';
+    netplay_last_rom.clear();
+    netplay_last_host.clear();
     netplay_last_port = 6096;
-    modal_dialogs = 1;
+    modal_dialogs = true;
+    current_save_slot = 0;
+    S9xCheatsEnable();
 
     rewind_granularity = 5;
     rewind_buffer_size = 0;
+    Settings.Rewinding = false;
 
-#ifdef USE_OPENGL
-    sync_to_vblank = 1;
-    use_pbos = 1;
-    pbo_format = 0;
-    npot_textures = FALSE;
-    use_shaders = 0;
-    fragment_shader[0] = '\0';
-    vertex_shader[0] = '\0';
-    sync_every_frame = FALSE;
-#endif
+    sync_to_vblank = true;
+    use_shaders = false;
+    shader_filename.clear();
+    reduce_input_lag = false;
 
-    /* Snes9X Variables */
-    Settings.MouseMaster = TRUE;
-    Settings.SuperScopeMaster = TRUE;
-    Settings.JustifierMaster = TRUE;
-    Settings.MultiPlayer5Master = TRUE;
-    Settings.UpAndDown = FALSE;
+    /* Snes9x Variables */
+    Settings.MouseMaster = true;
+    Settings.SuperScopeMaster = true;
+    Settings.JustifierMaster = true;
+    Settings.MultiPlayer5Master = true;
+    Settings.UpAndDown = false;
     Settings.AutoSaveDelay = 0;
-    Settings.SkipFrames = AUTO_FRAMERATE;
-    Settings.Transparency = TRUE;
-    Settings.DisplayFrameRate = FALSE;
-    Settings.SixteenBitSound = TRUE;
-    Settings.Stereo = TRUE;
-    Settings.ReverseStereo = FALSE;
-    Settings.SoundPlaybackRate = 32000;
-    Settings.StopEmulation = TRUE;
-    Settings.FrameTimeNTSC = 16667;
+    Settings.SkipFrames = 0;
+    Settings.Transparency = true;
+    Settings.DisplayTime = false;
+    Settings.DisplayFrameRate = false;
+    Settings.DisplayIndicators = false;
+    Settings.SixteenBitSound = true;
+    Settings.Stereo = true;
+    Settings.ReverseStereo = false;
+    Settings.SoundPlaybackRate = 48000;
+    Settings.StopEmulation = true;
+    Settings.FrameTimeNTSC = 16639;
     Settings.FrameTimePAL = 20000;
-    Settings.SupportHiRes = true;
     Settings.FrameTime = Settings.FrameTimeNTSC;
-    Settings.BlockInvalidVRAMAccessMaster = TRUE;
-    Settings.SoundSync = 1;
+    Settings.BlockInvalidVRAMAccessMaster = true;
+    Settings.SoundSync = false;
+    Settings.DynamicRateControl = false;
+    Settings.DynamicRateLimit = 5;
+    Settings.InterpolationMethod = DSP_INTERPOLATION_GAUSSIAN;
     Settings.HDMATimingHack = 100;
-    Settings.ApplyCheats = 1;
-
-#ifdef NETPLAY_SUPPORT
-    Settings.NetPlay = FALSE;
-    NetPlay.Paused = FALSE;
+    Settings.SuperFXClockMultiplier = 100;
+    Settings.NetPlay = false;
+    NetPlay.Paused = false;
     NetPlay.MaxFrameSkip = 10;
+    Settings.DisplayPressedKeys = false;
+#ifdef ALLOW_CPU_OVERCLOCK
+    Settings.MaxSpriteTilesPerLine = 34;
+    Settings.OneClockCycle = 6;
+    Settings.OneSlowClockCycle = 8;
+    Settings.TwoClockCycles = 12;
 #endif
 
-    memset (pad, 0, sizeof (JoypadBinding) * NUM_JOYPADS);
-    memset (shortcut, 0, sizeof (Binding) * NUM_EMU_LINKS);
+    for (auto &joypad : pad)
+    {
+        joypad.data.fill(Binding());
+    }
+
+    shortcut.fill(Binding());
 
     return 0;
 }
 
-#ifdef USE_JOYSTICK
-
-void
-Snes9xConfig::joystick_register_centers (void)
+int Snes9xConfig::save_config_file()
 {
-    for (int i = 0; joystick[i] != NULL; i++)
-        joystick[i]->register_centers ();
+    ConfigFile cf;
+    std::string section;
 
-    return;
-}
+    auto outbool = [&](std::string name, bool b, std::string comment = "") {
+        cf.SetBool((section + "::" + name).c_str(), b, "true", "false", comment.c_str());
+    };
 
-void
-Snes9xConfig::flush_joysticks (void)
-{
-    int i;
+    auto outstring = [&](std::string name, std::string str, std::string comment = "") {
+        cf.SetString((section + "::" + name).c_str(), str, comment.c_str());
+    };
 
-    for (i = 0; joystick[i] != NULL; i++)
-        joystick[i]->flush ();
+    auto outint = [&](std::string name, int i, std::string comment = "") {
+        cf.SetInt((section + "::" + name).c_str(), i, comment.c_str());
+    };
 
-    return;
-}
+    section = "Display";
+    outbool("FullscreenOnOpen", full_screen_on_open, "Set the screen resolution after opening a ROM");
+    outbool("ChangeDisplayResolution", change_display_resolution, "Set the resolution in fullscreen mode");
+    outbool("ScaleToFit", scale_to_fit, "Scale the image to fit the window size");
+    outbool("ShowOverscanArea", overscan);
+    outbool("MaintainAspectRatio", maintain_aspect_ratio, "Resize the screen to the proportions set by aspect ratio option");
+    outbool("Multithreading", multithreading, "Apply filters using multiple threads");
+    outbool("BilinearFilter", Settings.BilinearFilter, "Smoothes scaled image");
+    outbool("ForceInvertedByteOrder", force_inverted_byte_order);
+    outint("VideoMode", xrr_index, "Platform-specific video mode number");
+    outint("AspectRatio", aspect_ratio, "0: uncorrected, 1: uncorrected integer scale, 2: 4:3, 3: 4/3 integer scale, 4: NTSC/PAL, 5: NTSC/PAL integer scale");
+    outint("SoftwareScaleFilter", scale_method, "Build-specific number of filter used for software scaling");
+    outint("ScanlineFilterIntensity", scanline_filter_intensity, "0: 0%, 1: 12.5%, 2: 25%, 3: 50%, 4: 100%");
+    outint("HiresEffect", hires_effect, "0: Downscale to low-res, 1: Leave as-is, 2: Upscale low-res screens");
+    outint("NumberOfThreads", num_threads);
+    outstring("HardwareAcceleration", display_driver, "none, opengl, xv, vulkan");
+    outint("SplashBackground", splash_image, "0: Black, 1: Color bars, 2: Pattern, 3: Blue, 4: Default");
+    outbool("AutoVRR", auto_vrr, "Automatically use the best settings for variable sync in fullscreen mode");
+    outint("OSDSize", osd_size, "Size of on-screen display elements. Default: 24pt");
 
-void
-Snes9xConfig::set_joystick_mode (int mode)
-{
-    int i;
-    for (i = 0; joystick[i] != NULL; i++)
-        joystick[i]->mode = mode;
+    section = "NTSC";
+    outstring("Hue", std::to_string(ntsc_setup.hue));
+    outstring("Saturation", std::to_string(ntsc_setup.saturation));
+    outstring("Contrast", std::to_string(ntsc_setup.contrast));
+    outstring("Brightness", std::to_string(ntsc_setup.brightness));
+    outstring("Sharpness", std::to_string(ntsc_setup.sharpness));
+    outstring("Artifacts", std::to_string(ntsc_setup.artifacts));
+    outstring("Gamma", std::to_string(ntsc_setup.gamma));
+    outstring("Bleed", std::to_string(ntsc_setup.bleed));
+    outstring("Fringing", std::to_string(ntsc_setup.fringing));
+    outstring("Resolution", std::to_string(ntsc_setup.resolution));
+    outbool("MergeFields", ntsc_setup.merge_fields);
+    outint("ScanlineIntensity", ntsc_scanline_intensity);
 
-    return;
-}
+    section = "OpenGL";
+    outbool("VSync", sync_to_vblank);
+    outbool("ReduceInputLag", reduce_input_lag);
+    outbool("EnableCustomShaders", use_shaders);
+    outstring("ShaderFile", shader_filename);
 
-#endif
+    section = "Sound";
+    outbool("MuteSound", mute_sound);
+    outbool("MuteSoundDuringTurbo", mute_sound_turbo);
+    outint("BufferSize", sound_buffer_size, "Buffer size in milliseconds");
+    outint("Driver", sound_driver);
+    outint("InputRate", sound_input_rate);
+    outbool("DynamicRateControl", Settings.DynamicRateControl);
+    outint("DynamicRateControlLimit", Settings.DynamicRateLimit);
+    outbool("AutomaticInputRate", auto_input_rate, "Guess input rate by asking the monitor what its refresh rate is");
+    outint("PlaybackRate", gui_config->sound_playback_rate, "1: 8000Hz, 2: 11025Hz, 3: 16000Hz, 4: 22050Hz, 5: 32000Hz, 6: 44100Hz, 7: 48000Hz");
 
-int
-Snes9xConfig::save_config_file (void)
-{
-    xmlTextWriterPtr xml;
-    char             *filename;
-    char             buffer[256];
+    section = "Files";
+    outstring("LastDirectory", last_directory);
+    outstring("LastShaderDirectory", last_shader_directory);
+    outstring("SRAMDirectory", sram_directory);
+    outstring("SaveStateDirectory", savestate_directory);
+    outstring("CheatDirectory", cheat_directory);
+    outstring("PatchDirectory", patch_directory);
+    outstring("ExportDirectory", export_directory);
 
-    filename = get_config_file_name ();
-    xml = xmlNewTextWriterFilename (filename, 0);
-    free (filename);
-
-    xmlTextWriterSetIndent (xml, 1);
-
-    xmlTextWriterStartDocument (xml, NULL, NULL, NULL);
-    xmlTextWriterStartElement (xml, BAD_CAST "snes9x");
-    xmlTextWriterStartElement (xml, BAD_CAST "preferences");
-
-    xml_out_int (xml, "full_screen_on_open", full_screen_on_open);
-    xml_out_int (xml, "change_display_resolution", change_display_resolution);
-    xml_out_int (xml, "video_mode", xrr_index);
-    xml_out_int (xml, "video_mode_width", xrr_width);
-    xml_out_int (xml, "video_mode_height", xrr_height);
-    xml_out_int (xml, "scale_to_fit", scale_to_fit);
-    xml_out_int (xml, "maintain_aspect_ratio", maintain_aspect_ratio);
-    xml_out_int (xml, "aspect_ratio", aspect_ratio);
-    xml_out_int (xml, "scale_method", scale_method);
-    xml_out_int (xml, "overscan", overscan);
-    xml_out_int (xml, "hires_effect", hires_effect);
-    xml_out_int (xml, "force_inverted_byte_order", force_inverted_byte_order);
-    xml_out_int (xml, "multithreading", multithreading);
-    xml_out_string (xml, "last_directory", last_directory);
-    xml_out_string (xml, "sram_directory", sram_directory);
-    xml_out_string (xml, "savestate_directory", savestate_directory);
-    xml_out_string (xml, "cheat_directory", cheat_directory);
-    xml_out_string (xml, "patch_directory", patch_directory);
-    xml_out_string (xml, "export_directory", export_directory);
-    xml_out_int (xml, "window_width", window_width);
-    xml_out_int (xml, "window_height", window_height);
-    xml_out_int (xml, "preferences_width", preferences_width);
-    xml_out_int (xml, "preferences_height", preferences_height);
-    xml_out_int (xml, "pause_emulation_on_switch", pause_emulation_on_switch);
-    xml_out_int (xml, "num_threads", num_threads);
-    xml_out_int (xml, "default_esc_behavior", default_esc_behavior);
-    xml_out_int (xml, "prevent_screensaver", prevent_screensaver);
+    section = "Window State";
+    outint("MainWidth", window_width);
+    outint("MainHeight", window_height);
+    outint("PreferencesWidth", preferences_width);
+    outint("PreferencesHeight", preferences_height);
+    outint("ShaderParametersWidth", shader_parameters_width);
+    outint("ShaderParametersHeight", shader_parameters_height);
+    outint("CurrentDisplayTab", current_display_tab);
+    outbool("UIVisible", ui_visible);
+    outbool("EnableIcons", enable_icons);
     if (default_esc_behavior != ESC_TOGGLE_MENUBAR)
-        xml_out_int (xml, "fullscreen", 0);
+        outbool("Fullscreen", 0);
     else
-        xml_out_int (xml, "fullscreen", fullscreen);
-    xml_out_int (xml, "ui_visible", ui_visible);
-    xml_out_int (xml, "statusbar_visible", statusbar_visible);
-    xml_out_int (xml, "modal_dialogs", modal_dialogs);
+        outbool("Fullscreen", fullscreen);
 
-    xml_out_float (xml, "ntsc_hue", ntsc_setup.hue);
-    xml_out_float (xml, "ntsc_saturation", ntsc_setup.saturation);
-    xml_out_float (xml, "ntsc_contrast", ntsc_setup.contrast);
-    xml_out_float (xml, "ntsc_brightness", ntsc_setup.brightness);
-    xml_out_float (xml, "ntsc_sharpness", ntsc_setup.sharpness);
-    xml_out_float (xml, "ntsc_artifacts", ntsc_setup.artifacts);
-    xml_out_float (xml, "ntsc_gamma", ntsc_setup.gamma);
-    xml_out_float (xml, "ntsc_bleed", ntsc_setup.bleed);
-    xml_out_float (xml, "ntsc_fringing", ntsc_setup.fringing);
-    xml_out_float (xml, "ntsc_resolution", ntsc_setup.resolution);
-    xml_out_int (xml, "ntsc_merge_fields", ntsc_setup.merge_fields);
-    xml_out_int (xml, "ntsc_scanline_intensity", ntsc_scanline_intensity);
-    xml_out_int (xml, "scanline_filter_intensity", scanline_filter_intensity);
-    xml_out_int (xml, "hw_accel", hw_accel);
-    xml_out_int (xml, "bilinear_filter", bilinear_filter);
+    section = "Netplay";
+    outbool("ActAsServer", netplay_is_server);
+    outbool("UseResetToSync", netplay_sync_reset);
+    outbool("SendROM", netplay_send_rom);
+    outint("DefaultPort", netplay_default_port);
+    outint("MaxFrameLoss", netplay_max_frame_loss);
+    outint("LastUsedPort", netplay_last_port);
+    outstring("LastUsedROM", netplay_last_rom);
+    outstring("LastUsedHost", netplay_last_host);
 
-    xml_out_int (xml, "rewind_buffer_size", rewind_buffer_size);
-    xml_out_int (xml, "rewind_granularity", rewind_granularity);
+    section = "Behavior";
+    outbool("PauseEmulationWhenFocusLost", pause_emulation_on_switch);
+    outint("DefaultESCKeyBehavior", default_esc_behavior);
+    outbool("PreventScreensaver", prevent_screensaver);
+    outbool("UseModalDialogs", modal_dialogs);
+    outint("RewindBufferSize", rewind_buffer_size, "Amount of memory (in MB) to use for rewinding");
+    outint("RewindGranularity", rewind_granularity, "Only save rewind snapshots every N frames");
+    outint("CurrentSaveSlot", current_save_slot);
 
-#ifdef USE_OPENGL
-    xml_out_int (xml, "sync_to_vblank", sync_to_vblank);
-    xml_out_int (xml, "sync_every_frame", sync_every_frame);
-    xml_out_int (xml, "use_pbos", use_pbos);
-    xml_out_int (xml, "pbo_format", pbo_format);
-    xml_out_int (xml, "npot_textures", npot_textures);
-    xml_out_int (xml, "use_shaders", use_shaders);
-    xml_out_string (xml, "fragment_shader", fragment_shader);
-#endif
+    section = "Emulation";
+    outbool("EmulateTransparency", Settings.Transparency);
+    outbool("DisplayTime", Settings.DisplayTime);
+    outbool("DisplayFrameRate", Settings.DisplayFrameRate);
+    outbool("DisplayPressedKeys", Settings.DisplayPressedKeys);
+    outbool("DisplayIndicators", Settings.DisplayIndicators);
+    outint("SpeedControlMethod", Settings.SkipFrames, "0: Time the frames to 50 or 60Hz, 1: Same, but skip frames if too slow, 2: Synchronize to the sound buffer, 3: Unlimited, except potentially by vsync");
+    outint("SaveSRAMEveryNSeconds", Settings.AutoSaveDelay);
+    outbool("BlockInvalidVRAMAccess", Settings.BlockInvalidVRAMAccessMaster);
+    outbool("AllowDPadContradictions", Settings.UpAndDown, "Allow the D-Pad to press both up + down at the same time, or left + right");
 
-#ifdef USE_JOYSTICK
-    xml_out_int (xml, "joystick_threshold", joystick_threshold);
-#endif
+    section = "Hacks";
+    outint("SuperFXClockMultiplier", Settings.SuperFXClockMultiplier);
+    outint("SoundInterpolationMethod", Settings.InterpolationMethod, "0: None, 1: Linear, 2: Gaussian (what the hardware uses), 3: Cubic, 4: Sinc");
+    outbool("RemoveSpriteLimit", Settings.MaxSpriteTilesPerLine == 34 ? 0 : 1);
+    outbool("OverclockCPU", Settings.OneClockCycle == 6 ? 0 : 1);
+    outbool("EchoBufferHack", Settings.SeparateEchoBuffer, "Prevents echo buffer from overwriting APU RAM");
 
-    xml_out_int (xml, "netplay_is_server", netplay_is_server);
-    xml_out_int (xml, "netplay_sync_reset", netplay_sync_reset);
-    xml_out_int (xml, "netplay_send_rom", netplay_send_rom);
-    xml_out_int (xml, "netplay_default_port", netplay_default_port);
-    xml_out_int (xml, "netplay_max_frame_loss", netplay_max_frame_loss);
-    xml_out_int (xml, "netplay_last_port", netplay_last_port);
-    xml_out_string (xml, "netplay_last_rom", netplay_last_rom);
-    xml_out_string (xml, "netplay_last_host", netplay_last_host);
+    section = "Input";
+    controllers controller = CTL_NONE;
+    int8 id[4];
 
-    xml_out_int (xml, "mute_sound", mute_sound);
-    xml_out_int (xml, "mute_sound_turbo", mute_sound_turbo);
-    xml_out_int (xml, "sound_buffer_size", sound_buffer_size);
-    xml_out_int (xml, "sound_driver", sound_driver);
-    xml_out_int (xml, "sound_input_rate", sound_input_rate);
-    xml_out_int (xml, "sound_sync", Settings.SoundSync);
-
-    /* Snes9X core-stored variables */
-    xml_out_int (xml, "transparency", Settings.Transparency);
-    xml_out_int (xml, "show_frame_rate", Settings.DisplayFrameRate);
-    xml_out_int (xml, "frameskip", Settings.SkipFrames);
-    xml_out_int (xml, "save_sram_after_secs", Settings.AutoSaveDelay);
-    xml_out_int (xml, "16bit_sound", Settings.SixteenBitSound);
-    xml_out_int (xml, "stereo", Settings.Stereo);
-    xml_out_int (xml, "reverse_stereo", Settings.ReverseStereo);
-    xml_out_int (xml, "playback_rate", gui_config->sound_playback_rate);
-    xml_out_int (xml, "block_invalid_vram_access", Settings.BlockInvalidVRAMAccessMaster);
-    xml_out_int (xml, "upanddown", Settings.UpAndDown);
-
-    xmlTextWriterEndElement (xml); /* preferences */
-
-    xmlTextWriterStartElement (xml, BAD_CAST "controls");
-
-#ifdef USE_JOYSTICK
-    for (int i = 0; joystick[i]; i++)
+    for (int i = 0; i < 2; i++)
     {
-        xmlTextWriterStartElement (xml, BAD_CAST "calibration");
-        snprintf (buffer, 256, "%d", i);
-        xmlTextWriterWriteAttribute (xml, BAD_CAST "joystick", BAD_CAST buffer);
+        std::string name;
+        std::string value;
 
-        for (int j = 0; j < joystick[i]->num_axes; j++)
+        name = "ControllerPort" + std::to_string(i);
+        S9xGetController(i, &controller, &id[0], &id[1], &id[2], &id[3]);
+
+        switch (controller)
         {
-            xmlTextWriterStartElement (xml, BAD_CAST "axis");
-
-            snprintf (buffer, 256, "%d", j);
-            xmlTextWriterWriteAttribute (xml, BAD_CAST "number", BAD_CAST buffer);
-
-            snprintf (buffer, 256, "%d", joystick[i]->calibration[j].min);
-            xmlTextWriterWriteAttribute (xml, BAD_CAST "min", BAD_CAST buffer);
-
-            snprintf (buffer, 256, "%d", joystick[i]->calibration[j].max);
-            xmlTextWriterWriteAttribute (xml, BAD_CAST "max", BAD_CAST buffer);
-
-            snprintf (buffer, 256, "%d", joystick[i]->calibration[j].center);
-            xmlTextWriterWriteAttribute (xml, BAD_CAST "center", BAD_CAST buffer);
-
-            xmlTextWriterEndElement (xml); /* axis */
+        case CTL_JOYPAD:
+            value = "joypad";
+            break;
+        case CTL_MOUSE:
+            value = "mouse";
+            break;
+        case CTL_SUPERSCOPE:
+            value = "superscope";
+            break;
+        case CTL_MP5:
+            value = "multitap";
+            break;
+        case CTL_JUSTIFIER:
+            value = "justifier";
+            break;
+        default:
+            value = "none";
         }
 
-        xmlTextWriterEndElement (xml); /* Calibration */
+        outstring(name, value);
     }
-#endif
+
+    outint("JoystickThreshold", joystick_threshold);
 
     for (int i = 0; i < NUM_JOYPADS; i++)
     {
-        Binding *joypad = (Binding *) &pad[i];
-
-        xmlTextWriterStartElement (xml, BAD_CAST "joypad");
-        snprintf (buffer, 256, "%d", i);
-        xmlTextWriterWriteAttribute (xml, BAD_CAST "number", BAD_CAST buffer);
+        auto &joypad = pad[i];
 
         for (int j = 0; j < NUM_JOYPAD_LINKS; j++)
         {
-            xml_out_binding (xml, b_links[j].snes9x_name, joypad[j].hex ());
+            section = "Joypad " + std::to_string(i);
+            outstring(b_links[j].snes9x_name, joypad.data[j].as_string());
         }
-
-        xmlTextWriterEndElement (xml); /* joypad */
     }
 
+    section = "Shortcuts";
     for (int i = NUM_JOYPAD_LINKS; b_links[i].snes9x_name; i++)
     {
-        xml_out_binding (xml,
-                         b_links[i].snes9x_name,
-                         shortcut[i - NUM_JOYPAD_LINKS].hex ());
+        outstring(b_links[i].snes9x_name, shortcut[i - NUM_JOYPAD_LINKS].as_string());
     }
 
-    xmlTextWriterEndElement (xml); /* controls */
-    xmlTextWriterEndElement (xml); /* snes9x */
-    xmlTextWriterEndDocument (xml);
-
-    xmlFreeTextWriter (xml);
+    cf.SetNiceAlignment(true);
+    cf.SetShowComments(true);
+    cf.SaveTo(get_config_file_name().c_str());
 
     return 0;
 }
 
-int
-Snes9xConfig::set_option (const char *name, const char *value)
+int Snes9xConfig::load_config_file()
 {
-    if (!strcasecmp (name, "full_screen_on_open"))
-    {
-        full_screen_on_open = atoi (value);
-    }
-    else if (!strcasecmp (name, "change_display_resolution"))
-    {
-        change_display_resolution = atoi (value);
-    }
-    else if (!strcasecmp (name, "video_mode"))
-    {
-    }
-    else if (!strcasecmp (name, "video_mode_width"))
-    {
-        xrr_width = atoi (value);
-    }
-    else if (!strcasecmp (name, "video_mode_height"))
-    {
-        xrr_height = atoi (value);
-    }
-    else if (!strcasecmp (name, "scale_to_fit"))
-    {
-        scale_to_fit = atoi (value);
-    }
-    else if (!strcasecmp (name, "maintain_aspect_ratio"))
-    {
-        maintain_aspect_ratio = atoi (value);
-    }
-    else if (!strcasecmp (name, "aspect_ratio"))
-    {
-        aspect_ratio = atoi (value);
-    }
-    else if (!strcasecmp (name, "force_hires"))
-    {
-        /* Deprecated */
-    }
-    else if (!strcasecmp (name, "hires_effect"))
-    {
-        hires_effect = atoi (value);
-        hires_effect = CLAMP (hires_effect, 0, 2);
-    }
-    else if (!strcasecmp (name, "scale_method"))
-    {
-        scale_method = atoi (value);
-#ifdef USE_HQ2X
-        if (scale_method >= NUM_FILTERS)
-            scale_method = 0;
-#else
-        if (scale_method >= NUM_FILTERS - 3)
-            scale_method = 0;
-#endif /* USE_HQ2X */
-#ifdef USE_XBRZ
-        if (scale_method >= NUM_FILTERS)
-            scale_method = 0;
-#else
-        if (scale_method >= NUM_FILTERS - 3)
-            scale_method = 0;
-#endif /* USE_XBRZ */
-    }
-    else if (!strcasecmp (name, "multithreading"))
-    {
-        multithreading = atoi (value);
-    }
-    else if (!strcasecmp (name, "hw_accel"))
-    {
-        hw_accel = atoi (value);
-    }
-    else if (!strcasecmp (name, "use_opengl"))
-    {
-#ifdef USE_OPENGL
-        if (atoi (value) == 1)
-            hw_accel = HWA_OPENGL;
-#endif
-    }
-    else if (!strcasecmp (name, "bilinear_filter"))
-    {
-        bilinear_filter = atoi (value);
-    }
-    else if (!strcasecmp (name, "sync_to_vblank"))
-    {
-#ifdef USE_OPENGL
-        sync_to_vblank = atoi (value);
-#endif
-    }
-    else if (!strcasecmp (name, "sync_every_frame"))
-    {
-#ifdef USE_OPENGL
-        sync_every_frame = atoi (value);
-#endif
-    }
-    else if (!strcasecmp (name, "use_pbos"))
-    {
-#ifdef USE_OPENGL
-        use_pbos = atoi (value);
-#endif
-    }
-    else if (!strcasecmp (name, "pbo_format"))
-    {
-#ifdef USE_OPENGL
-        pbo_format = atoi (value);
-        pbo_format = CLAMP (pbo_format, 0, 2);
-#endif
-    }
-    else if (!strcasecmp (name, "npot_textures"))
-    {
-#ifdef USE_OPENGL
-        npot_textures = atoi (value);
-#endif
-    }
-    else if (!strcasecmp (name, "use_shaders"))
-    {
-#ifdef USE_OPENGL
-        use_shaders = atoi (value);
-#endif
-    }
-    else if (!strcasecmp (name, "fragment_shader"))
-    {
-#ifdef USE_OPENGL
-        strncpy (fragment_shader, value, PATH_MAX);
-#endif
-    }
-    else if (!strcasecmp (name, "vertex_shader"))
-    {
-#ifdef USE_OPENGL
-        /* Deprecated */
-#endif
-    }
-    else if (!strcasecmp (name, "joystick_threshold"))
-    {
-#ifdef USE_JOYSTICK
-        joystick_threshold = atoi (value);
-#endif
-    }
-    else if (!strcasecmp (name, "data_location"))
-    {
-        /* Deprecated */
-    }
-    else if (!strcasecmp (name, "save_sram_after_secs"))
-    {
-        Settings.AutoSaveDelay = atoi (value);
-    }
-    else if (!strcasecmp (name, "pause_emulation_on_switch"))
-    {
-        pause_emulation_on_switch = atoi (value);
-    }
-    else if (!strcasecmp (name, "transparency"))
-    {
-        Settings.Transparency = atoi (value);
-    }
-    else if (!strcasecmp (name, "show_frame_rate"))
-    {
-        Settings.DisplayFrameRate = atoi (value);
-    }
-    else if (!strcasecmp (name, "frameskip"))
-    {
-        Settings.SkipFrames = atoi (value);
-    }
-    else if (!strcasecmp (name, "sound_emulation"))
-    {
-        mute_sound = !(atoi (value));
-    }
-    else if (!strcasecmp (name, "mute_sound"))
-    {
-        mute_sound = atoi (value);
-    }
-    else if (!strcasecmp (name, "mute_sound_turbo"))
-    {
-        mute_sound_turbo = atoi (value);
-    }
-    else if (!strcasecmp (name, "16bit_sound"))
-    {
-        Settings.SixteenBitSound = atoi (value);
-    }
-    else if (!strcasecmp (name, "stereo"))
-    {
-        Settings.Stereo = atoi (value);
-    }
-    else if (!strcasecmp (name, "reverse_stereo"))
-    {
-        Settings.ReverseStereo = atoi (value);
-    }
-    else if (!strcasecmp (name, "gaussian_interpolation"))
-    {
-    }
-    else if (!strcasecmp (name, "envelope_reading"))
-    {
-    }
-    else if (!strcasecmp (name, "sound_echo"))
-    {
-    }
-    else if (!strcasecmp (name, "master_volume"))
-    {
-    }
-    else if (!strcasecmp (name, "playback_rate"))
-    {
-        sound_playback_rate = atoi (value);
-    }
-    else if (!strcasecmp (name, "sound_decoder"))
-    {
-    }
-    else if (!strcasecmp (name, "hdma"))
-    {
-        /* Deprecated */
-    }
-    else if (!strcasecmp (name, "speedhacks"))
-    {
-    }
-    else if (!strcasecmp (name, "overscan"))
-    {
-        overscan = atoi (value);
-    }
-    else if (!strcasecmp (name, "last_directory"))
-    {
-        strncpy (last_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "custom_sram_directory"))
-    {
-        strncpy (sram_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "sram_directory"))
-    {
-        strncpy (sram_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "savestate_directory"))
-    {
-        strncpy (savestate_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "cheat_directory"))
-    {
-        strncpy (cheat_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "patch_directory"))
-    {
-        strncpy (patch_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "export_directory"))
-    {
-        strncpy (export_directory, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "modal_dialogs"))
-    {
-        modal_dialogs = atoi (value) ? 1 : 0;
-    }
-    else if (!strcasecmp (name, "window_width"))
-    {
-        window_width = atoi (value);
-    }
-    else if (!strcasecmp (name, "window_height"))
-    {
-        window_height = atoi (value);
-    }
-    else if (!strcasecmp (name, "preferences_width"))
-    {
-        preferences_width = atoi (value);
-    }
-    else if (!strcasecmp (name, "preferences_height"))
-    {
-        preferences_height = atoi (value);
-    }
-    else if (!strcasecmp (name, "ntsc_format"))
-    {
-        /* Deprecated */
-    }
-    else if (!strcasecmp (name, "ntsc_hue"))
-    {
-        ntsc_setup.hue = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_saturation"))
-    {
-        ntsc_setup.saturation = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_contrast"))
-    {
-        ntsc_setup.contrast = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_brightness"))
-    {
-        ntsc_setup.brightness = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_sharpness"))
-    {
-        ntsc_setup.sharpness = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_warping"))
-    {
-        /* Deprecated */
-    }
-    else if (!strcasecmp (name, "ntsc_artifacts"))
-    {
-        ntsc_setup.artifacts = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_gamma"))
-    {
-        ntsc_setup.gamma = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_fringing"))
-    {
-        ntsc_setup.fringing = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_bleed"))
-    {
-        ntsc_setup.bleed = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_resolution"))
-    {
-        ntsc_setup.resolution = (float) atof (value);
-    }
-    else if (!strcasecmp (name, "ntsc_merge_fields"))
-    {
-        ntsc_setup.merge_fields = atoi (value);
-    }
-    else if (!strcasecmp (name, "ntsc_scanline_intensity"))
-    {
-        ntsc_scanline_intensity = CLAMP (atoi (value), 0, 4);
-    }
-    else if (!strcasecmp (name, "scanline_filter_intensity"))
-    {
-        scanline_filter_intensity = CLAMP (atoi (value), 0, 3);
-    }
-    else if (!strcasecmp (name, "num_threads"))
-    {
-        num_threads = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_is_server"))
-    {
-        netplay_is_server = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_sync_reset"))
-    {
-        netplay_sync_reset = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_send_rom"))
-    {
-        netplay_send_rom = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_default_port"))
-    {
-        netplay_default_port = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_max_frame_loss"))
-    {
-        netplay_max_frame_loss = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_last_port"))
-    {
-        netplay_last_port = atoi (value);
-    }
-    else if (!strcasecmp (name, "netplay_last_rom"))
-    {
-        strncpy (netplay_last_rom, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "netplay_last_host"))
-    {
-        strncpy (netplay_last_host, value, PATH_MAX);
-    }
-    else if (!strcasecmp (name, "fullscreen"))
-    {
-        fullscreen = atoi (value);
-    }
-    else if (!strcasecmp (name, "ui_visible"))
-    {
-        ui_visible = atoi (value);
-    }
-    else if (!strcasecmp (name, "statusbar_visible"))
-    {
-        statusbar_visible = atoi (value);
-    }
-    else if (!strcasecmp (name, "default_esc_behavior"))
-    {
-        default_esc_behavior = atoi (value);
-    }
-    else if (!strcasecmp (name, "sound_buffer_size"))
-    {
-        sound_buffer_size = atoi (value);
-    }
-    else if (!strcasecmp (name, "sound_input_rate"))
-    {
-        sound_input_rate = atoi (value);
-    }
-    else if (!strcasecmp (name, "sound_driver"))
-    {
-        sound_driver = atoi (value);
-    }
-    else if (!strcasecmp (name, "prevent_screensaver"))
-    {
-        prevent_screensaver = atoi (value);
-    }
-    else if (!strcasecmp (name, "force_inverted_byte_order"))
-    {
-        force_inverted_byte_order = atoi (value);
-    }
-    else if (!strcasecmp (name, "block_invalid_vram_access"))
-    {
-        Settings.BlockInvalidVRAMAccessMaster = CLAMP (atoi (value), 0, 1);
-    }
-    else if (!strcasecmp (name, "upanddown"))
-    {
-        Settings.UpAndDown = CLAMP (atoi (value), 0, 1);
-    }
-    else if (!strcasecmp (name, "sound_sync"))
-    {
-        Settings.SoundSync = atoi (value) ? 1 : 0;
-    }
-    else if (!strcasecmp (name, "rewind_buffer_size"))
-    {
-        rewind_buffer_size = CLAMP (atoi (value), 0, 2000);
-    }
-    else if (!strcasecmp (name, "rewind_granularity"))
-    {
-        rewind_granularity = CLAMP (atoi (value), 0, 600);
-    }
-    else
-    {
-        fprintf (stderr, _("bad option name: %s\n"), name);
-        return 1;
-    }
+    load_defaults();
 
-    return 0;
-}
+    fs::path path = get_config_dir();
 
-int
-Snes9xConfig::parse_option (xmlNodePtr node)
-{
-    xmlAttrPtr attr = NULL;
-    char       *name, *value;
-
-    /* Find name string */
-    for (attr = node->properties; attr; attr = attr->next)
+    if (!fs::exists(path))
     {
-        if (!xmlStrcasecmp (attr->name, BAD_CAST "name"))
+        if (!fs::create_directory(path))
         {
-            name = (char *) attr->children->content;
-            break;
-        }
-    }
-
-    if (!attr)
-        return 1;
-
-    /* Find value string */
-    for (attr = node->properties; attr; attr = attr->next)
-    {
-        if (!xmlStrcasecmp (attr->name, BAD_CAST "value"))
-        {
-            value = (char *) attr->children->content;
-            break;
-        }
-    }
-
-    if (!attr)
-        return 1;
-
-    return set_option (name, value);
-}
-
-int
-Snes9xConfig::parse_binding (xmlNodePtr node, int joypad_number)
-{
-    char    *name = NULL;
-    char    *type = NULL;
-    Binding b;
-
-    for (xmlAttrPtr attr = node->properties; attr; attr = attr->next)
-    {
-        if (!xmlStrcasecmp (attr->name, BAD_CAST "name"))
-            name = (char *) attr->children->content;
-
-        else if (!xmlStrcasecmp (attr->name, BAD_CAST "binding"))
-            type = (char *) attr->children->content;
-    }
-
-    b = Binding ((unsigned int) strtoul (type, NULL, 10));
-
-    if (joypad_number > -1 && joypad_number < NUM_JOYPAD_LINKS)
-    {
-        for (int i = 0; i < NUM_JOYPAD_LINKS; i++)
-        {
-            if (!strcasecmp (b_links[i].snes9x_name, name))
-            {
-                Binding *buttons = (Binding *) &pad[joypad_number];
-
-                if (b.is_key () || b.is_joy ())
-                    buttons[i] = b;
-                else
-                    buttons[i].clear ();
-            }
-        }
-    }
-    else
-    {
-        for (int i = NUM_JOYPAD_LINKS; b_links[i].snes9x_name; i++)
-        {
-            if (!strcasecmp (b_links[i].snes9x_name, name))
-            {
-                if (b.is_key () || b.is_joy ())
-                    shortcut[i - NUM_JOYPAD_LINKS] = b;
-                else
-                    shortcut[i - NUM_JOYPAD_LINKS].clear ();
-
-            }
-        }
-    }
-
-    return 0;
-}
-
-int
-Snes9xConfig::parse_joypad (xmlNodePtr node)
-{
-    xmlAttrPtr attr;
-    int        joypad_number = -1;
-    int        retval = 0;
-
-    /* Try to read joypad number */
-    for (attr = node->properties; attr; attr = attr->next)
-    {
-        if (!xmlStrcasecmp (attr->name, BAD_CAST "number"))
-        {
-            joypad_number = atoi ((char *) attr->children->content);
-
-            if (joypad_number < 0 || joypad_number > (NUM_JOYPADS - 1))
-                return 1;
-        }
-    }
-
-    for (xmlNodePtr i = node->children; i; i = i->next)
-    {
-        if (!xmlStrcasecmp (i->name, BAD_CAST "binding"))
-        {
-            retval = parse_binding (i, joypad_number) || retval;
-        }
-    }
-
-    return retval;
-}
-
-#ifdef USE_JOYSTICK
-
-int
-Snes9xConfig::parse_axis (xmlNodePtr node, int joynum)
-{
-    xmlAttrPtr attr;
-    int        retval = 0;
-
-    int number = -1, min = -32767, max = 32767, center = 0;
-
-    for (attr = node->properties; attr; attr = attr->next)
-    {
-        if (!xmlStrcasecmp (attr->name, BAD_CAST "number"))
-        {
-            number = atoi ((char *) attr->children->content);
-        }
-
-        else if (!xmlStrcasecmp (attr->name, BAD_CAST "min"))
-        {
-            min = atoi ((char *) attr->children->content);
-        }
-
-        else if (!xmlStrcasecmp (attr->name, BAD_CAST "max"))
-        {
-            max = atoi ((char *) attr->children->content);
-        }
-
-        else if (!xmlStrcasecmp (attr->name, BAD_CAST "center"))
-        {
-            center = atoi ((char *) attr->children->content);
-        }
-    }
-
-    if (number >= 0 && number < joystick[joynum]->num_axes)
-    {
-        joystick[joynum]->calibration[number].min = min;
-        joystick[joynum]->calibration[number].max = max;
-        joystick[joynum]->calibration[number].center = center;
-    }
-
-    return retval;
-}
-
-int
-Snes9xConfig::parse_calibration (xmlNodePtr node)
-{
-    xmlAttrPtr attr;
-    int        joynum = -1;
-    int        num_joysticks = 0;
-    int        retval = 0;
-
-    for (num_joysticks = 0; joystick[num_joysticks]; num_joysticks++)
-    {
-    }
-
-    for (attr = node->properties; attr; attr = attr->next)
-    {
-        if (!xmlStrcasecmp (attr->name, BAD_CAST "joystick"))
-        {
-            joynum = atoi ((char *) attr->children->content);
-
-            if (joynum < 0 || joynum >= num_joysticks)
-                return 0;
-        }
-    }
-
-    for (xmlNodePtr i = node->children; i; i = i->next)
-    {
-        if (!xmlStrcasecmp (i->name, BAD_CAST "axis"))
-        {
-            retval = parse_axis (i, joynum) | retval;
-        }
-    }
-
-    return retval;
-}
-
-#endif
-
-int
-Snes9xConfig::parse_preferences (xmlNodePtr node)
-{
-    xmlNodePtr i = NULL;
-    int        retval = 0;
-
-    for (i = node->children; i; i = i->next)
-    {
-        if (!xmlStrcasecmp (i->name, BAD_CAST "option"))
-            retval = parse_option (i) || retval;
-    }
-
-    return retval;
-}
-
-int
-Snes9xConfig::parse_controls (xmlNodePtr node)
-{
-    int retval = 0;
-
-    for (xmlNodePtr i = node->children; i; i = i->next)
-    {
-        if (!xmlStrcasecmp (i->name, BAD_CAST "joypad"))
-            retval = parse_joypad (i) || retval;
-
-        if (!xmlStrcasecmp (i->name, BAD_CAST "binding"))
-            retval = parse_binding (i, -1) || retval;
-
-#ifdef USE_JOYSTICK
-        if (!xmlStrcasecmp (i->name, BAD_CAST "calibration"))
-            retval = parse_calibration (i) || retval;
-#endif
-    }
-
-    return retval;
-}
-
-int
-Snes9xConfig::parse_snes9x (xmlNodePtr node)
-{
-    xmlNodePtr i = NULL;
-    int        retval = 0;
-
-    if (xmlStrcasecmp (node->name, BAD_CAST "snes9x"))
-    {
-        fprintf (stderr, _("failure to read snes9x node"));
-        return 1;
-    }
-
-    for (i = node->children; i; i = i->next)
-    {
-        if (!xmlStrcasecmp (i->name, BAD_CAST "preferences"))
-        {
-            retval = parse_preferences (i) || retval;
-        }
-
-        else if (!xmlStrcasecmp (i->name, BAD_CAST "controls"))
-        {
-            retval = parse_controls (i) || retval;
-        }
-    }
-
-    return 0;
-}
-
-int
-Snes9xConfig::load_config_file (void)
-{
-    struct stat file_info;
-    char        *pathname;
-    xmlDoc      *xml_doc = NULL;
-    xmlNodePtr  xml_root = NULL;
-
-    load_defaults ();
-
-    pathname = get_config_dir ();
-
-    if (stat (pathname, &file_info))
-    {
-        if (mkdir (pathname, 0755))
-        {
-            fprintf (stderr,
-                     _("Couldn't create config directory: %s\n"),
-                     pathname);
+            fmt::print(stderr, _("Couldn't create config directory: {}\n"), path.string());
             return -1;
         }
     }
     else
     {
-        chmod (pathname, 0755);
+        if ((fs::status(path).permissions() & fs::perms::owner_write) == fs::perms::none)
+            fs::permissions(path, fs::perms::owner_write, fs::perm_options::add);
     }
 
-    free (pathname);
+    path = get_config_file_name();
 
-    pathname = get_config_file_name ();
+    // Write an on-disk config file if none exists.
+    if (!fs::exists(path))
+        save_config_file();
 
-    if (stat (pathname, &file_info))
+    ConfigFile cf;
+    if (!cf.LoadFile(path.c_str()))
+        return -1;
+
+    std::string none;
+    std::string section;
+
+    auto inbool = [&](std::string name, auto &b) {
+        if (cf.Exists((section + "::" + name).c_str()))
+            b = cf.GetBool((section + "::" + name).c_str());
+    };
+
+    auto inint = [&](std::string name, auto &i) {
+        if (cf.Exists((section + "::" + name).c_str()))
+            i = cf.GetInt((section + "::" + name).c_str());
+    };
+
+    auto indouble = [&](std::string name, double &d) {
+        if (cf.Exists((section + "::" + name).c_str()))
+            d = atof(cf.GetString((section + "::" + name).c_str()));
+    };
+
+    auto instr = [&](std::string name, std::string &str) {
+        str = cf.GetString((section + "::" + name).c_str(), none);
+    };
+
+    section = "Display";
+    inbool("FullscreenOnOpen", full_screen_on_open);
+    inbool("ChangeDisplayResolution", change_display_resolution);
+    inint("VideoMode", xrr_index);
+    inbool("ScaleToFit", scale_to_fit);
+    inbool("MaintainAspectRatio", maintain_aspect_ratio);
+    inint("AspectRatio", aspect_ratio);
+    inint("SoftwareScaleFilter", scale_method);
+    inint("ScanlineFilterIntensity", scanline_filter_intensity);
+    inbool("ShowOverscanArea", overscan);
+    inint("HiresEffect", hires_effect);
+    inbool("ForceInvertedByteOrder", force_inverted_byte_order);
+    inbool("Multithreading", multithreading);
+    inint("NumberOfThreads", num_threads);
+    instr("HardwareAcceleration", display_driver);
+    inbool("BilinearFilter", Settings.BilinearFilter);
+    inint("SplashBackground", splash_image);
+    inbool("AutoVRR", auto_vrr);
+    inint("OSDSize", osd_size);
+
+    section = "NTSC";
+    indouble("Hue", ntsc_setup.hue);
+    indouble("Saturation", ntsc_setup.saturation);
+    indouble("Contrast", ntsc_setup.contrast);
+    indouble("Brightness", ntsc_setup.brightness);
+    indouble("Sharpness", ntsc_setup.sharpness);
+    indouble("Artifacts", ntsc_setup.artifacts);
+    indouble("Gamma", ntsc_setup.gamma);
+    indouble("Bleed", ntsc_setup.bleed);
+    indouble("Fringing", ntsc_setup.fringing);
+    indouble("Resolution", ntsc_setup.resolution);
+    inbool("MergeFields", ntsc_setup.merge_fields);
+    inint("ScanlineIntensity", ntsc_scanline_intensity);
+
+    section = "OpenGL";
+    inbool("VSync", sync_to_vblank);
+    inbool("ReduceInputLag", reduce_input_lag);
+    inbool("EnableCustomShaders", use_shaders);
+    instr("ShaderFile", shader_filename);
+
+    section = "Sound";
+    inbool("MuteSound", mute_sound);
+    inbool("MuteSoundDuringTurbo", mute_sound_turbo);
+    inint("BufferSize", sound_buffer_size);
+    inint("Driver", sound_driver);
+    inint("InputRate", sound_input_rate);
+    inbool("DynamicRateControl", Settings.DynamicRateControl);
+    inint("DynamicRateControlLimit", Settings.DynamicRateLimit);
+    inbool("AutomaticInputRate", auto_input_rate);
+    inint("PlaybackRate", gui_config->sound_playback_rate);
+
+    section = "Files";
+    instr("LastDirectory", last_directory);
+    instr("LastShaderDirectory", last_shader_directory);
+    instr("SRAMDirectory", sram_directory);
+    instr("SaveStateDirectory", savestate_directory);
+    instr("CheatDirectory", cheat_directory);
+    instr("PatchDirectory", patch_directory);
+    instr("ExportDirectory", export_directory);
+
+    section = "Window State";
+    inint("MainWidth", window_width);
+    inint("MainHeight", window_height);
+    inint("PreferencesWidth", preferences_width);
+    inint("PreferencesHeight", preferences_height);
+    inint("ShaderParametersWidth", shader_parameters_width);
+    inint("ShaderParametersHeight", shader_parameters_height);
+    inint("CurrentDisplayTab", current_display_tab);
+    inbool("UIVisible", ui_visible);
+    inbool("Fullscreen", fullscreen);
+    inbool("EnableIcons", enable_icons);
+
+    section = "Netplay";
+    inbool("ActAsServer", netplay_is_server);
+    inbool("UseResetToSync", netplay_sync_reset);
+    inbool("SendROM", netplay_send_rom);
+    inint("DefaultPort", netplay_default_port);
+    inint("MaxFrameLoss", netplay_max_frame_loss);
+    inint("LastUsedPort", netplay_last_port);
+    instr("LastUsedROM", netplay_last_rom);
+    instr("LastUsedHost", netplay_last_host);
+
+    section = "Behavior";
+    inbool("PauseEmulationWhenFocusLost", pause_emulation_on_switch);
+    inint("DefaultESCKeyBehavior", default_esc_behavior);
+    inbool("PreventScreensaver", prevent_screensaver);
+    inbool("UseModalDialogs", modal_dialogs);
+    inint("RewindBufferSize", rewind_buffer_size);
+    inint("RewindGranularity", rewind_granularity);
+    inint("CurrentSaveSlot", current_save_slot);
+
+    section = "Emulation";
+    inbool("EmulateTransparency", Settings.Transparency);
+    inbool("DisplayTime", Settings.DisplayTime);
+    inbool("DisplayFrameRate", Settings.DisplayFrameRate);
+    inbool("DisplayPressedKeys", Settings.DisplayPressedKeys);
+    inint("SpeedControlMethod", Settings.SkipFrames);
+    inint("SaveSRAMEveryNSeconds", Settings.AutoSaveDelay);
+    inbool("BlockInvalidVRAMAccess", Settings.BlockInvalidVRAMAccessMaster);
+    inbool("AllowDPadContradictions", Settings.UpAndDown);
+    inbool("DisplayIndicators", Settings.DisplayIndicators);
+
+    section = "Hacks";
+    inint("SuperFXClockMultiplier", Settings.SuperFXClockMultiplier);
+    inint("SoundInterpolationMethod", Settings.InterpolationMethod);
+
+    bool RemoveSpriteLimit = false;
+    inbool("RemoveSpriteLimit", RemoveSpriteLimit);
+    bool OverclockCPU = false;
+    inbool("OverclockCPU", OverclockCPU);
+    inbool("EchoBufferHack", Settings.SeparateEchoBuffer);
+
+    section = "Input";
+
+    for (int i = 0; i < 2; i++)
     {
-        save_config_file ();
+        std::string name = "ControllerPort" + std::to_string(i);
+        std::string value;
+        instr(name, value);
+
+        if (value.find("joypad") != std::string::npos)
+            S9xSetController(i, CTL_JOYPAD, i, 0, 0, 0);
+        else if (value.find("multitap") != std::string::npos)
+            S9xSetController(i, CTL_MP5, i, i + 1, i + 2, i + 3);
+        else if (value.find("superscope") != std::string::npos)
+            S9xSetController(i, CTL_SUPERSCOPE, 0, 0, 0, 0);
+        else if (value.find("mouse") != std::string::npos)
+            S9xSetController(i, CTL_MOUSE, i, 0, 0, 0);
+        else if (value.find("none") != std::string::npos)
+            S9xSetController(i, CTL_NONE, 0, 0, 0, 0);
     }
 
-    xml_doc = xmlReadFile (pathname, NULL, 0);
+    inint("JoystickThreshold", joystick_threshold);
 
-    if (!xml_doc)
+    std::string buffer;
+    for (int i = 0; i < NUM_JOYPADS; i++)
     {
-        fprintf (stderr, _("Couldn't open config file: %s\n"), pathname);
-        return -2;
+        auto &joypad = pad[i];
+
+        section = "Joypad " + std::to_string(i);
+        for (int j = 0; j < NUM_JOYPAD_LINKS; j++)
+        {
+            instr(b_links[j].snes9x_name, buffer);
+            joypad.data[j] = Binding(buffer.c_str());
+        }
     }
 
-    free (pathname);
+    section = "Shortcuts";
+    for (int i = NUM_JOYPAD_LINKS; b_links[i].snes9x_name; i++)
+    {
+        instr(b_links[i].snes9x_name, buffer);
+        shortcut[i - NUM_JOYPAD_LINKS] = Binding(buffer.c_str());
+    }
 
-    xml_root = xmlDocGetRootElement (xml_doc);
+    /* Validation */
 
-    parse_snes9x (xml_root);
+    if (RemoveSpriteLimit)
+        Settings.MaxSpriteTilesPerLine = 128;
+    else
+        Settings.MaxSpriteTilesPerLine = 34;
 
-    xmlFreeDoc (xml_doc);
+    if (OverclockCPU)
+    {
+        Settings.OneClockCycle = 4;
+        Settings.OneSlowClockCycle = 5;
+        Settings.TwoClockCycles = 6;
+    }
+    else
+    {
+        Settings.OneClockCycle = 6;
+        Settings.OneSlowClockCycle = 8;
+        Settings.TwoClockCycles = 12;
+    }
+
+#ifndef ALLOW_CPU_OVERCLOCK
+    Settings.OneClockCycle = 6;
+    Settings.OneSlowClockCycle = 8;
+    Settings.TwoClockCycles = 12;
+    Settings.MaxSpriteTilesPerLine = 34;
+    Settings.SeparateEchoBuffer = false;
+    Settings.InterpolationMethod = 2;
+    Settings.BlockInvalidVRAMAccessMaster = true;
+#endif
+
+    if (default_esc_behavior != ESC_TOGGLE_MENUBAR)
+        fullscreen = false;
+
+#ifdef USE_HQ2X
+    if (scale_method >= NUM_FILTERS)
+        scale_method = 0;
+#else
+    if (scale_method >= NUM_FILTERS - 3)
+        scale_method = 0;
+#endif /* USE_HQ2X */
+
+#ifdef USE_XBRZ
+    if (scale_method >= NUM_FILTERS)
+        scale_method = 0;
+#else
+    if (scale_method >= NUM_FILTERS - 3)
+        scale_method = 0;
+#endif /* USE_XBRZ */
+
+    if (Settings.SkipFrames == THROTTLE_SOUND_SYNC)
+        Settings.SoundSync = true;
+    else
+        Settings.SoundSync = false;
+
+    hires_effect = CLAMP(hires_effect, 0, 2);
+    Settings.DynamicRateLimit = CLAMP(Settings.DynamicRateLimit, 1, 1000);
+    Settings.SuperFXClockMultiplier = CLAMP(Settings.SuperFXClockMultiplier, 50, 400);
+    ntsc_scanline_intensity = MIN(ntsc_scanline_intensity, 4);
+    scanline_filter_intensity = MIN(scanline_filter_intensity, 3);
 
     return 0;
 }
 
-void
-Snes9xConfig::rebind_keys (void)
+void Snes9xConfig::rebind_keys()
 {
     s9xcommand_t cmd;
-    char         buf[256];
+    std::string string;
 
-    S9xUnmapAllControls ();
+    S9xUnmapAllControls();
 
-    for (int joypad_i = 0; joypad_i < NUM_JOYPADS; joypad_i++ )
+    for (int joypad_i = 0; joypad_i < NUM_JOYPADS; joypad_i++)
     {
-        Binding *bin = (Binding *) &pad[joypad_i];
+        auto &bin = pad[joypad_i].data;
 
         for (int button_i = 0; button_i < NUM_JOYPAD_LINKS; button_i++)
         {
-            snprintf (buf,
-                      256,
-                      "Joypad%d %s",
-                      (joypad_i % 5) + 1,
-                      b_links[button_i].snes9x_name);
+            int dupe;
+            for (dupe = button_i + 1; dupe < NUM_JOYPAD_LINKS; dupe++)
+            {
+                if (bin[button_i] == bin[dupe] && bin[button_i].hex() != 0)
+                    break;
+            }
+            if (dupe < NUM_JOYPAD_LINKS || bin[button_i].hex() == 0)
+                continue;
 
-            cmd = S9xGetPortCommandT (buf);
+            string = "Joypad" + std::to_string((joypad_i % 5) + 1) + " ";
+            string += b_links[button_i].snes9x_name;
 
-            S9xMapButton (bin[button_i].base_hex (), cmd, FALSE);
+            bool ismulti = false;
+            for (dupe = button_i - 1; dupe > 0; dupe--)
+            {
+                if (bin[button_i] == bin[dupe])
+                {
+                    ismulti = true;
+                    string += ",Joypad" + std::to_string((joypad_i % 5) + 1) + " ";
+                    string += b_links[dupe].snes9x_name;
+                }
+            }
+
+            if (ismulti)
+                string = std::string("{") + string + "}";
+
+            cmd = S9xGetPortCommandT(string.c_str());
+
+            S9xMapButton(bin[button_i].base_hex(), cmd, false);
         }
     }
 
     for (int i = NUM_JOYPAD_LINKS; b_links[i].snes9x_name; i++)
     {
-        snprintf (buf, 256, "%s", b_links[i].snes9x_name);
-        cmd = S9xGetPortCommandT (buf);
-        S9xMapButton (shortcut[i - NUM_JOYPAD_LINKS].base_hex (),
-                      cmd,
-                      FALSE);
+        cmd = S9xGetPortCommandT(b_links[i].snes9x_name);
+        S9xMapButton(shortcut[i - NUM_JOYPAD_LINKS].base_hex(),
+                     cmd,
+                     false);
     }
 
-    cmd = S9xGetPortCommandT ("Pointer Mouse1+Superscope+Justifier1");
-    S9xMapPointer (BINDING_MOUSE_POINTER, cmd, TRUE);
+    cmd = S9xGetPortCommandT("Pointer Mouse1+Superscope+Justifier1");
+    S9xMapPointer(BINDING_MOUSE_POINTER, cmd, true);
 
-    cmd = S9xGetPortCommandT ("{Mouse1 L,Superscope Fire,Justifier1 Trigger}");
-    S9xMapButton (BINDING_MOUSE_BUTTON0, cmd, FALSE);
+    cmd = S9xGetPortCommandT("{Mouse1 L,Superscope Fire,Justifier1 Trigger}");
+    S9xMapButton(BINDING_MOUSE_BUTTON0, cmd, false);
 
-    cmd = S9xGetPortCommandT ("{Justifier1 AimOffscreen Trigger,Superscope AimOffscreen}");
-    S9xMapButton (BINDING_MOUSE_BUTTON1, cmd, FALSE);
+    cmd = S9xGetPortCommandT("{Justifier1 AimOffscreen Trigger,Superscope AimOffscreen}");
+    S9xMapButton(BINDING_MOUSE_BUTTON1, cmd, false);
 
-    cmd = S9xGetPortCommandT ("{Mouse1 R,Superscope Cursor,Justifier1 Start}");
-    S9xMapButton (BINDING_MOUSE_BUTTON2, cmd, FALSE);
-
-    return;
+    cmd = S9xGetPortCommandT("{Mouse1 R,Superscope Cursor,Justifier1 Start}");
+    S9xMapButton(BINDING_MOUSE_BUTTON2, cmd, false);
 }
-
-void
-Snes9xConfig::reconfigure (void)
-{
-    rebind_keys ();
-
-    return;
-}
-
-
-

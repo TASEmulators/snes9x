@@ -1,236 +1,136 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-  MSU-1 code
-  (c) Copyright 2016         qwertymodo
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 #include "snes9x.h"
+#include "memmap.h"
 #include "display.h"
 #include "msu1.h"
+#include "apu/resampler.h"
 #include "apu/bapu/dsp/blargg_endian.h"
 #include <fstream>
 #include <sys/stat.h>
 
-std::ifstream dataFile, audioFile;
+STREAM dataStream = NULL;
+STREAM audioStream = NULL;
 uint32 audioLoopPos;
-uint32 partial_samples;
+size_t partial_frames;
 
 // Sample buffer
-int16 *bufPos, *bufBegin, *bufEnd;
+static Resampler *msu_resampler = NULL;
 
-bool AudioOpen()
+#ifdef UNZIP_SUPPORT
+static int unzFindExtension(unzFile &file, const char *ext, bool restart = TRUE, bool print = TRUE, bool allowExact = FALSE)
+{
+    unz_file_info	info;
+    int				port, l = strlen(ext), e = allowExact ? 0 : 1;
+
+    if (restart)
+        port = unzGoToFirstFile(file);
+    else
+        port = unzGoToNextFile(file);
+
+    while (port == UNZ_OK)
+    {
+        int		len;
+        char	name[132];
+
+        unzGetCurrentFileInfo(file, &info, name, 128, NULL, 0, NULL, 0);
+        len = strlen(name);
+
+        if (len >= l + e && strcasecmp(name + len - l, ext) == 0 && unzOpenCurrentFile(file) == UNZ_OK)
+        {
+            if (print)
+                printf("Using msu file %s", name);
+
+            return (port);
+        }
+
+        port = unzGoToNextFile(file);
+    }
+
+    return (port);
+}
+#endif
+
+STREAM S9xMSU1OpenFile(const char *msu_ext, bool skip_unpacked)
+{
+    auto filename = S9xGetFilename(msu_ext, ROMFILENAME_DIR);
+	STREAM file = 0;
+
+	if (!skip_unpacked)
+	{
+		file = OPEN_STREAM(filename.c_str(), "rb");
+		if (file)
+			printf("Using msu file %s.\n", filename.c_str());
+	}
+
+#ifdef UNZIP_SUPPORT
+    // look for msu1 pack file in the rom or patch dir if msu data file not found in rom dir
+    if (!file)
+    {
+        auto zip_filename = S9xGetFilename(".msu1", ROMFILENAME_DIR);
+		unzFile	unzFile = unzOpen(zip_filename.c_str());
+
+		if (!unzFile)
+		{
+			zip_filename = S9xGetFilename(".msu1", PATCH_DIR);
+			unzFile = unzOpen(zip_filename.c_str());
+		}
+
+        if (unzFile)
+        {
+            int	port = unzFindExtension(unzFile, msu_ext, true, true, true);
+            if (port == UNZ_OK)
+            {
+                file = new unzStream(unzFile);
+            }
+            else
+                unzClose(unzFile);
+        }
+    }
+#endif
+
+    return file;
+}
+
+static void AudioClose()
+{
+	if (audioStream)
+	{
+		CLOSE_STREAM(audioStream);
+		audioStream = NULL;
+	}
+}
+
+static bool AudioOpen()
 {
 	MSU1.MSU1_STATUS |= AudioError;
 
-	if (audioFile.is_open())
-		audioFile.close();
+	AudioClose();
 
-	char ext[_MAX_EXT];
-	snprintf(ext, _MAX_EXT, "-%d.pcm", MSU1.MSU1_CURRENT_TRACK);
+	std::string extension = "-" + std::to_string(MSU1.MSU1_CURRENT_TRACK) + ".pcm";
 
-	audioFile.clear();
-	audioFile.open(S9xGetFilename(ext, ROMFILENAME_DIR), std::ios::in | std::ios::binary);
-	if (audioFile.good())
+    audioStream = S9xMSU1OpenFile(extension.c_str());
+	if (audioStream)
 	{
-		if (audioFile.get() != 'M')
+		if (GETC_STREAM(audioStream) != 'M')
 			return false;
-		if (audioFile.get() != 'S')
+		if (GETC_STREAM(audioStream) != 'S')
 			return false;
-		if (audioFile.get() != 'U')
+		if (GETC_STREAM(audioStream) != 'U')
 			return false;
-		if (audioFile.get() != '1')
+		if (GETC_STREAM(audioStream) != '1')
 			return false;
 
-		audioFile.read((char *)&audioLoopPos, 4);
+        READ_STREAM((char *)&audioLoopPos, 4, audioStream);
 		audioLoopPos = GET_LE32(&audioLoopPos);
 		audioLoopPos <<= 2;
 		audioLoopPos += 8;
+
+        MSU1.MSU1_AUDIO_POS = 8;
 
 		MSU1.MSU1_STATUS &= ~AudioError;
 		return true;
@@ -239,14 +139,25 @@ bool AudioOpen()
 	return false;
 }
 
-bool DataOpen()
+static void DataClose()
 {
-	if (dataFile.is_open())
-		dataFile.close();
+	if (dataStream)
+	{
+		CLOSE_STREAM(dataStream);
+		dataStream = NULL;
+	}
+}
 
-	dataFile.clear();
-	dataFile.open(S9xGetFilename(".msu", ROMFILENAME_DIR), std::ios::in | std::ios::binary);
-	return dataFile.is_open();
+static bool DataOpen()
+{
+	DataClose();
+
+    dataStream = S9xMSU1OpenFile(".msu");
+
+	if(!dataStream)
+		dataStream = S9xMSU1OpenFile("msu1.rom");
+
+	return dataStream != NULL;
 }
 
 void S9xResetMSU(void)
@@ -262,102 +173,134 @@ void S9xResetMSU(void)
 	MSU1.MSU1_AUDIO_POS		= 0;
 	MSU1.MSU1_RESUME_POS	= 0;
 
+	if (msu_resampler)
+		msu_resampler->clear();
 
-	bufPos				= 0;
-	bufBegin			= 0;
-	bufEnd				= 0;
+	partial_frames = 0;
 
-	partial_samples = 0;
+	DataClose();
 
-	if (dataFile.is_open())
-		dataFile.close();
-
-	if (audioFile.is_open())
-		audioFile.close();
+	AudioClose();
 
 	Settings.MSU1 = S9xMSU1ROMExists();
 }
 
 void S9xMSU1Init(void)
 {
-	S9xResetMSU();
 	DataOpen();
+}
+
+void S9xMSU1DeInit(void)
+{
+	DataClose();
+	AudioClose();
 }
 
 bool S9xMSU1ROMExists(void)
 {
-	struct stat buf;
-	return (stat(S9xGetFilename(".msu", ROMFILENAME_DIR), &buf) == 0);
+    STREAM s = S9xMSU1OpenFile(".msu");
+	if (s)
+	{
+		CLOSE_STREAM(s);
+		return true;
+	}
+#ifdef UNZIP_SUPPORT
+
+	if (splitpath(Memory.ROMFilename).ext_is(".msu1"))
+		return true;
+
+	unzFile unzFile = unzOpen(S9xGetFilename(".msu1", ROMFILENAME_DIR).c_str());
+
+	if(!unzFile)
+		unzFile = unzOpen(S9xGetFilename(".msu1", PATCH_DIR).c_str());
+
+	if (unzFile)
+	{
+		unzClose(unzFile);
+		return true;
+	}
+#endif
+    return false;
 }
 
-void S9xMSU1Generate(int sample_count)
+void S9xMSU1Generate(size_t sample_count)
 {
-	partial_samples += 44100 * sample_count;
+	partial_frames += 4410 * (sample_count / 2);
 
-	while (((uintptr_t)bufPos < (uintptr_t)bufEnd) && (MSU1.MSU1_STATUS & AudioPlaying) && partial_samples > 32040)
+	while (partial_frames >= 3204)
 	{
-		if (audioFile.is_open())
+		if (MSU1.MSU1_STATUS & AudioPlaying && audioStream)
 		{
-			int16 sample;
-			if (audioFile.read((char *)&sample, 2).good())
-			{
-				sample = (int16)((double)(int16)GET_LE16(&sample) * (double)MSU1.MSU1_VOLUME / 255.0);
+			int32 sample;
+			int16* left = (int16*)&sample;
+			int16* right = left + 1;
 
-				*(bufPos++) = sample;
-				MSU1.MSU1_AUDIO_POS += 2;
-				partial_samples -= 32040;
+			int bytes_read = READ_STREAM((char *)&sample, 4, audioStream);
+			if (bytes_read == 4)
+			{
+				*left = ((int32)(int16)GET_LE16(left) * MSU1.MSU1_VOLUME / 255);
+				*right = ((int32)(int16)GET_LE16(right) * MSU1.MSU1_VOLUME / 255);
+
+				msu_resampler->push_sample(*left, *right);
+				MSU1.MSU1_AUDIO_POS += 4;
+				partial_frames -= 3204;
 			}
 			else
-			if (audioFile.eof())
+			if (bytes_read >= 0)
 			{
-				sample = (int16)((double)(int16)GET_LE16(&sample) * (double)MSU1.MSU1_VOLUME / 255.0);
-
-				*(bufPos++) = sample;
-				MSU1.MSU1_AUDIO_POS += 2;
-				partial_samples -= 32040;
-
 				if (MSU1.MSU1_STATUS & AudioRepeating)
 				{
-					audioFile.clear();
-					MSU1.MSU1_AUDIO_POS = audioLoopPos;
-					audioFile.seekg(MSU1.MSU1_AUDIO_POS);
+					if (audioLoopPos < MSU1.MSU1_AUDIO_POS)
+					{
+						MSU1.MSU1_AUDIO_POS = audioLoopPos;
+					}
+					else // if the loop point is invalid, revert to start
+					{
+						MSU1.MSU1_AUDIO_POS = 8;
+					}
+					REVERT_STREAM(audioStream, MSU1.MSU1_AUDIO_POS, 0);
 				}
 				else
 				{
 					MSU1.MSU1_STATUS &= ~(AudioPlaying | AudioRepeating);
-					audioFile.clear();
-					audioFile.seekg(8);
-					return;
+					REVERT_STREAM(audioStream, 8, 0);
 				}
 			}
 			else
 			{
 				MSU1.MSU1_STATUS &= ~(AudioPlaying | AudioRepeating);
-				return;
 			}
 		}
 		else
 		{
 			MSU1.MSU1_STATUS &= ~(AudioPlaying | AudioRepeating);
-			return;
+			partial_frames -= 3204;
+			msu_resampler->push_sample(0, 0);
 		}
 	}
 }
 
 
-uint8 S9xMSU1ReadPort(int port)
+uint8 S9xMSU1ReadPort(uint8 port)
 {
 	switch (port)
 	{
 	case 0:
-		return MSU1.MSU1_STATUS;
+		return MSU1.MSU1_STATUS | MSU1_REVISION;
 	case 1:
-		if (MSU1.MSU1_STATUS & DataBusy)
-			return 0;
-		if (dataFile.fail() || dataFile.bad() || dataFile.eof())
-			return 0;
-		MSU1.MSU1_DATA_POS++;
-		return dataFile.get();
+    {
+        if (MSU1.MSU1_STATUS & DataBusy)
+            return 0;
+        if (!dataStream)
+            return 0;
+        int data = GETC_STREAM(dataStream);
+        if (data >= 0)
+        {
+            MSU1.MSU1_DATA_POS++;
+            return data;
+        }
+        return 0;
+    }
 	case 2:
 		return 'S';
 	case 3:
@@ -376,7 +319,7 @@ uint8 S9xMSU1ReadPort(int port)
 }
 
 
-void S9xMSU1WritePort(int port, uint8 byte)
+void S9xMSU1WritePort(uint8 port, uint8 byte)
 {
 	switch (port)
 	{
@@ -396,8 +339,10 @@ void S9xMSU1WritePort(int port, uint8 byte)
 		MSU1.MSU1_DATA_SEEK &= 0x00FFFFFF;
 		MSU1.MSU1_DATA_SEEK |= byte << 24;
 		MSU1.MSU1_DATA_POS = MSU1.MSU1_DATA_SEEK;
-		if(dataFile.good())
-			dataFile.seekg(MSU1.MSU1_DATA_POS);
+        if (dataStream)
+        {
+            REVERT_STREAM(dataStream, MSU1.MSU1_DATA_POS, 0);
+        }
 		break;
 	case 4:
 		MSU1.MSU1_TRACK_SEEK &= 0xFF00;
@@ -424,7 +369,7 @@ void S9xMSU1WritePort(int port, uint8 byte)
 				MSU1.MSU1_AUDIO_POS = 8;
 			}
 
-			audioFile.seekg(MSU1.MSU1_AUDIO_POS);
+            REVERT_STREAM(audioStream, MSU1.MSU1_AUDIO_POS, 0);
 		}
 		break;
 	case 6:
@@ -445,35 +390,37 @@ void S9xMSU1WritePort(int port, uint8 byte)
 	}
 }
 
-uint16 S9xMSU1Samples(void)
+size_t S9xMSU1Samples(void)
 {
-	return bufPos - bufBegin;
+	return msu_resampler->space_filled();
 }
 
-void S9xMSU1SetOutput(int16 * out, int size)
+void S9xMSU1SetOutput(Resampler *resampler)
 {
-	bufPos = bufBegin = out;
-	bufEnd = out + size;
+	msu_resampler = resampler;
 }
 
 void S9xMSU1PostLoadState(void)
 {
 	if (DataOpen())
 	{
-		dataFile.seekg(MSU1.MSU1_DATA_POS);
+        REVERT_STREAM(dataStream, MSU1.MSU1_DATA_POS, 0);
 	}
 
 	if (MSU1.MSU1_STATUS & AudioPlaying)
 	{
+		uint32 savedPosition = MSU1.MSU1_AUDIO_POS;
+
 		if (AudioOpen())
 		{
-			audioFile.seekg(4);
-			audioFile.read((char *)&audioLoopPos, 4);
+            REVERT_STREAM(audioStream, 4, 0);
+            READ_STREAM((char *)&audioLoopPos, 4, audioStream);
 			audioLoopPos = GET_LE32(&audioLoopPos);
 			audioLoopPos <<= 2;
 			audioLoopPos += 8;
 
-			audioFile.seekg(MSU1.MSU1_AUDIO_POS);
+			MSU1.MSU1_AUDIO_POS = savedPosition;
+            REVERT_STREAM(audioStream, MSU1.MSU1_AUDIO_POS, 0);
 		}
 		else
 		{
@@ -482,9 +429,8 @@ void S9xMSU1PostLoadState(void)
 		}
 	}
 
-	bufPos = 0;
-	bufBegin = 0;
-	bufEnd = 0;
+	if (msu_resampler)
+		msu_resampler->clear();
 
-	partial_samples = 0;
+	partial_frames = 0;
 }

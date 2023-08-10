@@ -1,194 +1,10 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 #pragma comment( lib, "d3d9" )
-#pragma comment( lib, "d3dx9" )
 
 #include "cdirect3d.h"
 #include "win32_display.h"
@@ -196,14 +12,14 @@
 #include "../gfx.h"
 #include "../display.h"
 #include "wsnes9x.h"
-#include <Dxerr.h>
+#include "dxerr.h"
 #include <commctrl.h>
-#include "CXML.h"
-
-
 
 #include "../filter/hq2x.h"
 #include "../filter/2xsai.h"
+
+#include "imgui_impl_dx9.h"
+#include "snes9x_imgui.h"
 
 #ifndef max
 #define max(a, b) (((a) > (b)) ? (a) : (b))
@@ -237,7 +53,6 @@ CDirect3D::CDirect3D()
 	for(int i = 0; i < MAX_SHADER_TEXTURES; i++) {
 		rubyLUT[i] = NULL;
 	}
-	effect=NULL;
 	shader_type = D3D_SHADER_NONE;
 	shaderTimer = 1.0f;
 	shaderTimeStart = 0;
@@ -322,9 +137,19 @@ bool CDirect3D::Initialize(HWND hWnd)
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_BORDER);
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_BORDER);
 
-	pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+	Clear();
 
 	init_done = true;
+
+	if (!Settings.AutoDisplayMessages)
+	{
+		auto defaults = S9xImGuiGetDefaults();
+		defaults.font_size = GUI.OSDSize;
+		defaults.spacing = (int)(defaults.font_size / 2.4);
+		S9xImGuiInit(&defaults);
+		ImGui_ImplDX9_Init(pDevice);
+		Settings.DisplayIndicators = true;
+	}
 
 	ApplyDisplayChanges();
 
@@ -334,6 +159,12 @@ bool CDirect3D::Initialize(HWND hWnd)
 
 void CDirect3D::DeInitialize()
 {
+	if (S9xImGuiRunning())
+	{
+		ImGui_ImplDX9_Shutdown();
+		S9xImGuiDeinit();
+	}
+
 	DestroyDrawSurface();
 	SetShader(NULL);
 
@@ -382,15 +213,14 @@ void CDirect3D::DeInitialize()
 bool CDirect3D::SetShader(const TCHAR *file)
 {
 	SetShaderCG(NULL);
-	SetShaderHLSL(NULL);
 	shader_type = D3D_SHADER_NONE;
 	if(file!=NULL &&
 		(lstrlen(file)>3 && _tcsncicmp(&file[lstrlen(file)-3],TEXT(".cg"),3)==0) ||
 		(lstrlen(file)>4 && _tcsncicmp(&file[lstrlen(file)-4],TEXT(".cgp"),4)==0)){
 		return SetShaderCG(file);
-	} else {
-		return SetShaderHLSL(file);
 	}
+
+	return true;
 }
 
 void CDirect3D::checkForCgError(const char *situation)
@@ -430,194 +260,6 @@ bool CDirect3D::SetShaderCG(const TCHAR *file)
 	return true;
 }
 
-bool CDirect3D::SetShaderHLSL(const TCHAR *file)
-{
-	//MUDLORD: the guts
-	//Compiles a shader from files on disc
-	//Sets LUT textures to texture files in PNG format.
-
-	TCHAR folder[MAX_PATH];
-	TCHAR rubyLUTfileName[MAX_PATH];
-	TCHAR *slash;
-
-	TCHAR errorMsg[MAX_PATH + 50];
-
-	shaderTimer = 1.0f;
-	shaderTimeStart = 0;
-	shaderTimeElapsed = 0;
-
-	if(effect) {
-		effect->Release();
-		effect = NULL;
-	}
-	for(int i = 0; i < MAX_SHADER_TEXTURES; i++) {
-		if (rubyLUT[i] != NULL) {
-			rubyLUT[i]->Release();
-			rubyLUT[i] = NULL;
-		}
-	}
-	if (file == NULL || *file==TEXT('\0'))
-		return true;
-
-	CXML xml;
-
-    if(!xml.loadXmlFile(file))
-        return false;
-
-    TCHAR *lang = xml.getAttribute(TEXT("/shader"),TEXT("language"));
-
-	if(lstrcmpi(lang,TEXT("hlsl"))) {
-		_stprintf(errorMsg,TEXT("Shader language is <%s>, expected <HLSL> in file:\n%s"),lang,file);
-		MessageBox(NULL, errorMsg, TEXT("Shader Loading Error"), MB_OK|MB_ICONEXCLAMATION);
-		return false;
-	}
-
-    TCHAR *shaderText = xml.getNodeContent(TEXT("/shader/source"));
-
-	if(!shaderText) {
-		_stprintf(errorMsg,TEXT("No HLSL shader program in file:\n%s"),file);
-		MessageBox(NULL, errorMsg, TEXT("Shader Loading Error"),
-			MB_OK|MB_ICONEXCLAMATION);
-		return false;
-	}
-
-	LPD3DXBUFFER pBufferErrors = NULL;
-#ifdef UNICODE
-    HRESULT hr = D3DXCreateEffect( pDevice,WideToCP(shaderText,CP_ACP),strlen(WideToCP(shaderText,CP_ACP)),NULL, NULL,
-		D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, NULL, &effect, 
-		&pBufferErrors );
-#else
-	HRESULT hr = D3DXCreateEffect( pDevice,shaderText,strlen(shaderText),NULL, NULL,
-		D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, NULL, &effect, 
-		&pBufferErrors );
-#endif
-
-    if( FAILED(hr) ) {
-		_stprintf(errorMsg,TEXT("Error parsing HLSL shader file:\n%s"),file);
-		MessageBox(NULL, errorMsg, TEXT("Shader Loading Error"), MB_OK|MB_ICONEXCLAMATION);
-		if(pBufferErrors) {
-			LPVOID pCompilErrors = pBufferErrors->GetBufferPointer();
-			MessageBox(NULL, (const TCHAR*)pCompilErrors, TEXT("FX Compile Error"),
-				MB_OK|MB_ICONEXCLAMATION);
-		}
-		return false;
-	}
-
-	lstrcpy(folder,file);
-	slash = _tcsrchr(folder,TEXT('\\'));
-	if(slash)
-		*(slash+1)=TEXT('\0');
-	else
-		*folder=TEXT('\0');
-	SetCurrentDirectory(S9xGetDirectoryT(DEFAULT_DIR));
-
-	for(int i = 0; i < MAX_SHADER_TEXTURES; i++) {		
-		_stprintf(rubyLUTfileName, TEXT("%srubyLUT%d.png"), folder, i);
-		hr = D3DXCreateTextureFromFile(pDevice,rubyLUTfileName,&rubyLUT[i]);
-		if FAILED(hr){
-			rubyLUT[i] = NULL;
-		}
-	}
-
-	D3DXHANDLE hTech;
-	effect->FindNextValidTechnique(NULL,&hTech);
-	effect->SetTechnique( hTech );
-	shader_type = D3D_SHADER_HLSL;
-	return true;
-}
-
-void CDirect3D::SetShaderVars(bool setMatrix)
-{
-	if(shader_type == D3D_SHADER_HLSL) {
-		D3DXVECTOR4 rubyTextureSize;
-		D3DXVECTOR4 rubyInputSize;
-		D3DXVECTOR4 rubyOutputSize;
-		D3DXHANDLE  rubyTimer;
-
-		int shaderTime = GetTickCount();
-		shaderTimeElapsed += shaderTime - shaderTimeStart;
-		shaderTimeStart = shaderTime;
-		if(shaderTimeElapsed > 100) {
-			shaderTimeElapsed = 0;
-			shaderTimer += 0.01f;
-		}
-		rubyTextureSize.x = rubyTextureSize.y = (float)quadTextureSize;
-		rubyTextureSize.z = rubyTextureSize.w = 1.0 / quadTextureSize;
-		rubyInputSize.x = (float)afterRenderWidth;
-		rubyInputSize.y = (float)afterRenderHeight;
-		rubyInputSize.z = 1.0 / rubyInputSize.y;
-		rubyInputSize.w = 1.0 / rubyInputSize.z;
-		rubyOutputSize.x  = GUI.Stretch?(float)dPresentParams.BackBufferWidth:(float)afterRenderWidth;
-		rubyOutputSize.y  = GUI.Stretch?(float)dPresentParams.BackBufferHeight:(float)afterRenderHeight;
-		rubyOutputSize.z = 1.0 / rubyOutputSize.y;
-		rubyOutputSize.w = 1.0 / rubyOutputSize.x;
-		rubyTimer = effect->GetParameterByName(0, "rubyTimer");
-
-		effect->SetFloat(rubyTimer, shaderTimer);
-		effect->SetVector("rubyTextureSize", &rubyTextureSize);
-		effect->SetVector("rubyInputSize", &rubyInputSize);
-		effect->SetVector("rubyOutputSize", &rubyOutputSize);
-
-		effect->SetTexture("rubyTexture", drawSurface);
-		for(int i = 0; i < MAX_SHADER_TEXTURES; i++) {
-			char rubyLUTName[256];
-			sprintf(rubyLUTName, "rubyLUT%d", i);
-			if (rubyLUT[i] != NULL) {
-				effect->SetTexture( rubyLUTName, rubyLUT[i] );
-			}
-		}
-	}/* else if(shader_type == D3D_SHADER_CG) {
-
-		D3DXVECTOR2 videoSize;
-		D3DXVECTOR2 textureSize;
-		D3DXVECTOR2 outputSize;
-		float frameCnt;
-		videoSize.x = (float)afterRenderWidth;
-		videoSize.y = (float)afterRenderHeight;
-		textureSize.x = textureSize.y = (float)quadTextureSize;
-		outputSize.x = GUI.Stretch?(float)dPresentParams.BackBufferWidth:(float)afterRenderWidth;
-		outputSize.y = GUI.Stretch?(float)dPresentParams.BackBufferHeight:(float)afterRenderHeight;
-		frameCnt = (float)++frameCount;
-		videoSize = textureSize;
-
-#define setProgramUniform(program,varname,floats)\
-{\
-	CGparameter cgp = cgGetNamedParameter(program, varname);\
-	if(cgp)\
-		cgD3D9SetUniform(cgp,floats);\
-}\
-
-		setProgramUniform(cgFragmentProgram,"IN.video_size",&videoSize);
-		setProgramUniform(cgFragmentProgram,"IN.texture_size",&textureSize);
-		setProgramUniform(cgFragmentProgram,"IN.output_size",&outputSize);
-		setProgramUniform(cgFragmentProgram,"IN.frame_count",&frameCnt);
-
-		setProgramUniform(cgVertexProgram,"IN.video_size",&videoSize);
-		setProgramUniform(cgVertexProgram,"IN.texture_size",&textureSize);
-		setProgramUniform(cgVertexProgram,"IN.output_size",&outputSize);
-		setProgramUniform(cgVertexProgram,"IN.frame_count",&frameCnt);
-
-		if(setMatrix) {
-			D3DXMATRIX matWorld;
-			D3DXMATRIX matView;
-			D3DXMATRIX matProj;
-			D3DXMATRIX mvp;
-
-			pDevice->GetTransform(D3DTS_WORLD,&matWorld);
-			pDevice->GetTransform(D3DTS_VIEW,&matView);
-			pDevice->GetTransform(D3DTS_PROJECTION,&matProj);
-
-			mvp = matWorld * matView * matProj;
-			D3DXMatrixTranspose(&mvp,&mvp);
-
-			CGparameter cgpModelViewProj = cgGetNamedParameter(cgVertexProgram, "modelViewProj");
-
-			if(cgpModelViewProj)
-				cgD3D9SetUniformMatrix(cgpModelViewProj,&mvp);
-		}
-	}*/
-}
-
 /*  CDirect3D::Render
 does the actual rendering, changes the draw surface if necessary and recalculates
 the vertex information if filter output size changes
@@ -647,7 +289,8 @@ void CDirect3D::Render(SSurface Src)
 			case D3DERR_DEVICELOST:		//do no rendering until device is restored
 				return;
 			case D3DERR_DEVICENOTRESET: //we can reset now
-				ResetDevice();
+                if(!IsIconic(dPresentParams.hDeviceWindow))
+				    ResetDevice();
 				return;
 			default:
 				DXTRACE_ERR_MSGBOX(TEXT("Internal driver error"), hr);
@@ -666,16 +309,13 @@ void CDirect3D::Render(SSurface Src)
 		Dst.Pitch = lr.Pitch;
 
 		RenderMethod (Src, Dst, &dstRect);
-		if(!Settings.AutoDisplayMessages) {
-			WinSetCustomDisplaySurface((void *)Dst.Surface, Dst.Pitch/2, dstRect.right-dstRect.left, dstRect.bottom-dstRect.top, GetFilterScale(CurrentScale));
-			S9xDisplayMessages ((uint16*)Dst.Surface, Dst.Pitch/2, dstRect.right-dstRect.left, dstRect.bottom-dstRect.top, GetFilterScale(CurrentScale));
-		}
 
 		drawSurface->UnlockRect(0);
 	}
 
-	if(!GUI.Stretch||GUI.AspectRatio)
-		pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+	if (!GUI.Stretch || GUI.AspectRatio) {
+		Clear();
+	}
 
 	//if the output size of the render method changes we need to update the viewport
 	if(afterRenderHeight != dstRect.bottom || afterRenderWidth != dstRect.right) {
@@ -688,45 +328,50 @@ void CDirect3D::Render(SSurface Src)
 	pDevice->SetVertexDeclaration(vertexDeclaration);
 	pDevice->SetStreamSource(0,vertexBuffer,0,sizeof(VERTEX));
 
-	if (shader_type == D3D_SHADER_HLSL) {
-		SetShaderVars();
-		SetFiltering();
-
-		UINT passes;
-		pDevice->BeginScene();
-		hr = effect->Begin(&passes, 0);
-		for(UINT pass = 0; pass < passes; pass++ ) {
-			effect->BeginPass(pass);
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,0,2);
-			effect->EndPass();
-		}
-		effect->End();
-		pDevice->EndScene();
-
-	} else {
-		if(shader_type == D3D_SHADER_CG) {
-			RECT displayRect;
-			//Get maximum rect respecting AR setting
-			displayRect=CalculateDisplayRect(dPresentParams.BackBufferWidth,dPresentParams.BackBufferHeight,
-											dPresentParams.BackBufferWidth,dPresentParams.BackBufferHeight);
-			cgShader->Render(drawSurface,
-				D3DXVECTOR2((float)quadTextureSize, (float)quadTextureSize),
-				D3DXVECTOR2((float)afterRenderWidth, (float)afterRenderHeight),
-				D3DXVECTOR2((float)(displayRect.right - displayRect.left),
-									(float)(displayRect.bottom - displayRect.top)),
-				D3DXVECTOR2((float)dPresentParams.BackBufferWidth, (float)dPresentParams.BackBufferHeight));
-		}
-
-		SetFiltering();
-
-		pDevice->SetVertexDeclaration(vertexDeclaration);
-
-		pDevice->BeginScene();
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,0,2);
-		pDevice->EndScene();
+	if(shader_type == D3D_SHADER_CG) {
+		RECT displayRect;
+		//Get maximum rect respecting AR setting
+		displayRect=CalculateDisplayRect(dPresentParams.BackBufferWidth,dPresentParams.BackBufferHeight,
+										dPresentParams.BackBufferWidth,dPresentParams.BackBufferHeight);
+		cgShader->Render(drawSurface,
+			float2{ (float)quadTextureSize, (float)quadTextureSize },
+			float2{ (float)afterRenderWidth, (float)afterRenderHeight },
+			float2{ (float)(displayRect.right - displayRect.left), (float)(displayRect.bottom - displayRect.top) },
+			float2{ (float)dPresentParams.BackBufferWidth, (float)dPresentParams.BackBufferHeight });
 	}
 
+	SetFiltering();
+
+	pDevice->SetVertexDeclaration(vertexDeclaration);
+
+	pDevice->BeginScene();
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,0,2);
+	if (S9xImGuiRunning())
+	{
+		ImGui_ImplDX9_NewFrame();
+		if (S9xImGuiDraw(dPresentParams.BackBufferWidth, dPresentParams.BackBufferHeight))
+			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	pDevice->EndScene();
+
+	WinThrottleFramerate();
 	pDevice->Present(NULL, NULL, NULL, NULL);
+
+	if (GUI.ReduceInputLag)
+	{
+		IDirect3DSurface9 *surface;
+		RECT r = { 0, 0, 2, 2 };
+
+		if (pDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &surface) == D3D_OK)
+		{
+			if (surface->LockRect(&lr, &r, D3DLOCK_READONLY) == D3D_OK)
+			{
+				surface->UnlockRect();
+			}
+			surface->Release();
+		}
+	}
 
     return;
 }
@@ -845,16 +490,22 @@ void CDirect3D::SetupVertices()
 
 void CDirect3D::SetViewport()
 {
-	D3DXMATRIX matIdentity;
-	D3DXMATRIX matProjection;
+	D3DMATRIX matIdentity;
+	D3DMATRIX matProjection;
 
-	D3DXMatrixOrthoOffCenterLH(&matProjection,0.0f,1.0f,0.0f,1.0f,0.0f,1.0f);
-	D3DXMatrixIdentity(&matIdentity);
-	pDevice->SetTransform(D3DTS_WORLD,&matIdentity);
-	pDevice->SetTransform(D3DTS_VIEW,&matIdentity);
-	pDevice->SetTransform(D3DTS_PROJECTION,&matProjection);
+    matIdentity = { 1.0f, 0.0f, 0.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f };
 
-	SetShaderVars(true);
+    matProjection = {  2.0f,  0.0f,  0.0f, 0.0f,
+                       0.0f,  2.0f,  0.0f, 0.0f,
+                       0.0f,  0.0f, -1.0f, 0.0f,
+                      -1.0f, -1.0f,  0.0f, 1.0f };
+
+	pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)&matIdentity);
+	pDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&matIdentity);
+	pDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&matProjection);
 
 	RECT drawRect = CalculateDisplayRect(afterRenderWidth,afterRenderHeight,dPresentParams.BackBufferWidth,dPresentParams.BackBufferHeight);
 	D3DVIEWPORT9 viewport;
@@ -905,6 +556,11 @@ bool CDirect3D::ResetDevice()
 
 	HRESULT hr;
 
+	if (S9xImGuiRunning())
+	{
+		ImGui_ImplDX9_InvalidateDeviceObjects();
+	}
+
 	//release prior to reset
 	DestroyDrawSurface();
 
@@ -912,9 +568,6 @@ bool CDirect3D::ResetDevice()
 		cgShader->OnLostDevice();
 		cgD3D9SetDevice(NULL);
 	}
-
-	if(effect)
-		effect->OnLostDevice();
 
 	//zero or unknown values result in the current window size/display settings
 	dPresentParams.BackBufferWidth = 0;
@@ -924,6 +577,7 @@ bool CDirect3D::ResetDevice()
 	dPresentParams.FullScreen_RefreshRateInHz = 0;
 	dPresentParams.Windowed = true;
 	dPresentParams.PresentationInterval = GUI.Vsync?D3DPRESENT_INTERVAL_ONE:D3DPRESENT_INTERVAL_IMMEDIATE;
+	dPresentParams.Flags = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
 	if(fullscreen) {
 		dPresentParams.BackBufferWidth = GUI.FullscreenMode.width;
@@ -942,9 +596,6 @@ bool CDirect3D::ResetDevice()
 		return false;
 	}
 
-	if(effect)
-		effect->OnResetDevice();
-
 	if(cgAvailable) {
 		cgD3D9SetDevice(pDevice);
 		cgShader->OnResetDevice();
@@ -953,11 +604,16 @@ bool CDirect3D::ResetDevice()
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-	
+
 	//recreate the surface
 	CreateDrawSurface();
 
 	SetViewport();
+
+	if (S9xImGuiRunning())
+	{
+		ImGui_ImplDX9_CreateDeviceObjects();
+	}
 
 	return true;
 }
@@ -972,7 +628,6 @@ void CDirect3D::SetSnes9xColorFormat()
 	GUI.BlueShift = 0;
 	GUI.GreenShift = 6;
 	GUI.RedShift = 11;
-	S9xSetRenderPixelFormat (RGB565);
 	S9xBlit2xSaIFilterInit();
 	S9xBlitHQ2xFilterInit();
 	GUI.NeedDepthConvert = FALSE;
@@ -1065,11 +720,32 @@ bool CDirect3D::ApplyDisplayChanges(void)
 
 void CDirect3D::SetFiltering()
 {
-	if(GUI.BilinearFilter) {
+	if(Settings.BilinearFilter) {
 		pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 		pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	} else {
 		pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 		pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
 	}
+}
+
+// reset viewport to whole window, clear, set back to current viewport
+void CDirect3D::Clear()
+{
+	if (!init_done)
+		return;
+
+	D3DVIEWPORT9 vp_current, vp_all;
+	pDevice->GetViewport(&vp_current);
+
+	vp_all.X = 0;
+	vp_all.Y = 0;
+	vp_all.Width = dPresentParams.BackBufferWidth;
+	vp_all.Height = dPresentParams.BackBufferHeight;
+	vp_all.MinZ = 0.0;
+	vp_all.MaxZ = 1.0;
+
+	pDevice->SetViewport(&vp_all);
+	pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+	pDevice->SetViewport(&vp_current);
 }

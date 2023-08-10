@@ -2,15 +2,14 @@ Snes9x: The Portable Super Nintendo Entertainment System Emulator
 =================================================================
 Files included in the Snes9x archive:
   Snes9x.exe
-  fmod.dll
   readme-windows.txt
   faqs-windows.txt
   changes.txt
   snes9x-license.txt
 
-version 1.55  May, 2017
+version 1.62.3  March, 2023
 Home page: http://www.snes9x.com/
-
+Source code: https://github.com/snes9xgit/snes9x/
 
 
 Contents
@@ -80,9 +79,8 @@ Getting Started
 ===============
 
 Launch Snes9x using the Windows explorer to locate the directory where you
-un-zipped the snes9x.exe and the fmod.dll files and double-click on the
-snes9x.exe executable. You could create a shortcut to Snes9x and drag that icon
-out onto your desktop.
+un-zipped the snes9x.exe files and double-click on the snes9x.exe executable.
+You could create a shortcut to Snes9x and drag that icon out onto your desktop.
 
 Loading Games
 -------------
@@ -114,7 +112,7 @@ is displayed. This will help to find out what the problem is.
 
 These colors do NOT signify whether a game will work or not. It is just a means
 for reference so we can understand what may or may not be a problem. Most often
-the problem with games that don't work is that they are corrupt or are a bad dump 
+the problem with games that don't work is that they are corrupt or are a bad dump
 and should be redumped.
 
 SNES Joypad Emulation
@@ -141,11 +139,8 @@ Requirements
 
 System Requirements
 -------------------
-Windows 98/2000/XP/Vista/7.
-DirectX 6.1b or later.
-300MHz processor BARE MINIMUM (1GHz+ rec for best settings.)
-16MB RAM BARE MINIMUM.
-DirectSound capable sound card.
+Windows XP and up.
+DirectX 9.
 
 Certain games use added hardware which will require a faster machine. The specs
 listed above are the minimum to use Snes9x in any playable form. It is
@@ -164,14 +159,27 @@ liable under various EULAs.
 
 CG Shaders
 --------
-If you want to use CG Shaders in Snex9x for windows you need to install the
+If you want to use CG Shaders in Snes9x for windows you need to install the
 CG Toolkit from nvidia's developer zone:
 http://developer.nvidia.com/object/cg_download.html
 
 CG shaders work in both D3D and OpenGL. Various shaders can be found in
 Themaister's Emulator Shader Pack:
 https://github.com/Themaister/Emulator-Shader-Pack
+You can also try the shaders in the libretro common-shaders repository:
+https://github.com/libretro/common-shaders
 
+GLSL Shaders
+--------
+Support for GLSL shaders is available when using OpenGL. A number can be
+obtained from the libretro glsl-shaders repository:
+https://github.com/libretro/glsl-shaders
+
+Slang Shaders
+--------
+Slang shaders may also be used with OpenGL. The primary location to get these
+is the libretro slang-shaders repository:
+https://github.com/libretro/slang-shaders
 
 Controllers Support
 ===================
@@ -298,7 +306,9 @@ item is found, and etc. Two major formats are well-known: Game Genie and
 Pro-Action Reply (PAR). Many existing Game Genie and PAR codes can be found via
 Internet.
 
-Snes9x supports both Game Genie and PAR. Also you can find your own cheat code.
+Snes9x supports both Game Genie and PAR, as well as the standard raw format:
+xxxxxx=bb or xxxxxx=cc?bb. Also you can create your own cheat codes with the
+cheat search tool.
 Cheats are saved in .cht files and are automatically loaded the next time a game
 with the same filename is loaded.
 
@@ -314,7 +324,7 @@ the cheat address might be different between regions and versions.
 Cheat Code Entry
 ----------------
 Use the Cheat Code Entry and Editor dialog from the Cheats menu to enter Game
-Genie or PAR cheat codes. Type in a Game Genie or PAR code into the 'Enter Cheat
+Genie or PAR, or raw codes. Type a cheat code into the 'Enter Cheat
 Code' text edit box and press Return key. Be sure to include the '-' when typing
 in a Game Genie code. You can then type in an optional short description as a
 reminder to yourself of what function the cheat performs. Press Return key again
@@ -324,10 +334,9 @@ Note that the Add button remains insensitive while 'Enter Cheat Code' text edit
 box is empty or contains an invalid code. The cheat code is always translated
 into an address and value pair and displayed in the cheat list as such.
 
-It is also possible to enter cheats as an address and value pair. Type in the
-address into the 'Address' text edit box then type the value into the 'Value'
-text edit box. The value is normally entered in decimal, but if you prefix the
-value with a '$' or append an 'h' then you can enter the value in hex.
+It is also possible to enter cheats as an address and value pair. Type in a
+code of the form 'address=value' in the 'Enter Cheat Code' box, with both
+address and value in hexadecimal.
 
 Double-clicking on an cheat line from the list in the dialog or clicking on the
 'En' column toggles an individual cheat on and off. All cheats can be switched
@@ -342,6 +351,10 @@ whether you originally entered it as a Game Genie or Pro-Action Replay code.
 
 Selecting a cheat from the list then pressing the Delete button permanently
 removes that cheat.
+
+Snes9x contains a database of cheats for several known games. Click the
+'Search Database' button with a game loaded, and it will try to add existing
+cheats for your current game.
 
 Cheat Search
 ------------
@@ -455,8 +468,18 @@ accidentally alter it, check 'Open as read only' when you go to play it.
 
 
 
+MSU1 Support
+===============
+MSU1 is supported in either Mercurial Magic (MSU-1 distribution pack) format, or
+by placing the .msu/.pcm files next to the rom file itself.
+
+
+
 Netplay Support
 ===============
+
+NOTE 2017 OV2: netplay has not been maintained and tested in a long time, so it
+might be broken.
 
 Netplay support allows up to five players to sit in front of different computers
 and simultaneously play the same game, or just watch someone else play a game.
@@ -518,13 +541,14 @@ multi-player games on the SNES) sync the game to sound samples finishing.
 Miscellaneous
 =============
 
-Using IPS or UPS Patch
+Using IPS/UPS/BPS Patch
 ----------------------
 Snes9x automatically patches without overwriting the ROM image.
 
-- Put the IPS or UPS file into the same folder as the ROM image.
+- Put the IPS/UPS/BPS file into the same folder as the ROM image or in the folder
+  configured as patch folder
 - Rename the name to the same as the ROM image (except extension, it is '.ips'
-  or '.ups').
+  or '.ups' or '.bps').
 - (IPS only) If you want to use multiple IPS files at a time, set their
   extensions to '.000.ips', '.001.ips', ...
 - Open and load the ROM image.
@@ -589,10 +613,10 @@ the extension of the freeze files.
 
 Compatibility with Other SNES Emulators
 ---------------------------------------
-Cheat files (.cht) are common between Snes9x and ZSNES. RTC files (.rtc) are
-common between Snes9x and bsnes. SRAM files (.srm) should be common among all
-SNES emulators.
-
+Cheat files (.cht) are common between Snes9x and higan/bsnes. higan stores
+these as cheats.bml in the higan subdirectory of a game folder.
+RTC files (.rtc) are common between Snes9x and bsnes.
+SRAM files (.srm) should be common among all SNES emulators.
 
 
 Problems
@@ -629,27 +653,28 @@ Problems with Sound
 -------------------
 No sound coming from any SNES game using Snes9x? Could be any or all of these:
 
-- If all sound menu options are grayed out, or an error dialog about Snes9x not
-  being able to initialize DirectSound is displayed - then DirectSound could not
-  initialize itself. Make sure DirectX 6 or above is installed and your sound
-  card is supported by DirectX.
   Installing the latest drivers for your sound card might help. Another Windows
-  application might have opened DirectSound in exclusive mode or opened the
-  Windows WAVE device - WinAmp uses the Windows WAVE device by default - in
-  which case you will need to stop that application and then restart Snes9x. It
-  is possible to switch WinAmp to use DirectSound, in which case both Snes9x and
-  WinAmp output can be heard at the same time.
-  If your sound card isn't supported by DirectX very well (or not at all) you
-  will have to use FMOD's WAVE output option; but WAVE output introduces a 0.15s
-  delay between Snes9x generating sample data and you hearing it. Select FMOD's
-  WAVE output by choosing the 'FMOD Windows Multimedia' sound driver option from
-  the Sound Settings dialog.
+  application might be holding exclusive access to the sound card - in
+  which case you will need to stop that application and then restart Snes9x.
 - The sound card's volume level might be set too low. Snes9x doesn't alter the
   card's master volume level so you might need to adjust it using the sound
   card's mixer/volume controls usually available from the task bar or start
   menu.
 - Make sure your speakers and turned on, plugged in and the volume controls are
   set to a suitable level.
+- If experiencing crackling, try the following in the Sound Settings dialog:
+    * Ensure the "Synchronize with sound core" option is enabled.
+    * Increase the buffer size.
+    * Switch the sound driver from WaveOut to XAudio2 or vice-versa.
+    * If "Automatic Input Rate" option is disabled, enable it. Otherwise,
+      disable it and lower the "Input Rate" value in steps of 10 until the
+      crackling goes away.
+    * Enable the "Dynamic Rate Control" option.
+    * Change the "Playback Rate" to 48000Hz. Versions of Windows since Vista
+      have included a sound server that controls audio. It usually runs at
+      48000Hz, and matching this means Windows doesn't try to convert it.
+      Contrary to other advice, running at 32000Hz does NOT provide any
+      benefits.
 
 
 
@@ -811,7 +836,6 @@ Konami and Justifier are trademarks of Konami Corp.
 Hudson is a trademark of Husdon Soft Co., Ltd.
 Capcom is a trademark of Capcom Co., Ltd.
 
-Gary Henderson
+This document was originally authored by Gary Henderson
 
-Edited for Windows port by: zones (kasumitokoduck@yahoo.com)
-Updated most recently by: 2011/04/11 zones
+Updated most recently: 2019/2/26

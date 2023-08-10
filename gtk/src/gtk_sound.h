@@ -1,18 +1,23 @@
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
+
 #ifndef __GTK_SOUND_H
 #define __GTK_SOUND_H
 
-void S9xPortSoundInit (void);
-void S9xPortSoundDeinit (void);
-void S9xPortSoundReinit (void);
-void S9xSoundStart (void);
-void S9xSoundStop (void);
-void S9xMixSound (void);
+#include <vector>
+#include <string>
 
-int S9xSoundBase2log (int num);
-int S9xSoundPowerof2 (int num);
+void S9xPortSoundInit();
+void S9xPortSoundDeinit();
+void S9xPortSoundReinit();
+void S9xSoundStart();
+void S9xSoundStop();
 
-extern int playback_rates[8];
-extern int buffer_sizes[8];
-extern double d_playback_rates[8];
+int S9xSoundBase2log(int num);
+int S9xSoundPowerof2(int num);
+std::vector<std::string> S9xGetSoundDriverNames();
 
 #endif /* __GTK_SOUND_H */
