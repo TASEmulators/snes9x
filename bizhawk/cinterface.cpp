@@ -11,7 +11,6 @@
 #include "controls.h"
 #include "cheats.h"
 #include "movie.h"
-#include "logger.h"
 #include "display.h"
 #include "conffile.h"
 #include <stdio.h>
@@ -246,10 +245,7 @@ ECL_EXPORT int biz_load_rom(const void *data, int size)
 {
 	rom_loaded = Memory.LoadROMMem((const uint8_t *)data, size);
 
-	int pixel_format = RGB565;
-
 	S9xGraphicsDeinit();
-	S9xSetRenderPixelFormat(pixel_format);
 	S9xGraphicsInit();
 
 	return rom_loaded;
@@ -325,11 +321,13 @@ ECL_EXPORT int biz_init()
 	Settings.SoundPlaybackRate = 44100;
 	Settings.SoundInputRate = 32040;
 	Settings.SoundSync = TRUE;
-	Settings.SupportHiRes = TRUE;
+	Settings.InterpolationMethod = 2;
 	Settings.Transparency = TRUE;
 	Settings.AutoDisplayMessages = TRUE;
 	Settings.InitialInfoStringTimeout = 120;
+	Settings.SuperFXClockMultiplier = 100;
 	Settings.HDMATimingHack = 100;
+	Settings.MaxSpriteTilesPerLine = 34;
 	Settings.BlockInvalidVRAMAccessMaster = TRUE;
 	Settings.WrongMovieStateProtection = TRUE;
 	Settings.DumpStreamsMaxFrames = -1;
@@ -339,6 +337,7 @@ ECL_EXPORT int biz_init()
 	Settings.CartBName[0] = 0;
 	Settings.AutoSaveDelay = 1;
 	Settings.DontSaveOopsSnapshot = TRUE;
+	Settings.UpAndDown = TRUE;
 
 	CPU.Flags = 0;
 
@@ -348,12 +347,10 @@ ECL_EXPORT int biz_init()
 		return 0;
 	}
 
-	S9xInitSound(24, 0); // 16, 0)
+	S9xInitSound(0); // 16, 0)
 	S9xSetSoundMute(FALSE);
 	//S9xSetSamplesAvailableCallback(S9xAudioCallback, NULL);
 
-	GFX.Pitch = MAX_SNES_WIDTH * sizeof(uint16);
-	GFX.Screen = (uint16 *)alloc_invisible(GFX.Pitch * MAX_SNES_HEIGHT);
 	S9xGraphicsInit();
 
 	S9xInitInputDevices();
@@ -617,9 +614,9 @@ static void Blit(const uint16_t *src, uint8_t *dst)
 		for (int i = 0; i < actual_width; i++)
 		{
 			auto c = *src++;
-			*dst++ = c << 3 & 0xf8 | c >> 2 & 7;
-			*dst++ = c >> 3 & 0xfa | c >> 9 & 3;
-			*dst++ = c >> 8 & 0xf8 | c >> 13 & 7;
+			*dst++ = (c << 3 & 0xf8) | (c >> 2 & 7);
+			*dst++ = (c >> 3 & 0xfa) | (c >> 9 & 3);
+			*dst++ = (c >> 8 & 0xf8) | (c >> 13 & 7);
 			*dst++ = 0xff;
 		}
 		src += vinc;
@@ -637,7 +634,7 @@ ECL_EXPORT void FrameAdvance(FrameInfo *frame)
 {
 	pad_read = FALSE;
 	S9xMainLoop();
-	S9xFinalizeSamples();
+	S9xLandSamples();
 	frame->Lagged = !pad_read;
 
 	size_t avail = S9xGetSampleCount();
@@ -730,18 +727,16 @@ bool8 S9xContinueUpdate(int width, int height)
 }
 
 // Dummy functions that should probably be implemented correctly later.
+std::string S9xGetDirectory(s9x_getdirtype) { return ""; }
+std::string S9xGetFilenameInc(std::string in, s9x_getdirtype) { return ""; }
 void S9xParsePortConfig(ConfigFile &, int) {}
 void S9xSyncSpeed() {}
 const char *S9xStringInput(const char *in) { return in; }
-const char *S9xGetFilename(const char *in, s9x_getdirtype) { return in; }
-const char *S9xGetDirectory(s9x_getdirtype) { return ""; }
 void S9xInitInputDevices() {}
 const char *S9xChooseFilename(unsigned char) { return ""; }
 void S9xHandlePortCommand(s9xcommand_t, short, short) {}
 bool S9xPollButton(unsigned int, bool *) { return false; }
 void S9xToggleSoundChannel(int) {}
-const char *S9xGetFilenameInc(const char *in, s9x_getdirtype) { return ""; }
-const char *S9xBasename(const char *in) { return in; }
 bool8 S9xInitUpdate() { return TRUE; }
 void S9xExtraUsage() {}
 bool8 S9xOpenSoundDevice() { return TRUE; }
@@ -781,69 +776,6 @@ void S9xAutoSaveSRAM()
 {
 	return;
 }
-
-#ifndef __WIN32__
-// S9x weirdness.
-void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext)
-{
-	*drive = 0;
-
-	const char *slash = strrchr(path, SLASH_CHAR),
-			   *dot = strrchr(path, '.');
-
-	if (dot && slash && dot < slash)
-		dot = NULL;
-
-	if (!slash)
-	{
-		*dir = 0;
-
-		strcpy(fname, path);
-
-		if (dot)
-		{
-			fname[dot - path] = 0;
-			strcpy(ext, dot + 1);
-		}
-		else
-			*ext = 0;
-	}
-	else
-	{
-		strcpy(dir, path);
-		dir[slash - path] = 0;
-
-		strcpy(fname, slash + 1);
-
-		if (dot)
-		{
-			fname[dot - slash - 1] = 0;
-			strcpy(ext, dot + 1);
-		}
-		else
-			*ext = 0;
-	}
-}
-
-void _makepath(char *path, const char *, const char *dir, const char *fname, const char *ext)
-{
-	if (dir && *dir)
-	{
-		strcpy(path, dir);
-		strcat(path, SLASH_STR);
-	}
-	else
-		*path = 0;
-
-	strcat(path, fname);
-
-	if (ext && *ext)
-	{
-		strcat(path, ".");
-		strcat(path, ext);
-	}
-}
-#endif // __WIN32__
 
 int main(void)
 {

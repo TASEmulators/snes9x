@@ -917,10 +917,8 @@ bool8 CMemory::Init (void)
 		return (FALSE);
     }
 
-	ROMStorage.resize(MAX_ROM_SIZE + 0x200 + 0x8000);
-	std::fill(ROMStorage.begin(), ROMStorage.end(), 0);
-	SRAMStorage.resize(SRAM_SIZE);
-	std::fill(SRAMStorage.begin(), SRAMStorage.end(), 0);
+	ROMStorage = alloc_invisible<uint8>(MAX_ROM_SIZE + 0x200 + 0x8000);
+	SRAMStorage = alloc_invisible<uint8>(SRAM_SIZE);
 	SRAM = &SRAMStorage[0];
 	memset(RAM, 0,  sizeof(RAM));
 	memset(VRAM, 0, sizeof(VRAM));

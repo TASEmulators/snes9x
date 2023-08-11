@@ -55,7 +55,7 @@ bool8 S9xGraphicsInit (void)
 	S9xFixColourBrightness();
 	S9xBuildDirectColourMaps();
 
-	GFX.ScreenBuffer.resize(MAX_SNES_WIDTH * (MAX_SNES_HEIGHT + 64));
+	GFX.ScreenBuffer = alloc_invisible<uint16>(MAX_SNES_WIDTH * (MAX_SNES_HEIGHT + 64));
 	GFX.Screen = &GFX.ScreenBuffer[GFX.RealPPL * 32];
 	GFX.ZERO = alloc_invisible<uint16>(0x10000);
 	GFX.SubScreen  = alloc_invisible<uint16>(GFX.ScreenSize);
@@ -1796,7 +1796,7 @@ static void VariableDisplayChar(int x, int y, uint8 c, bool monospace = false, i
 
 void S9xVariableDisplayString(const char* string, int linesFromBottom,	int pixelsFromLeft, bool allowWrap, int type)
 {
-	if (GFX.ScreenBuffer.empty() || IPPU.RenderedScreenWidth == 0)
+	if (!GFX.ScreenBuffer || IPPU.RenderedScreenWidth == 0)
 		return;
 
 	bool monospace = true;

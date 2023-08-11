@@ -57,9 +57,9 @@ struct CMemory
 	int32	HeaderCount;
 
 	uint8	RAM[0x20000];
-	std::vector<uint8_t> ROMStorage;
+	uint8   *ROMStorage;
 	uint8   *ROM;
-	std::vector<uint8_t> SRAMStorage;
+	uint8   *SRAMStorage;
 	uint8	*SRAM;
 	const size_t SRAM_SIZE = 0x80000;
 	uint8	VRAM[0x10000];
