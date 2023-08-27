@@ -55,4 +55,11 @@ class Resampler;
 void S9xMSU1SetOutput(Resampler *resampler);
 void S9xMSU1PostLoadState(void);
 
+char* BizHawkGetMsuDataFile(void);
+bool BizHawkOpenMsuAudioFile(uint16 id);
+void BizHawkCloseMsuAudioFile(void);
+void BizHawkSeekMsuAudioFile(int64 offset, bool relative);
+uint8 BizHawkReadMsuAudioFile(void);
+bool BizHawkMsuAudioFileEnd(void);
+
 #endif

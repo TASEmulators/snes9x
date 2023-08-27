@@ -14,12 +14,19 @@
 #include <sys/stat.h>
 
 STREAM dataStream = NULL;
-STREAM audioStream = NULL;
+bool audioStreamOpen;
 uint32 audioLoopPos;
 size_t partial_frames;
 
 // Sample buffer
 static Resampler *msu_resampler = NULL;
+
+void BizHawkReadMsuAudioFile(char* buffer, uint64 size)
+{
+	while (size--) {
+		*buffer++ = BizHawkReadMsuAudioFile();
+	}
+}
 
 #ifdef UNZIP_SUPPORT
 static int unzFindExtension(unzFile &file, const char *ext, bool restart = TRUE, bool print = TRUE, bool allowExact = FALSE)
@@ -57,7 +64,8 @@ static int unzFindExtension(unzFile &file, const char *ext, bool restart = TRUE,
 
 STREAM S9xMSU1OpenFile(const char *msu_ext, bool skip_unpacked)
 {
-    auto filename = S9xGetFilename(msu_ext, ROMFILENAME_DIR);
+	std::string filename = "msu1.rom"; // must be provided by the frontend
+    // auto filename = S9xGetFilename(msu_ext, ROMFILENAME_DIR);
 	STREAM file = 0;
 
 	if (!skip_unpacked)
@@ -98,11 +106,8 @@ STREAM S9xMSU1OpenFile(const char *msu_ext, bool skip_unpacked)
 
 static void AudioClose()
 {
-	if (audioStream)
-	{
-		CLOSE_STREAM(audioStream);
-		audioStream = NULL;
-	}
+	BizHawkCloseMsuAudioFile();
+	audioStreamOpen = false;
 }
 
 static bool AudioOpen()
@@ -111,21 +116,21 @@ static bool AudioOpen()
 
 	AudioClose();
 
-	std::string extension = "-" + std::to_string(MSU1.MSU1_CURRENT_TRACK) + ".pcm";
+	// std::string extension = "-" + std::to_string(MSU1.MSU1_CURRENT_TRACK) + ".pcm";
 
-    audioStream = S9xMSU1OpenFile(extension.c_str());
-	if (audioStream)
+	audioStreamOpen = BizHawkOpenMsuAudioFile(MSU1.MSU1_CURRENT_TRACK);
+    if (audioStreamOpen)
 	{
-		if (GETC_STREAM(audioStream) != 'M')
+		if (BizHawkReadMsuAudioFile() != 'M')
 			return false;
-		if (GETC_STREAM(audioStream) != 'S')
+		if (BizHawkReadMsuAudioFile() != 'S')
 			return false;
-		if (GETC_STREAM(audioStream) != 'U')
+		if (BizHawkReadMsuAudioFile() != 'U')
 			return false;
-		if (GETC_STREAM(audioStream) != '1')
+		if (BizHawkReadMsuAudioFile() != '1')
 			return false;
 
-        READ_STREAM((char *)&audioLoopPos, 4, audioStream);
+        BizHawkReadMsuAudioFile((char *)&audioLoopPos, 4);
 		audioLoopPos = GET_LE32(&audioLoopPos);
 		audioLoopPos <<= 2;
 		audioLoopPos += 8;
@@ -229,15 +234,15 @@ void S9xMSU1Generate(size_t sample_count)
 
 	while (partial_frames >= 3204)
 	{
-		if (MSU1.MSU1_STATUS & AudioPlaying && audioStream)
+		if (MSU1.MSU1_STATUS & AudioPlaying && audioStreamOpen)
 		{
 			int32 sample;
 			int16* left = (int16*)&sample;
 			int16* right = left + 1;
 
-			int bytes_read = READ_STREAM((char *)&sample, 4, audioStream);
-			if (bytes_read == 4)
+			if (!BizHawkMsuAudioFileEnd())
 			{
+				BizHawkReadMsuAudioFile((char *)&sample, 4);
 				*left = ((int32)(int16)GET_LE16(left) * MSU1.MSU1_VOLUME / 255);
 				*right = ((int32)(int16)GET_LE16(right) * MSU1.MSU1_VOLUME / 255);
 
@@ -246,7 +251,7 @@ void S9xMSU1Generate(size_t sample_count)
 				partial_frames -= 3204;
 			}
 			else
-			if (bytes_read >= 0)
+			// if (bytes_read >= 0)
 			{
 				if (MSU1.MSU1_STATUS & AudioRepeating)
 				{
@@ -258,18 +263,20 @@ void S9xMSU1Generate(size_t sample_count)
 					{
 						MSU1.MSU1_AUDIO_POS = 8;
 					}
-					REVERT_STREAM(audioStream, MSU1.MSU1_AUDIO_POS, 0);
+					BizHawkSeekMsuAudioFile(MSU1.MSU1_AUDIO_POS, false);
 				}
 				else
 				{
 					MSU1.MSU1_STATUS &= ~(AudioPlaying | AudioRepeating);
-					REVERT_STREAM(audioStream, 8, 0);
+					BizHawkSeekMsuAudioFile(8, false);
 				}
 			}
+			/*
 			else
 			{
 				MSU1.MSU1_STATUS &= ~(AudioPlaying | AudioRepeating);
 			}
+			*/
 		}
 		else
 		{
@@ -369,7 +376,7 @@ void S9xMSU1WritePort(uint8 port, uint8 byte)
 				MSU1.MSU1_AUDIO_POS = 8;
 			}
 
-            REVERT_STREAM(audioStream, MSU1.MSU1_AUDIO_POS, 0);
+            BizHawkSeekMsuAudioFile(MSU1.MSU1_AUDIO_POS, false);
 		}
 		break;
 	case 6:
@@ -413,14 +420,14 @@ void S9xMSU1PostLoadState(void)
 
 		if (AudioOpen())
 		{
-            REVERT_STREAM(audioStream, 4, 0);
-            READ_STREAM((char *)&audioLoopPos, 4, audioStream);
+            BizHawkSeekMsuAudioFile(4, false);
+            BizHawkReadMsuAudioFile((char *)&audioLoopPos, 4);
 			audioLoopPos = GET_LE32(&audioLoopPos);
 			audioLoopPos <<= 2;
 			audioLoopPos += 8;
 
 			MSU1.MSU1_AUDIO_POS = savedPosition;
-            REVERT_STREAM(audioStream, MSU1.MSU1_AUDIO_POS, 0);
+            BizHawkSeekMsuAudioFile(MSU1.MSU1_AUDIO_POS, false);
 		}
 		else
 		{

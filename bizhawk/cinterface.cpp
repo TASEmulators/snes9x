@@ -382,6 +382,8 @@ ECL_EXPORT void biz_post_load_state()
 	memset(IPPU.TileCached[TILE_2BIT_ODD], 0, MAX_2BIT_TILES);
 	memset(IPPU.TileCached[TILE_4BIT_EVEN], 0, MAX_4BIT_TILES);
 	memset(IPPU.TileCached[TILE_4BIT_ODD], 0, MAX_4BIT_TILES);
+
+	S9xMSU1PostLoadState();
 }
 
 #define MAP_BUTTON(id, name) S9xMapButton((id), S9xGetCommandT((name)), false)
@@ -612,6 +614,30 @@ ECL_EXPORT void SetInputCallback(void (*callback)())
 {
 	InputCallback = callback;
 }
+
+typedef bool (*MsuOpenAudio)(uint16 track_id);
+typedef void (*MsuSeekAudio)(int64 offset, bool relative);
+typedef uint8 (*MsuReadAudio)(void);
+typedef bool (*MsuAudioEnd)(void);
+
+MsuOpenAudio OpenAudio;
+MsuSeekAudio SeekAudio;
+MsuReadAudio ReadAudio;
+MsuAudioEnd AudioEnd;
+
+ECL_EXPORT void SetMsu1Callbacks(MsuOpenAudio openAudio, MsuSeekAudio seekAudio, MsuReadAudio readAudio, MsuAudioEnd audioEnd)
+{
+	OpenAudio = openAudio;
+	SeekAudio = seekAudio;
+	ReadAudio = readAudio;
+	AudioEnd = audioEnd;
+}
+
+bool BizHawkOpenMsuAudioFile(uint16 id) { return OpenAudio(id); }
+void BizHawkCloseMsuAudioFile(void) { /* do nothing; OpenMsuAudioFile disposes any existing file in frontend */ }
+void BizHawkSeekMsuAudioFile(int64 offset, bool relative) { SeekAudio(offset, relative); }
+uint8 BizHawkReadMsuAudioFile(void) { return ReadAudio(); }
+bool BizHawkMsuAudioFileEnd(void) { return AudioEnd(); }
 
 static int actual_width;
 static int actual_height;
