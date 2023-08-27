@@ -38,7 +38,10 @@
 
 static void log_cb(int level, const char *fmt, ...)
 {
-	_debug_puts(fmt);
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(stderr, fmt, args);
+	va_end(args);
 }
 
 static bool use_overscan = false;
@@ -132,6 +135,10 @@ static void retro_set_controller_port_device(unsigned port, unsigned device)
 		int offset = snes_devices[0] == RETRO_DEVICE_JOYPAD_MULTITAP ? 4 : 1;
 		switch (device)
 		{
+		case RETRO_DEVICE_NONE:
+			S9xSetController(port, CTL_NONE, 0, 0, 0, 0);
+			snes_devices[port] = RETRO_DEVICE_NONE;
+			break;
 		case RETRO_DEVICE_JOYPAD:
 			S9xSetController(port, CTL_JOYPAD, port * offset, 0, 0, 0);
 			snes_devices[port] = RETRO_DEVICE_JOYPAD;
@@ -547,6 +554,9 @@ static void report_buttons()
 	{
 		switch (snes_devices[port])
 		{
+		case RETRO_DEVICE_NONE:
+			break;
+
 		case RETRO_DEVICE_JOYPAD:
 			for (int i = BTN_FIRST; i <= BTN_LAST; i++)
 				S9xReportButton(MAKE_BUTTON(port * offset + 1, i), input_state_cb(port * offset, RETRO_DEVICE_JOYPAD, 0, i));
