@@ -453,7 +453,7 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_1, BTN_UP), "Joypad1 Up");
 	MAP_BUTTON(MAKE_BUTTON(PAD_1, BTN_DOWN), "Joypad1 Down");
 	S9xMapPointer((BTN_POINTER), S9xGetCommandT("Pointer Mouse1+Superscope+Justifier1"), false);
-	S9xMapPointer((BTN_POINTER2), S9xGetCommandT("Pointer Mouse2"), false);
+	S9xMapPointer((BTN_POINTER2), S9xGetCommandT("Pointer Mouse2+Justifier2"), false);
 
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_A), "Joypad2 A");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_B), "Joypad2 B");
@@ -463,7 +463,7 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_START), "{Joypad2 Start,Mouse2 R,Superscope Cursor,Justifier1 Start}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_L), "Joypad2 L");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_R), "Joypad2 R");
-	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_LEFT), "Joypad2 Left,Superscope AimOffscreen");
+	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_LEFT), "{Joypad2 Left,Superscope AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_RIGHT), "Joypad2 Right");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_UP), "{Joypad2 Up,Superscope ToggleTurbo,Justifier1 AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_DOWN), "{Joypad2 Down,Superscope Pause}");
@@ -472,13 +472,13 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_B), "Joypad3 B");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_X), "Joypad3 X");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_Y), "Joypad3 Y");
-	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_SELECT), "Joypad3 Select");
-	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_START), "Joypad3 Start");
+	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_SELECT), "{Joypad3 Select,Justifier2 Trigger}");
+	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_START), "{Joypad3 Start,Justifier2 Start}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_L), "Joypad3 L");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_R), "Joypad3 R");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_LEFT), "Joypad3 Left");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_RIGHT), "Joypad3 Right");
-	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_UP), "Joypad3 Up");
+	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_UP), "{Joypad3 Up,Justifier2 AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_DOWN), "Joypad3 Down");
 
 	MAP_BUTTON(MAKE_BUTTON(PAD_4, BTN_A), "Joypad4 A");
