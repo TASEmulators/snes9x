@@ -1,197 +1,17 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
 #include "CD3DCG.h"
 #include "wsnes9x.h"
 #include "win32_display.h"
-#include <Dxerr.h>
+#include "snes9x.h"
+#include "dxerr.h"
 #include <png.h>
 #include "CDirect3D.h"
+#include "image_functions.h"
 
 #ifndef max
 #define max(a, b) (((a) > (b)) ? (a) : (b))
@@ -332,7 +152,7 @@ bool CD3DCG::LoadShader(const TCHAR *shaderFile)
 		   and no filter has been set use the GUI setting
 		*/
 		if(pass.scaleParams.scaleTypeX==CG_SCALE_NONE && !it->filterSet) {
-			pass.linearFilter = GUI.BilinearFilter;
+			pass.linearFilter = Settings.BilinearFilter;
 		} else {
 			pass.linearFilter = it->linearFilter;
 		}
@@ -402,22 +222,7 @@ bool CD3DCG::LoadShader(const TCHAR *shaderFile)
 
 		_tfullpath(tempPath,_tFromChar(it->texturePath),MAX_PATH);
 
-		hr = D3DXCreateTextureFromFileEx(
-               pDevice,
-               tempPath,
-               D3DX_DEFAULT_NONPOW2,
-               D3DX_DEFAULT_NONPOW2,
-               0,
-               0,
-               D3DFMT_FROM_FILE,
-               D3DPOOL_MANAGED,
-			   it->linearfilter?D3DX_FILTER_LINEAR:D3DX_FILTER_POINT,
-               0,
-               0,
-               NULL,
-               NULL,
-               &tex.tex);
-		if FAILED(hr){
+		if(!d3d_create_texture_from_file(pDevice, tempPath, &tex.tex)){
 			tex.tex = NULL;
 		}
 		lookupTextures.push_back(tex);
@@ -428,17 +233,17 @@ bool CD3DCG::LoadShader(const TCHAR *shaderFile)
 	return true;
 }
 
-void CD3DCG::ensureTextureSize(LPDIRECT3DTEXTURE9 &tex, D3DXVECTOR2 &texSize,
-							   D3DXVECTOR2 wantedSize,bool renderTarget,bool useFloat)
+void CD3DCG::ensureTextureSize(LPDIRECT3DTEXTURE9 &tex, float2 &texSize,
+                               float2 wantedSize,bool renderTarget,bool useFloat)
 {
 	HRESULT hr;
 
-	if(!tex || texSize != wantedSize) {
+	if(!tex || texSize.x != wantedSize.x || texSize.y != wantedSize.y) {
 		if(tex)
 			tex->Release();
 
 		hr = pDevice->CreateTexture(
-			wantedSize.x, wantedSize.y,
+			(UINT)wantedSize.x, (UINT)wantedSize.y,
 			1, // 1 level, no mipmaps
 			renderTarget?D3DUSAGE_RENDERTARGET:0,
             renderTarget?(useFloat?D3DFMT_A32B32G32R32F:D3DFMT_A8R8G8B8):D3DFMT_R5G6B5,
@@ -456,7 +261,7 @@ void CD3DCG::ensureTextureSize(LPDIRECT3DTEXTURE9 &tex, D3DXVECTOR2 &texSize,
 }
 
 void CD3DCG::setVertexStream(IDirect3DVertexBuffer9 *vertexBuffer,
-							 D3DXVECTOR2 inputSize,D3DXVECTOR2 textureSize,D3DXVECTOR2 outputSize)
+                             float2 inputSize, float2 textureSize, float2 outputSize)
 {
 	float tX = inputSize.x / textureSize.x;
 	float tY = inputSize.y / textureSize.y;
@@ -497,8 +302,8 @@ void CD3DCG::setVertexStream(IDirect3DVertexBuffer9 *vertexBuffer,
 	pDevice->SetStreamSource(3,vertexBuffer,0,sizeof(VERTEX));
 }
 
-void CD3DCG::Render(LPDIRECT3DTEXTURE9 &origTex, D3DXVECTOR2 textureSize,
-					D3DXVECTOR2 inputSize, D3DXVECTOR2 viewportSize, D3DXVECTOR2 windowSize)
+void CD3DCG::Render(LPDIRECT3DTEXTURE9 &origTex, float2 textureSize,
+                    float2 inputSize, float2 viewportSize, float2 windowSize)
 {
 	LPDIRECT3DSURFACE9 pRenderSurface = NULL,pBackBuffer = NULL;
 	frameCnt++;
@@ -550,7 +355,7 @@ void CD3DCG::Render(LPDIRECT3DTEXTURE9 &origTex, D3DXVECTOR2 textureSize,
 		/* make sure the render target exists and has an appropriate size,
 		   then set as current render target with last pass as source
 		*/
-		ensureTextureSize(shaderPasses[i].tex,shaderPasses[i].textureSize,D3DXVECTOR2(texSize,texSize),true,shaderPasses[i].useFloatTex);
+		ensureTextureSize(shaderPasses[i].tex, shaderPasses[i].textureSize, float2{ texSize,texSize }, true, shaderPasses[i].useFloatTex);
 		shaderPasses[i].tex->GetSurfaceLevel(0,&pRenderSurface);
 		pDevice->SetTexture(0, shaderPasses[i-1].tex);
 		pDevice->SetRenderTarget(0,pRenderSurface);
@@ -579,7 +384,7 @@ void CD3DCG::Render(LPDIRECT3DTEXTURE9 &origTex, D3DXVECTOR2 textureSize,
 		
 		/* viewport defines output size
 		*/
-		setViewport(0,0,shaderPasses[i].outputSize.x,shaderPasses[i].outputSize.y);
+		setViewport(0,0,(DWORD)shaderPasses[i].outputSize.x, (DWORD)shaderPasses[i].outputSize.y);
 
         pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
@@ -616,27 +421,54 @@ void CD3DCG::Render(LPDIRECT3DTEXTURE9 &origTex, D3DXVECTOR2 textureSize,
 	pDevice->SetTexture(0, shaderPasses.back().tex);
 	pDevice->SetRenderTarget(0,pBackBuffer);
 	pBackBuffer->Release();
-	RECT displayRect=CalculateDisplayRect(shaderPasses.back().outputSize.x,shaderPasses.back().outputSize.y,windowSize.x,windowSize.y);
+	RECT displayRect=CalculateDisplayRect((unsigned int)shaderPasses.back().outputSize.x, (unsigned int)shaderPasses.back().outputSize.y, (unsigned int)windowSize.x, (unsigned int)windowSize.y);
 	setViewport(displayRect.left,displayRect.top,displayRect.right - displayRect.left,displayRect.bottom - displayRect.top);
 	setVertexStream(shaderPasses.back().vertexBuffer,
 		shaderPasses.back().outputSize,shaderPasses.back().textureSize,
-		D3DXVECTOR2(displayRect.right - displayRect.left,displayRect.bottom - displayRect.top));
+		float2{ (float)(displayRect.right - displayRect.left),(float)(displayRect.bottom - displayRect.top) });
 	pDevice->SetVertexShader(NULL);
 	pDevice->SetPixelShader(NULL);
 }
 
+static D3DMATRIX matrix_mul(D3DMATRIX mat1, D3DMATRIX mat2)
+{
+	D3DMATRIX out;
+	for (auto y = 0; y < 4; y++)
+	{
+		for (auto x = 0; x < 4; x++)
+		{
+			out.m[y][x] =
+				mat1.m[y][0] * mat2.m[0][x] +
+				mat1.m[y][1] * mat2.m[1][x] +
+				mat1.m[y][2] * mat2.m[2][x] +
+				mat1.m[y][3] * mat2.m[3][x];
+		}
+	}
+
+	return out;
+}
+
+static D3DMATRIX matrix_transpose(D3DMATRIX mat)
+{
+	D3DMATRIX out;
+	for (auto y = 0; y < 4; y++)
+		for (auto x = 0; x < 4; x++)
+			out.m[y][x] = mat.m[x][y];
+
+	return out;
+}
+
 void CD3DCG::calculateMatrix()
 {
-	D3DXMATRIX matWorld;
-	D3DXMATRIX matView;
-	D3DXMATRIX matProj;
+	D3DMATRIX matWorld;
+	D3DMATRIX matView;
+	D3DMATRIX matProj;
 
-	pDevice->GetTransform(D3DTS_WORLD,&matWorld);
-	pDevice->GetTransform(D3DTS_VIEW,&matView);
-	pDevice->GetTransform(D3DTS_PROJECTION,&matProj);
+	pDevice->GetTransform(D3DTS_WORLD, (D3DMATRIX*)&matWorld);
+	pDevice->GetTransform(D3DTS_VIEW, (D3DMATRIX*)&matView);
+	pDevice->GetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&matProj);
 
-	mvp = matWorld * matView * matProj;
-	D3DXMatrixTranspose(&mvp,&mvp);
+	mvp = matrix_transpose(matrix_mul(matProj, matrix_mul(matWorld, matView)));
 }
 
 void CD3DCG::setViewport(DWORD x, DWORD y, DWORD width, DWORD height)
@@ -653,16 +485,16 @@ void CD3DCG::setViewport(DWORD x, DWORD y, DWORD width, DWORD height)
 
 void CD3DCG::setShaderVars(int pass)
 {
-	D3DXVECTOR2 inputSize = shaderPasses[pass-1].outputSize;
-	D3DXVECTOR2 textureSize = shaderPasses[pass-1].textureSize;
-	D3DXVECTOR2 outputSize = shaderPasses[pass].outputSize;
+	float2 inputSize = shaderPasses[pass-1].outputSize;
+	float2 textureSize = shaderPasses[pass-1].textureSize;
+	float2 outputSize = shaderPasses[pass].outputSize;
 
 	/* mvp paramater
 	*/
 	CGparameter cgpModelViewProj = cgGetNamedParameter(shaderPasses[pass].cgVertexProgram, "modelViewProj");
 
 	if(cgpModelViewProj)
-		cgD3D9SetUniformMatrix(cgpModelViewProj,&mvp);
+		cgD3D9SetUniformMatrix(cgpModelViewProj,(D3DMATRIX*)&mvp);
 
 #define setProgramUniform(pass,varname,floats)\
 {\
@@ -708,25 +540,25 @@ void CD3DCG::setShaderVars(int pass)
 	setProgramUniform(pass,"IN.video_size",&inputSize);
 	setProgramUniform(pass,"IN.texture_size",&textureSize);
 	setProgramUniform(pass,"IN.output_size",&outputSize);
-    float shaderFrameCnt = frameCnt;
+    float shaderFrameCnt = (float)frameCnt;
     if(shaderPasses[pass].frameCounterMod)
         shaderFrameCnt = (float)(frameCnt % shaderPasses[pass].frameCounterMod);
 	setProgramUniform(pass,"IN.frame_count",&shaderFrameCnt);
-    float frameDirection = GUI.rewinding?-1.0f:1.0f;
+    float frameDirection = Settings.Rewinding?-1.0f:1.0f;
     setProgramUniform(pass,"IN.frame_direction",&frameDirection);
 
 	/* ORIG parameter
 	*/
-	setProgramUniform(pass,"ORIG.video_size",shaderPasses[0].outputSize);
-	setProgramUniform(pass,"ORIG.texture_size",shaderPasses[0].textureSize);
+	setProgramUniform(pass,"ORIG.video_size",&shaderPasses[0].outputSize);
+	setProgramUniform(pass,"ORIG.texture_size",&shaderPasses[0].textureSize);
 	setTextureParameter(pass,"ORIG.texture",shaderPasses[0].tex,shaderPasses[1].linearFilter);
 	setTexCoordsParameter(pass,"ORIG.tex_coord",shaderPasses[1].vertexBuffer);
 
 	/* PREV parameter
 	*/
 	if(prevPasses[0].tex) {
-		setProgramUniform(pass,"PREV.video_size",prevPasses[0].imageSize);
-		setProgramUniform(pass,"PREV.texture_size",prevPasses[0].textureSize);
+		setProgramUniform(pass,"PREV.video_size",&prevPasses[0].imageSize);
+		setProgramUniform(pass,"PREV.texture_size",&prevPasses[0].textureSize);
 		setTextureParameter(pass,"PREV.texture",prevPasses[0].tex,shaderPasses[1].linearFilter);
 		setTexCoordsParameter(pass,"PREV.tex_coord",prevPasses[0].vertexBuffer);
 	}
@@ -738,9 +570,9 @@ void CD3DCG::setShaderVars(int pass)
 			break;
 		char varname[100];
 		sprintf(varname,"PREV%d.video_size",i);
-		setProgramUniform(pass,varname,prevPasses[i].imageSize);
+		setProgramUniform(pass,varname,&prevPasses[i].imageSize);
 		sprintf(varname,"PREV%d.texture_size",i);
-		setProgramUniform(pass,varname,prevPasses[i].textureSize);
+		setProgramUniform(pass,varname,&prevPasses[i].textureSize);
 		sprintf(varname,"PREV%d.texture",i);
 		setTextureParameter(pass,varname,prevPasses[i].tex,shaderPasses[1].linearFilter);
 		sprintf(varname,"PREV%d.tex_coord",i);
@@ -759,9 +591,9 @@ void CD3DCG::setShaderVars(int pass)
 		for(int i=1;i<pass-1;i++) {
 			char varname[100];
 			sprintf(varname,"PASS%d.video_size",i);
-			setProgramUniform(pass,varname,shaderPasses[i].outputSize);
+			setProgramUniform(pass,varname,&shaderPasses[i].outputSize);
 			sprintf(varname,"PASS%d.texture_size",i);
-			setProgramUniform(pass,varname,shaderPasses[i].textureSize);
+			setProgramUniform(pass,varname,&shaderPasses[i].textureSize);
 			sprintf(varname,"PASS%d.texture",i);
 			setTextureParameter(pass,varname,shaderPasses[i].tex,shaderPasses[i+1].linearFilter);
 			sprintf(varname,"PASS%d.tex_coord",i);
@@ -846,7 +678,7 @@ void CD3DCG::setupVertexDeclaration(shaderPass &pass)
 			}
 		} else {
 			int resIndex = atoi(sem + strlen(sem) - 1);
-			D3DVERTEXELEMENT9 elem = {streamNum, 12, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, resIndex};
+			D3DVERTEXELEMENT9 elem = {(WORD)streamNum, 12, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, (BYTE)resIndex};
 			vElems[i] = elem;
 			pass.parameterMap[i].streamNumber = streamNum;
 			streamNum++;

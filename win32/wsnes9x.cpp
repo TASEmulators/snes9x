@@ -1,192 +1,8 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 #pragma comment(linker, \
     "\"/manifestdependency:type='Win32' "\
@@ -205,7 +21,9 @@
 #define _WIN32_WINNT 0x0501
 #endif
 
+#pragma warning(disable: 4091)
 #include <shlobj.h>
+#pragma warning(default: 4091)
 #include <objidl.h>
 #include <shlwapi.h>
 #include <Shobjidl.h>
@@ -215,6 +33,9 @@
 #include "win32_sound.h"
 #include "win32_display.h"
 #include "CCGShader.h"
+#include "../shaders/glsl.h"
+#include "CShaderParamDlg.h"
+#include "CSaveLoadWithPreviewDlg.h"
 #include "../snes9x.h"
 #include "../memmap.h"
 #include "../cpuexec.h"
@@ -229,6 +50,11 @@
 #include "AVIOutput.h"
 #include "InputCustom.h"
 #include <vector>
+#include <string>
+
+#ifdef DEBUGGER
+#include "../debug.h"
+#endif
 
 #if (((defined(_MSC_VER) && _MSC_VER >= 1300)) || defined(__MINGW32__))
 	// both MINGW and VS.NET use fstream instead of fstream.h which is deprecated
@@ -243,13 +69,6 @@
 //#include "string_cache.h"
 #include "wlanguage.h"
 #include "../language.h"
-
-//uncomment to find memory leaks, with a line in WinMain
-//#define CHECK_MEMORY_LEAKS
-
-#ifdef CHECK_MEMORY_LEAKS
-	#include <crtdbg.h>
-#endif
 
 #include <commctrl.h>
 #include <io.h>
@@ -267,20 +86,16 @@ extern SNPServer NPServer;
 #define R_OK 4
 #endif
 
-__int64 PCBase, PCFrameTime, PCFrameTimeNTSC, PCFrameTimePAL, PCStart, PCEnd;
-DWORD PCStartTicks, PCEndTicks;
-
-INT_PTR CALLBACK  DlgSP7PackConfig(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgSoundConf(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgInfoProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgAboutProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgEmulatorProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK DlgEmulatorHacksProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 
 INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgMultiROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK DlgChildSplitProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgNPProgress(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK DlgPackConfigProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgNetConnect(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgNPOptions(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -292,10 +107,13 @@ INT_PTR CALLBACK DlgCheatSearchAdd(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lP
 INT_PTR CALLBACK DlgCreateMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK DlgOpenMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 HRESULT CALLBACK EnumModesCallback( LPDDSURFACEDESC lpDDSurfaceDesc, LPVOID lpContext);
+int WinSearchCheatDatabase();
 
 VOID CALLBACK HotkeyTimer( UINT idEvent, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
 
 void S9xDetectJoypads();
+
+void S9xWinScanJoypads();
 
 #define NOTKNOWN "Unknown Company "
 #define HEADER_SIZE 512
@@ -303,7 +121,11 @@ void S9xDetectJoypads();
 
 #define WM_CUSTKEYDOWN	(WM_USER+50)
 #define WM_CUSTKEYUP	(WM_USER+51)
-#define WM_SCANJOYPADS  (WM_APP+10)
+
+#define TIMER_SCANJOYPADS  (99999)
+#define NC_SEARCHDB 0x8000
+
+#define MAX_SWITCHABLE_HOTKEY_DIALOG_ITEMS 14
 
 #ifdef UNICODE
 #define S9XW_SHARD_PATH SHARD_PATHW
@@ -326,11 +148,15 @@ HANDLE SoundEvent;
 ExtList* valid_ext=NULL;
 void MakeExtFile(void);
 void LoadExts(void);
+void ClearExts(void);
 static bool ExtensionIsValid(const TCHAR *filename);
 
 extern FILE *trace_fs;
 extern SCheatData Cheat;
 extern bool8 do_frame_adjust;
+
+TCHAR multiRomA[MAX_PATH] = { 0 }; // lazy, should put in sGUI and add init to {0} somewhere
+TCHAR multiRomB[MAX_PATH] = { 0 };
 
 HINSTANCE g_hInst;
 
@@ -543,16 +369,18 @@ struct SCustomKeys CustomKeys = {
 	{0,0}, // slot minus (disabled by default)
 	{0,0}, // slot save (disabled by default)
 	{0,0}, // slot load (disabled by default)
-	{'1',0}, // background layer 1
-	{'2',0}, // background layer 2
-	{'3',0}, // background layer 3
-	{'4',0}, // background layer 4
-	{'5',0}, // sprite layer
-	{'8',0}, // Clipping Windows
-//	{'8',0}, // BG Layering hack
-	{'9',0}, // Transparency
-//	{'6',CUSTKEY_SHIFT_MASK}, // GLCube Mode
-//	{'9',CUSTKEY_SHIFT_MASK}, // Interpolate Mode 7
+	{0,0}, // bank plus (disabled by default)
+	{0,0}, // bank minus (disabled by default)
+    {VK_F11,CUSTKEY_SHIFT_MASK}, // dialog save
+    {VK_F11,0}, // dialog load
+	{0,0}, // background layer 1
+	{0,0}, // background layer 2
+	{0,0}, // background layer 3
+	{0,0}, // background layer 4
+	{0,0}, // sprite layer
+	{0,0}, // Toggle backdrop
+	{0,0}, // Clipping Windows
+	{0,0}, // Transparency
 	{'6',0}, // Joypad Swap
 	{'7',0}, // Switch Controllers
 	{VK_NEXT,CUSTKEY_SHIFT_MASK}, // Turbo A
@@ -577,7 +405,7 @@ struct SCustomKeys CustomKeys = {
 	 {0,0}, // Select save slot 7
 	 {0,0}, // Select save slot 8
 	 {0,0}}, // Select save slot 9
-	{'R',CUSTKEY_CTRL_MASK|CUSTKEY_SHIFT_MASK}, // Reset Game
+	{'R',CUSTKEY_CTRL_MASK|CUSTKEY_ALT_MASK}, // Reset Game
 	{0,0}, // Toggle Cheats
 	{0,0},
     {'R',0}, // Rewind
@@ -604,15 +432,14 @@ static uint32 FrameTimings[] = {
 	4000, 4000, 8333, 11667, 16667, 20000, 33333, 66667, 133333, 300000, 500000, 1000000, 1000000
 };
 
-// Languages supported by Snes9X: Windows
+// Languages supported by Snes9x: Windows
 // 0 - English [Default]
 struct sLanguages Languages[] = {
 	{ IDR_MENU_US,
 		TEXT("Failed to initialize currently selected display output!\n Try switching to a different output method in the display settings."),
 		TEXT("DirectDraw failed to set the selected display mode!"),
 		TEXT("DirectSound failed to initialize; no sound will be played."),
-		TEXT("These settings won't take effect until you restart the emulator."),
-		TEXT("The frame timer failed to initialize, please do NOT select the automatic framerate option or Snes9X will crash!")}
+		TEXT("These settings won't take effect until you restart the emulator.")}
 };
 
 struct OpenMovieParams
@@ -626,7 +453,8 @@ struct OpenMovieParams
 	wchar_t Metadata[MOVIE_MAX_METADATA];
 };
 
-
+TCHAR g_bankMenuItemStrings[NUM_SAVE_BANKS][20];
+TCHAR g_saveMenuItemStrings[NUM_SAVE_BANKS * SAVE_SLOTS_PER_BANK][20];
 
 StateManager stateMan;
 
@@ -638,12 +466,11 @@ void DoAVIOpen(const TCHAR* filename);
 void DoAVIClose(int reason);
 void RestoreGUIDisplay ();
 void RestoreSNESDisplay ();
-void FreezeUnfreeze (int slot, bool8 freeze);
 void CheckDirectoryIsWritable (const char *filename);
 static void CheckMenuStates ();
 static void ResetFrameTimer ();
-static bool LoadROM (const TCHAR *filename);
-static bool LoadMultiROM (const TCHAR *filename, const TCHAR *filename2);
+static bool LoadROM (const TCHAR *filename, const TCHAR *filename2 = NULL);
+static bool LoadROMMulti (const TCHAR *filename, const TCHAR *filename2);
 bool8 S9xLoadROMImage (const TCHAR *string);
 #ifdef NETPLAY_SUPPORT
 static void EnableServer (bool8 enable);
@@ -659,7 +486,6 @@ void WinCleanupConfigData ();
 
 #include "../ppu.h"
 #include "../snapshot.h"
-const char *S9xGetFilenameInc (const char *);
 void S9xSetRecentGames ();
 void S9xAddToRecentGames (const TCHAR *filename);
 void S9xRemoveFromRecentGames (int i);
@@ -711,6 +537,17 @@ BOOL PostMenuCommand (UINT uID)
 		return FALSE;
 }
 
+HMENU GetSubMenuById(UINT uID)
+{
+	MENUITEMINFO mii;
+
+	mii.cbSize = sizeof(mii);
+	mii.fMask = MIIM_SUBMENU;
+	if (!GetMenuItemInfo(GUI.hMenu, uID, FALSE, &mii))
+		return NULL;
+	return mii.hSubMenu;
+}
+
 void S9xMouseOn ()
 {
 	if(Settings.StopEmulation)
@@ -723,7 +560,7 @@ void S9xMouseOn ()
 		else
 	        SetCursor (NULL);
     }
-    else if (GUI.ControllerOption!=SNES_SUPERSCOPE && GUI.ControllerOption!=SNES_JUSTIFIER && GUI.ControllerOption!=SNES_JUSTIFIER_2)
+    else if (GUI.ControllerOption!=SNES_SUPERSCOPE && GUI.ControllerOption!=SNES_JUSTIFIER && GUI.ControllerOption!=SNES_JUSTIFIER_2 && GUI.ControllerOption!=SNES_MACSRIFLE)
     {
         SetCursor (GUI.Arrow);
         GUI.CursorTimer = 60;
@@ -746,9 +583,7 @@ void ControllerOptionsFromControllers()
 
    GUI.ControllerOption = SNES_JOYPAD;
 
-   if (controller[0] == CTL_JOYPAD && controller[1] == CTL_JOYPAD)
-      GUI.ControllerOption = SNES_JOYPAD;
-   else if (controller[0] == CTL_JOYPAD && controller[1] == CTL_MP5)
+   if (controller[0] == CTL_JOYPAD && controller[1] == CTL_MP5)
       GUI.ControllerOption = SNES_MULTIPLAYER5;
    else if (controller[0] == CTL_MP5 && controller[1] == CTL_MP5)
       GUI.ControllerOption = SNES_MULTIPLAYER8;
@@ -762,6 +597,11 @@ void ControllerOptionsFromControllers()
       GUI.ControllerOption = SNES_JUSTIFIER;
    else if (controller[0] == CTL_JOYPAD && controller[1] == CTL_JUSTIFIER && ids[0])
       GUI.ControllerOption = SNES_JUSTIFIER_2;
+   else if (controller[0] == CTL_JOYPAD && controller[1] == CTL_MACSRIFLE)
+      GUI.ControllerOption = SNES_MACSRIFLE;
+   else if (controller[0] == CTL_JOYPAD)
+      GUI.ControllerOption = SNES_JOYPAD;
+
 }
 
 void ChangeInputDevice(void)
@@ -770,6 +610,7 @@ void ChangeInputDevice(void)
 	Settings.JustifierMaster = false;
 	Settings.SuperScopeMaster = false;
 	Settings.MultiPlayer5Master = false;
+	Settings.MacsRifleMaster = false;
 
 	switch(GUI.ControllerOption)
 	{
@@ -808,10 +649,18 @@ void ChangeInputDevice(void)
 		S9xSetController(0, CTL_JOYPAD,     0, 0, 0, 0);
 		S9xSetController(1, CTL_JUSTIFIER,  1, 0, 0, 0);
 		break;
+	case SNES_MACSRIFLE:
+		Settings.MacsRifleMaster = true;
+		S9xSetController(0, CTL_JOYPAD,     0, 0, 0, 0);
+		S9xSetController(1, CTL_MACSRIFLE,  0, 0, 0, 0);
+		break;
 	default:
 	case SNES_JOYPAD:
 		S9xSetController(0, CTL_JOYPAD,     0, 0, 0, 0);
-		S9xSetController(1, CTL_JOYPAD,     1, 0, 0, 0);
+		if (Joypad[1].Enabled)
+			S9xSetController(1, CTL_JOYPAD,     1, 0, 0, 0);
+		else
+			S9xSetController(1, CTL_NONE,       0, 0, 0, 0);
 		break;
 	}
 
@@ -848,8 +697,16 @@ static void CenterCursor()
 
 void S9xRestoreWindowTitle ()
 {
-    TCHAR buf [100];
-    _stprintf (buf, WINDOW_TITLE, TEXT(VERSION));
+    TCHAR buf [1024];
+    if (Memory.ROMFilename[0])
+    {
+        char def[_MAX_FNAME];
+        _splitpath(Memory.ROMFilename.c_str(), NULL, NULL, def, NULL);
+        _stprintf(buf, TEXT("%s - %s %s"), (wchar_t *)Utf8ToWide(def), WINDOW_TITLE, TEXT(VERSION));
+    }
+    else
+        _stprintf(buf, TEXT("%s %s"), WINDOW_TITLE, TEXT(VERSION));
+
     SetWindowText (GUI.hWnd, buf);
 }
 
@@ -968,6 +825,12 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 
 	bool hitHotKey = false;
 
+    // if this is not a gamepad press and background hotkeys are disabled, skip it if we do not have focus
+    if (!GUI.BackgroundKeyHotkeys && !(wParam & 0x8000) && GUI.hWnd != GetForegroundWindow())
+    {
+        return 0;
+    }
+
 	if(!(wParam == 0 || wParam == VK_ESCAPE)) // if it's the 'disabled' key, it's never pressed as a hotkey
 	{
 		int modifiers = 0;
@@ -979,18 +842,18 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 			modifiers |= CUSTKEY_SHIFT_MASK;
 
 		{
-			for(int i = 0 ; i < 10 ; i++)
+			for(int i = 0 ; i < SAVE_SLOTS_PER_BANK; i++)
 			{
 				if(wParam == CustomKeys.Save[i].key
 				&& modifiers == CustomKeys.Save[i].modifiers)
 				{
-					FreezeUnfreeze (i, true);
+					FreezeUnfreezeSlot (GUI.CurrentSaveBank * SAVE_SLOTS_PER_BANK + i, true);
 					hitHotKey = true;
 				}
 				if(wParam == CustomKeys.Load[i].key
 				&& modifiers == CustomKeys.Load[i].modifiers)
 				{
-					FreezeUnfreeze (i, false);
+					FreezeUnfreezeSlot (GUI.CurrentSaveBank * SAVE_SLOTS_PER_BANK + i, false);
 					hitHotKey = true;
 				}
 			}
@@ -998,20 +861,32 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 			if(wParam == CustomKeys.SlotSave.key
 			&& modifiers == CustomKeys.SlotSave.modifiers)
 			{
-				FreezeUnfreeze (GUI.CurrentSaveSlot, true);
+				FreezeUnfreezeSlot (GUI.CurrentSaveSlot, true);
 				hitHotKey = true;
 			}
 			if(wParam == CustomKeys.SlotLoad.key
 			&& modifiers == CustomKeys.SlotLoad.modifiers)
 			{
-				FreezeUnfreeze (GUI.CurrentSaveSlot, false);
+				FreezeUnfreezeSlot (GUI.CurrentSaveSlot, false);
 				hitHotKey = true;
 			}
+            if(wParam == CustomKeys.DialogSave.key
+                && modifiers == CustomKeys.DialogSave.modifiers)
+            {
+                FreezeUnfreezeDialogPreview(true);
+                hitHotKey = true;
+            }
+            if(wParam == CustomKeys.DialogLoad.key
+                && modifiers == CustomKeys.DialogLoad.modifiers)
+            {
+                FreezeUnfreezeDialogPreview(false);
+                hitHotKey = true;
+            }
 			if(wParam == CustomKeys.SlotPlus.key
 			&& modifiers == CustomKeys.SlotPlus.modifiers)
 			{
 				GUI.CurrentSaveSlot++;
-				if(GUI.CurrentSaveSlot > 9)
+				if(GUI.CurrentSaveSlot > LAST_SAVE_SLOT_IN_BANK)
 					GUI.CurrentSaveSlot = 0;
 
 				static char str [64];
@@ -1033,6 +908,32 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 
 				hitHotKey = true;
 			}
+			if (wParam == CustomKeys.BankPlus.key
+				&& modifiers == CustomKeys.BankPlus.modifiers)
+			{
+				GUI.CurrentSaveBank++;
+				if (GUI.CurrentSaveBank > LAST_SAVE_BANK)
+					GUI.CurrentSaveBank = 0;
+
+				static char str[64];
+				sprintf(str, FREEZE_INFO_SET_BANK_N, GUI.CurrentSaveBank);
+				S9xSetInfoString(str);
+
+				hitHotKey = true;
+			}
+			if (wParam == CustomKeys.BankMinus.key
+				&& modifiers == CustomKeys.BankMinus.modifiers)
+			{
+				GUI.CurrentSaveBank--;
+				if (GUI.CurrentSaveBank < 0)
+					GUI.CurrentSaveBank = 9;
+
+				static char str[64];
+				sprintf(str, FREEZE_INFO_SET_BANK_N, GUI.CurrentSaveBank);
+				S9xSetInfoString(str);
+
+				hitHotKey = true;
+			}
 		}
 
 
@@ -1040,7 +941,7 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 		&& modifiers == CustomKeys.FrameAdvance.modifiers)
 		{
 			static DWORD lastTime = 0;
-			if((int)(timeGetTime() - lastTime) > 20)
+			if((timeGetTime() - lastTime) > 20)
 			{
 				lastTime = timeGetTime();
 				if(Settings.Paused || GUI.FASkipsNonInput)
@@ -1102,9 +1003,6 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 		if(wParam == CustomKeys.FastForward.key
 		&& modifiers == CustomKeys.FastForward.modifiers)
 		{
-			if(Settings.SPC7110RTC)
-				return 1;
-
 			if(!Settings.TurboMode)
 				S9xMessage (S9X_INFO, S9X_TURBO_MODE, WINPROC_TURBOMODE_TEXT);
 			Settings.TurboMode = TRUE;
@@ -1113,9 +1011,6 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 		if(wParam == CustomKeys.FastForwardToggle.key
 		&& modifiers == CustomKeys.FastForwardToggle.modifiers)
 		{
-			if(Settings.SPC7110RTC)
-				return 1;
-
 			Settings.TurboMode ^= TRUE;
 			if (Settings.TurboMode)
 				S9xMessage (S9X_INFO, S9X_TURBO_MODE,
@@ -1297,10 +1192,38 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
         if(wParam == CustomKeys.Rewind.key
 		&& modifiers == CustomKeys.Rewind.modifiers)
 		{
-            if(!GUI.rewinding)
+            if(!Settings.Rewinding)
                 S9xMessage (S9X_INFO, 0, GUI.rewindBufferSize?WINPROC_REWINDING_TEXT:WINPROC_REWINDING_DISABLED);
-            GUI.rewinding = true;
+            Settings.Rewinding = true;
+			hitHotKey = true;
         }
+
+		if (wParam == CustomKeys.SaveFileSelect.key
+			&& modifiers == CustomKeys.SaveFileSelect.modifiers)
+		{
+			FreezeUnfreezeDialog(TRUE);
+			hitHotKey = true;
+		}
+		if (wParam == CustomKeys.LoadFileSelect.key
+			&& modifiers == CustomKeys.LoadFileSelect.modifiers)
+		{
+			FreezeUnfreezeDialog(FALSE);
+			hitHotKey = true;
+		}
+
+		if (wParam == CustomKeys.Mute.key
+			&& modifiers == CustomKeys.Mute.modifiers)
+		{
+			GUI.Mute = !GUI.Mute;
+			hitHotKey = true;
+		}
+
+		if (wParam == CustomKeys.ToggleBackdrop.key && modifiers == CustomKeys.ToggleBackdrop.modifiers)
+		{
+			auto cmd = S9xGetCommandT("ToggleBackdrop");
+			S9xApplyCommand(cmd, 1, 0);
+		}
+
 		//if(wParam == CustomKeys.BGLHack.key
 		//&& modifiers == CustomKeys.BGLHack.modifiers)
 		//{
@@ -1341,11 +1264,11 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 		if(wParam == CustomKeys.TurboDown.key && modifiers == CustomKeys.TurboDown.modifiers)
 			PostMessage(GUI.hWnd, WM_COMMAND, (WPARAM)(ID_TURBO_DOWN),(LPARAM)(NULL));
 
-		for(int i = 0 ; i < 10 ; i++)
+		for(int i = 0 ; i < SAVE_SLOTS_PER_BANK; i++)
 		{
 			if(wParam == CustomKeys.SelectSave[i].key && modifiers == CustomKeys.SelectSave[i].modifiers)
 			{
-				GUI.CurrentSaveSlot = i;
+				GUI.CurrentSaveSlot = GUI.CurrentSaveBank * SAVE_SLOTS_PER_BANK + i;
 
 				static char str [64];
 				sprintf(str, FREEZE_INFO_SET_SLOT_N, GUI.CurrentSaveSlot);
@@ -1387,7 +1310,7 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam)
 	{
 		case VK_ESCAPE:
 			if(
-                GUI.outputMethod!=DIRECTDRAW && 
+                GUI.outputMethod!=DIRECTDRAW &&
                 GUI.FullScreen && !GUI.EmulateFullscreen)
 				ToggleFullScreen();
 			else
@@ -1520,10 +1443,11 @@ bool WinMoviePlay(LPCTSTR filename)
 		return false;
 	}
 
-	while (info.ROMCRC32 != Memory.ROMCRC32 || strcmp(info.ROMName, Memory.RawROMName) != 0) {
+	while (info.ROMCRC32 != Memory.ROMCRC32) {
 		TCHAR temp[512];
-		wsprintf(temp, TEXT("Movie's ROM: crc32=%08X, name=%s\nCurrent ROM: crc32=%08X, name=%s\n\nstill want to play the movie?"),
-			info.ROMCRC32, _tFromMS932(info.ROMName), Memory.ROMCRC32, _tFromMS932(Memory.RawROMName));
+		CPToWide wromname(info.ROMName, 932);
+		wsprintf(temp, TEXT("Movie's ROM: crc32=%08X, name=%s\nCurrent ROM: crc32=%08X\n\nstill want to play the movie?"),
+			info.ROMCRC32, (wchar_t *)wromname, Memory.ROMCRC32);
 		int sel = MessageBox(GUI.hWnd, temp, SNES9X_INFO, MB_ABORTRETRYIGNORE|MB_ICONQUESTION);
 		switch (sel) {
 		case IDABORT:
@@ -1560,10 +1484,6 @@ bool WinMoviePlay(LPCTSTR filename)
 	}
 	return true;
 }
-
-TCHAR multiRomA [MAX_PATH] = {0}; // lazy, should put in sGUI and add init to {0} somewhere
-TCHAR multiRomB [MAX_PATH] = {0};
-
 
 static bool startingMovie = false;
 
@@ -1624,7 +1544,7 @@ LRESULT CALLBACK WinProc(
             if(wParam == CustomKeys.Rewind.key
 		    && modifiers == CustomKeys.Rewind.modifiers)
 		    {
-                GUI.rewinding = false;
+                Settings.Rewinding = false;
             }
 
 		}
@@ -1656,7 +1576,19 @@ LRESULT CALLBACK WinProc(
 		return 0;
 
 	case WM_COMMAND:
-		switch (wParam & 0xffff)
+	{
+		int cmd_id = wParam & 0xffff;
+		if (cmd_id >= ID_FILE_SAVE0 && cmd_id < ID_FILE_SAVE0 + NUM_SAVE_BANKS * SAVE_SLOTS_PER_BANK)
+		{
+			FreezeUnfreezeSlot(cmd_id - ID_FILE_SAVE0, TRUE);
+			break;
+		}
+		else if (cmd_id >= ID_FILE_LOAD0 && cmd_id < ID_FILE_LOAD0 + NUM_SAVE_BANKS * SAVE_SLOTS_PER_BANK)
+		{
+			FreezeUnfreezeSlot(cmd_id - ID_FILE_LOAD0, FALSE);
+			break;
+		}
+		switch (cmd_id)
 		{
 		case ID_FILE_AVI_RECORDING:
 			if (!GUI.AVIOut)
@@ -1801,6 +1733,11 @@ LRESULT CALLBACK WinProc(
 			GUI.ControllerOption = SNES_JUSTIFIER_2;
 			ChangeInputDevice();
 			break;
+		case IDM_MACSRIFLE_TOGGLE:
+			MOVIE_LOCKED_SETTING
+			GUI.ControllerOption = SNES_MACSRIFLE;
+			ChangeInputDevice();
+			break;
 
 			//start turbo
 		case ID_TURBO_R:
@@ -1879,11 +1816,11 @@ LRESULT CALLBACK WinProc(
 		case ID_OPTIONS_DISPLAY:
 			{
 				RestoreGUIDisplay ();
-				
+
 				if(GUI.FullScreen)
 					ToggleFullScreen();
 				DialogBox(g_hInst, MAKEINTRESOURCE(IDD_NEWDISPLAY), hWnd, DlgFunky);
-				
+
 				SwitchToGDI();
 
 				RestoreSNESDisplay ();
@@ -1906,6 +1843,7 @@ LRESULT CALLBACK WinProc(
             RestoreGUIDisplay ();
 			DialogBox(g_hInst, MAKEINTRESOURCE(IDD_INPUTCONFIG), hWnd, DlgInputConfig);
             RestoreSNESDisplay ();
+            ChangeInputDevice ();
             break;
 
 		case ID_OPTIONS_KEYCUSTOM:
@@ -1920,54 +1858,23 @@ LRESULT CALLBACK WinProc(
 				GUI.hHotkeyTimer = timeSetEvent (32, 0, (LPTIMECALLBACK)HotkeyTimer, 0, TIME_PERIODIC);
 			break;
 
+        case ID_INPUT_BACKGROUNDKEYBOARDHOTKEYS:
+            GUI.BackgroundKeyHotkeys = !GUI.BackgroundKeyHotkeys;
+            break;
+
+        case ID_INPUT_DETECTGAMEPADCHANGES:
+            S9xDetectJoypads();
+            break;
+
 		case ID_FILE_LOADMULTICART:
 			{
-#ifdef NETPLAY_SUPPORT
-				if (Settings.NetPlay && !Settings.NetPlayServer)
-				{
-					S9xMessage (S9X_INFO, S9X_NETPLAY_NOT_SERVER, WINPROC_DISCONNECT);
-					break;
-				}
-#endif
 				RestoreGUIDisplay ();
 
 				const bool ok = (1 <= DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_MULTICART), GUI.hWnd, DlgMultiROMProc, (LPARAM)NULL));
 
 				if(ok)
 				{
-					if (!Settings.StopEmulation)
-					{
-						Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR));
-						S9xSaveCheatFile (S9xGetFilename (".cht", CHEAT_DIR));
-					}
-					
-					Settings.StopEmulation = !LoadMultiROM (multiRomA, multiRomB);
-					if (!Settings.StopEmulation)
-					{
-						bool8 loadedSRAM = Memory.LoadSRAM (S9xGetFilename (".srm", SRAM_DIR));
-						if(!loadedSRAM) // help migration from earlier Snes9x versions by checking ROM directory for savestates
-							Memory.LoadSRAM (S9xGetFilename (".srm", ROMFILENAME_DIR));
-						S9xLoadCheatFile (S9xGetFilename (".cht", CHEAT_DIR));
-//						S9xAddToRecentGames (multiRomA, multiRomB);
-						CheckDirectoryIsWritable (S9xGetFilename (".---", SNAPSHOT_DIR));
-						CheckMenuStates ();
-#ifdef NETPLAY_SUPPORT
-						// still valid with multicart ???
-						if (NPServer.SendROMImageOnConnect)
-							S9xNPServerQueueSendingROMImage ();
-						else
-							S9xNPServerQueueSendingLoadROMRequest (Memory.ROMName);
-#endif
-					}
-
-					if(GUI.ControllerOption == SNES_SUPERSCOPE)
-						SetCursor (GUI.GunSight);
-					else
-					{
-						SetCursor (GUI.Arrow);
-						GUI.CursorTimer = 60;
-					}
-					Settings.Paused = false;
+					LoadROM(multiRomA, multiRomB);
 				}
 
 				RestoreSNESDisplay ();
@@ -1990,7 +1897,7 @@ LRESULT CALLBACK WinProc(
 
 		case ID_FILE_EXIT:
             S9xSetPause (PAUSE_EXIT);
-            PostMessage (hWnd, WM_DESTROY, 0, 0);
+            PostMessage (hWnd, WM_CLOSE, 0, 0);
             break;
 
 		case ID_WINDOW_HIDEMENUBAR:
@@ -2107,56 +2014,56 @@ LRESULT CALLBACK WinProc(
 				}
 				break;
 
-		case ID_SOUND_16MS: 
+		case ID_SOUND_16MS:
 			GUI.SoundBufferSize = 16;
 			ReInitSound();
 			break;
-		case ID_SOUND_32MS: 
+		case ID_SOUND_32MS:
 			GUI.SoundBufferSize = 32;
 			ReInitSound();
 			break;
-		case ID_SOUND_48MS: 
+		case ID_SOUND_48MS:
 			GUI.SoundBufferSize = 48;
 			ReInitSound();
 			break;
-		case ID_SOUND_64MS: 
+		case ID_SOUND_64MS:
 			GUI.SoundBufferSize = 64;
 			ReInitSound();
 			break;
-		case ID_SOUND_80MS: 
+		case ID_SOUND_80MS:
 			GUI.SoundBufferSize = 80;
 			ReInitSound();
 			break;
-		case ID_SOUND_96MS: 
+		case ID_SOUND_96MS:
 			GUI.SoundBufferSize = 96;
 			ReInitSound();
 			break;
-		case ID_SOUND_112MS: 
+		case ID_SOUND_112MS:
 			GUI.SoundBufferSize = 112;
 			ReInitSound();
 			break;
-		case ID_SOUND_128MS: 
+		case ID_SOUND_128MS:
 			GUI.SoundBufferSize = 128;
 			ReInitSound();
 			break;
-		case ID_SOUND_144MS: 
+		case ID_SOUND_144MS:
 			GUI.SoundBufferSize = 144;
 			ReInitSound();
 			break;
-		case ID_SOUND_160MS: 
+		case ID_SOUND_160MS:
 			GUI.SoundBufferSize = 160;
 			ReInitSound();
 			break;
-		case ID_SOUND_176MS: 
+		case ID_SOUND_176MS:
 			GUI.SoundBufferSize = 176;
 			ReInitSound();
 			break;
-		case ID_SOUND_194MS: 
-			GUI.SoundBufferSize = 194;
+		case ID_SOUND_192MS:
+			GUI.SoundBufferSize = 192;
 			ReInitSound();
 			break;
-		case ID_SOUND_210MS: 
-			GUI.SoundBufferSize = 210;
+		case ID_SOUND_208MS:
+			GUI.SoundBufferSize = 208;
 			ReInitSound();
 			break;
 
@@ -2176,17 +2083,6 @@ LRESULT CALLBACK WinProc(
 			GUI.Mute = !GUI.Mute;
             break;
 
-        case ID_SOUND_STEREO:
-            Settings.Stereo = !Settings.Stereo;
-            ReInitSound();
-            break;
-        case ID_SOUND_REVERSE_STEREO:
-            Settings.ReverseStereo = !Settings.ReverseStereo;
-            break;
-        case ID_SOUND_16BIT:
-            Settings.SixteenBitSound = !Settings.SixteenBitSound;
-            ReInitSound();
-            break;
         case ID_SOUND_SYNC:
             Settings.SoundSync = !Settings.SoundSync;
 			S9xDisplayStateChange (WINPROC_SYNC_SND, Settings.SoundSync);
@@ -2208,11 +2104,17 @@ LRESULT CALLBACK WinProc(
 		case ID_WINDOW_SIZE_2X:
 		case ID_WINDOW_SIZE_3X:
 		case ID_WINDOW_SIZE_4X:
+		case ID_WINDOW_SIZE_5X:
+		case ID_WINDOW_SIZE_6X:
+		case ID_WINDOW_SIZE_7X:
+		case ID_WINDOW_SIZE_8X:
+		case ID_WINDOW_SIZE_9X:
+		case ID_WINDOW_SIZE_10X:
 			UINT factor, newWidth, newHeight;
 			RECT margins;
 			factor = (wParam & 0xffff) - ID_WINDOW_SIZE_1X + 1;
 			newWidth = GUI.AspectWidth * factor;
-			newHeight = (GUI.HeightExtend ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT) * factor;
+			newHeight = (Settings.ShowOverscan ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT) * factor;
 
 			margins = GetWindowMargins(GUI.hWnd,newWidth);
 			newHeight += margins.top + margins.bottom;
@@ -2231,7 +2133,7 @@ LRESULT CALLBACK WinProc(
 			WinRefreshDisplay();
 			break;
 		case ID_WINDOW_BILINEAR:
-			GUI.BilinearFilter = !GUI.BilinearFilter;
+			Settings.BilinearFilter = !Settings.BilinearFilter;
 			WinDisplayApplyChanges();
 			WinRefreshDisplay();
 			break;
@@ -2246,18 +2148,18 @@ LRESULT CALLBACK WinProc(
 			S9xMessage(S9X_INFO, 0, INFO_SAVE_SPC);
 			break;
 		case ID_FILE_SAVE_SRAM_DATA: {
-			bool8 success = Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR));
+			bool8 success = Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR).c_str());
 			if(!success)
 				S9xMessage(S9X_ERROR, S9X_FREEZE_FILE_INFO, SRM_SAVE_FAILED);
 		}	break;
 		case ID_SAVEMEMPACK: {
-			const char *filename = S9xGetFilenameInc(".bs", SRAM_DIR);
-			bool8 success = Memory.SaveMPAK(filename);
+			std::string filename = S9xGetFilenameInc(".bs", SRAM_DIR);
+			bool8 success = Memory.SaveMPAK(filename.c_str());
 			if (!success)
 				S9xMessage(S9X_ERROR, 0, MPAK_SAVE_FAILED);
 			else
 			{
-				sprintf(String, "Saved Memory Pack %s", filename);
+				sprintf(String, "Saved Memory Pack %s", filename.c_str());
 				S9xMessage(S9X_INFO, 0, String);
 			}
 		}	break;
@@ -2286,72 +2188,28 @@ LRESULT CALLBACK WinProc(
 			Settings.FrameAdvance = false;
 			GUI.FrameAdvanceJustPressed = 0;
 			break;
-        case ID_FILE_LOAD0:
-			FreezeUnfreeze (0, FALSE);
+		case ID_FILE_LOAD_OOPS:
+			FreezeUnfreezeSlot(-1, FALSE);
 			break;
-		case ID_FILE_LOAD1:
-			FreezeUnfreeze (1, FALSE);
-			break;
-		case ID_FILE_LOAD2:
-			FreezeUnfreeze (2, FALSE);
-			break;
-		case ID_FILE_LOAD3:
-			FreezeUnfreeze (3, FALSE);
-			break;
-		case ID_FILE_LOAD4:
-			FreezeUnfreeze (4, FALSE);
-			break;
-		case ID_FILE_LOAD5:
-			FreezeUnfreeze (5, FALSE);
-			break;
-		case ID_FILE_LOAD6:
-			FreezeUnfreeze (6, FALSE);
-			break;
-		case ID_FILE_LOAD7:
-			FreezeUnfreeze (7, FALSE);
-			break;
-		case ID_FILE_LOAD8:
-			FreezeUnfreeze (8, FALSE);
-			break;
-		case ID_FILE_LOAD9:
-			FreezeUnfreeze (9, FALSE);
-			break;
-        case ID_FILE_SAVE0:
-            FreezeUnfreeze (0, TRUE);
-			break;
-		case ID_FILE_SAVE1:
-			FreezeUnfreeze (1, TRUE);
-			break;
-		case ID_FILE_SAVE2:
-			FreezeUnfreeze (2, TRUE);
-			break;
-		case ID_FILE_SAVE3:
-			FreezeUnfreeze (3, TRUE);
-			break;
-		case ID_FILE_SAVE4:
-			FreezeUnfreeze (4, TRUE);
-			break;
-		case ID_FILE_SAVE5:
-			FreezeUnfreeze (5, TRUE);
-			break;
-		case ID_FILE_SAVE6:
-			FreezeUnfreeze (6, TRUE);
-			break;
-		case ID_FILE_SAVE7:
-			FreezeUnfreeze (7, TRUE);
-			break;
-		case ID_FILE_SAVE8:
-			FreezeUnfreeze (8, TRUE);
-			break;
-		case ID_FILE_SAVE9:
-			FreezeUnfreeze (9, TRUE);
-			break;
+        case ID_FILE_LOAD_FILE:
+            FreezeUnfreezeDialog(FALSE);
+            break;
+        case ID_FILE_LOAD_PREVIEW:
+            FreezeUnfreezeDialogPreview(FALSE);
+            break;
+        case ID_FILE_SAVE_FILE:
+            FreezeUnfreezeDialog(TRUE);
+            break;
+        case ID_FILE_SAVE_PREVIEW:
+            FreezeUnfreezeDialogPreview(TRUE);
+            break;
 		case ID_CHEAT_ENTER:
 			RestoreGUIDisplay ();
-			S9xRemoveCheats ();
-			DialogBox(g_hInst, MAKEINTRESOURCE(IDD_CHEATER), hWnd, DlgCheater);
+			while (DialogBox(g_hInst, MAKEINTRESOURCE(IDD_CHEATER), hWnd, DlgCheater) == NC_SEARCHDB)
+			{
+				WinSearchCheatDatabase();
+			}
 			S9xSaveCheatFile (S9xGetFilename (".cht", CHEAT_DIR));
-			S9xApplyCheats ();
 			RestoreSNESDisplay ();
 			break;
 		case ID_CHEAT_SEARCH:
@@ -2376,14 +2234,14 @@ LRESULT CALLBACK WinProc(
 		case ID_CHEAT_APPLY:
 			Settings.ApplyCheats = !Settings.ApplyCheats;
 			if (!Settings.ApplyCheats){
-				S9xRemoveCheats ();
+				S9xCheatsDisable ();
 				S9xMessage (S9X_INFO, S9X_GAME_GENIE_CODE_ERROR, CHEATS_INFO_DISABLED);
 			}else{
-				S9xApplyCheats ();
+				S9xCheatsEnable ();
 				bool on = false;
 				extern struct SCheatData Cheat;
-				for (uint32 i = 0; i < Cheat.num_cheats && !on; i++)
-					if (Cheat.c [i].enabled)
+				for (uint32 i = 0; i < Cheat.group.size() && !on; i++)
+					if (Cheat.group[i].enabled)
 						on = true;
 				S9xMessage (S9X_INFO, S9X_GAME_GENIE_CODE_ERROR, on ? CHEATS_INFO_ENABLED : CHEATS_INFO_ENABLED_NONE);
 			}
@@ -2396,6 +2254,22 @@ LRESULT CALLBACK WinProc(
 			DialogBox(g_hInst, MAKEINTRESOURCE(IDD_EMU_SETTINGS), hWnd, DlgEmulatorProc);
 			RestoreSNESDisplay ();
 			break;
+        case ID_EMULATION_HACKS:
+			if (MessageBoxA(hWnd,
+				"The settings in this dialog should only be used for compatibility "
+				"with old ROM hacks or if you otherwise know what you're doing.\n\n"
+				"If any problems occur, click \"Set Defaults\" to reset the options to normal.",
+				"Warning: Unsupported",
+				MB_ICONWARNING | MB_OKCANCEL) != IDOK)
+				break;
+
+            RestoreGUIDisplay();
+			i = DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG_HACKS), hWnd, DlgEmulatorHacksProc);
+            if (i == 1)
+                S9xReset();
+            else
+                RestoreSNESDisplay();
+            break;
 		case ID_HELP_ABOUT:
 			RestoreGUIDisplay ();
 			DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgAboutProc);
@@ -2407,7 +2281,7 @@ LRESULT CALLBACK WinProc(
 			break;
 #ifdef DEBUGGER
 		case ID_DEBUG_TRACE:
-			CPU.Flags ^= TRACE_FLAG;
+			S9xDebugProcessCommand("T");
 			break;
 
 		case ID_DEBUG_FRAME_ADVANCE:
@@ -2416,7 +2290,8 @@ LRESULT CALLBACK WinProc(
 			Settings.Paused = FALSE;
 			break;
 		case ID_DEBUG_APU_TRACE:
-			spc_core->debug_toggle_trace();
+			// TODO: reactivate once APU debugger works again
+			//spc_core->debug_toggle_trace();
 			break;
 #endif
 		case IDM_ROM_INFO:
@@ -2430,6 +2305,13 @@ LRESULT CALLBACK WinProc(
 				int i = (wParam & 0xffff) - 0xFF00;
 				int j = 0;
 				{
+					if (wParam == 0xFF00 + MAX_RECENT_GAMES_LIST_SIZE)
+					{
+						WinDeleteRecentGamesList();
+						S9xSetRecentGames();
+						break;
+					}
+
 					while (j < MAX_RECENT_GAMES_LIST_SIZE && j != i)
 						j++;
 					if (i == j)
@@ -2446,7 +2328,7 @@ LRESULT CALLBACK WinProc(
 			break;
         }
         break;
-
+	}
 	case WM_EXITMENULOOP:
 		UpdateWindow(GUI.hWnd);
 		DrawMenuBar(GUI.hWnd);
@@ -2466,7 +2348,7 @@ LRESULT CALLBACK WinProc(
 		break;
 
 	case WM_DESTROY:
-		Memory.SaveSRAM(S9xGetFilename(".srm", SRAM_DIR));
+		Memory.SaveSRAM(S9xGetFilename(".srm", SRAM_DIR).c_str());
 		GUI.hWnd = NULL;
 		PostQuitMessage (0);
 		return (0);
@@ -2509,6 +2391,10 @@ LRESULT CALLBACK WinProc(
 		//                RealizePalette (GUI.WindowDC);
 		break;
 	case WM_SIZE:
+		if (wParam == SIZE_MINIMIZED && GUI.InactivePause)
+		{
+			S9xSetPause(PAUSE_INACTIVE_WINDOW);
+		}
 		WinChangeWindowSize(LOWORD(lParam),HIWORD(lParam));
 		break;
 	case WM_MOVE:
@@ -2550,7 +2436,7 @@ LRESULT CALLBACK WinProc(
 			{
 				CenterCursor();
 			}
-			else if (GUI.ControllerOption==SNES_SUPERSCOPE || GUI.ControllerOption==SNES_JUSTIFIER || GUI.ControllerOption==SNES_JUSTIFIER_2)
+			else if (GUI.ControllerOption==SNES_SUPERSCOPE || GUI.ControllerOption==SNES_JUSTIFIER || GUI.ControllerOption==SNES_JUSTIFIER_2 || GUI.ControllerOption==SNES_MACSRIFLE)
 			{
 				RECT size;
 				GetClientRect (GUI.hWnd, &size);
@@ -2562,7 +2448,7 @@ LRESULT CALLBACK WinProc(
 
 //					int theight;
 //					(IPPU.RenderedScreenHeight> 256)? theight= SNES_HEIGHT_EXTENDED<<1: theight = SNES_HEIGHT_EXTENDED;
-					int theight = GUI.HeightExtend ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT;
+					int theight = Settings.ShowOverscan ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT;
 					if(IPPU.RenderedScreenHeight > SNES_HEIGHT_EXTENDED) theight <<= 1;
 
 					startx= size.right-IPPU.RenderedScreenWidth;
@@ -2592,7 +2478,7 @@ LRESULT CALLBACK WinProc(
 						sizex=IPPU.RenderedScreenWidth;
 					else sizex=IPPU.RenderedScreenWidth*2;
 
-					int theight = GUI.HeightExtend ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT;
+					int theight = Settings.ShowOverscan ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT;
 					sizey = (IPPU.RenderedScreenHeight > SNES_HEIGHT_EXTENDED) ? theight : (theight << 1);
 
 					startx= size.right-sizex;
@@ -2617,7 +2503,7 @@ LRESULT CALLBACK WinProc(
 				else
 				{
 					int sizex = IPPU.RenderedScreenWidth;
-					int sizey = GUI.HeightExtend ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT;
+					int sizey = Settings.ShowOverscan ? SNES_HEIGHT_EXTENDED : SNES_HEIGHT;
 					sizey = (IPPU.RenderedScreenHeight > SNES_HEIGHT_EXTENDED) ? (sizey << 1) : sizey;
 					int width = size.right, height = size.bottom, xdiff = 0, ydiff = 0;
 					if(GUI.AspectRatio)
@@ -2724,14 +2610,7 @@ LRESULT CALLBACK WinProc(
 #endif
 		break;
 #endif
-    case WM_DEVICECHANGE:
-        if(wParam == DBT_DEVICEARRIVAL || wParam == DBT_DEVICEREMOVECOMPLETE)
-            PostMessage(hWnd, WM_SCANJOYPADS, 0, 0);
-        break;
-    case WM_SCANJOYPADS:
-        S9xDetectJoypads();
-        break;
-    }
+	}
     return DefWindowProc (hWnd, uMsg, wParam, lParam);
 }
 
@@ -2748,10 +2627,10 @@ BOOL WinInit( HINSTANCE hInstance)
     wndclass.lpfnWndProc = WinProc;
     wndclass.hInstance = hInstance;
     wndclass.hIcon = LoadIcon (hInstance, MAKEINTRESOURCE(IDI_ICON1));
-    wndclass.hIconSm = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, 0);
+    wndclass.hIconSm = NULL;
     wndclass.hCursor = NULL;
     wndclass.lpszMenuName = NULL;
-    wndclass.lpszClassName = TEXT("Snes9X: WndClass");
+    wndclass.lpszClassName = TEXT("Snes9x: WndClass");
 	wndclass.hbrBackground=(HBRUSH)GetStockObject(BLACK_BRUSH);
 
     GUI.hInstance = hInstance;
@@ -2765,8 +2644,42 @@ BOOL WinInit( HINSTANCE hInstance)
 	GUI.hMenu = LoadMenu(GUI.hInstance, MAKEINTRESOURCE(IDR_MENU_US));
     if (GUI.hMenu == NULL)
 	{
-		MessageBox (NULL, TEXT("Failed to initialize the menu.\nThis could indicate a failure of your operating system;\ntry closing some other windows or programs, or restart your computer, before opening Snes9x again.\nOr, if you compiled this program yourself, ensure that Snes9x was built with the proper resource files."), TEXT("Snes9X - Menu Initialization Failure"), MB_OK | MB_ICONSTOP);
+		MessageBox (NULL, TEXT("Failed to initialize the menu.\nThis could indicate a failure of your operating system;\ntry closing some other windows or programs, or restart your computer, before opening Snes9x again.\nOr, if you compiled this program yourself, ensure that Snes9x was built with the proper resource files."), TEXT("Snes9x - Menu Initialization Failure"), MB_OK | MB_ICONSTOP);
 //        return FALSE; // disabled: try to function without the menu
+	}
+
+	// insert bank and slot submenus / menu items
+	HMENU parent_menu_save = GetSubMenuById(ID_FILE_SAVE_POPUP);
+	HMENU parent_menu_load = GetSubMenuById(ID_FILE_LOAD_POPUP);
+	MENUITEMINFO mii;
+	mii.cbSize = sizeof(mii);
+
+	for (int i = 0; i < NUM_SAVE_BANKS; i++)
+	{
+		// one bank sub each for save and load
+		HMENU bank_menu_save = CreatePopupMenu();
+		HMENU bank_menu_load = CreatePopupMenu();
+		// fill the slot entries into the sub menus
+		for (int j = 0; j < SAVE_SLOTS_PER_BANK; j++)
+		{
+			TCHAR *slot_string = g_saveMenuItemStrings[i * SAVE_SLOTS_PER_BANK + j];
+			_stprintf(slot_string, _T("Slot #&%d"), j);
+			mii.fMask = MIIM_STRING | MIIM_ID;
+			mii.dwTypeData = slot_string;
+			mii.wID = ID_FILE_SAVE0 + i * SAVE_SLOTS_PER_BANK + j;
+			InsertMenuItem(bank_menu_save, j, TRUE, &mii);
+			mii.wID = ID_FILE_LOAD0 + i * SAVE_SLOTS_PER_BANK + j;
+			InsertMenuItem(bank_menu_load, j, TRUE, &mii);
+		}
+
+		// add the bank menus to save and load
+		_stprintf(g_bankMenuItemStrings[i], _T("Bank #&%d"), i);
+		mii.fMask = MIIM_STRING | MIIM_SUBMENU;
+		mii.dwTypeData = g_bankMenuItemStrings[i];
+		mii.hSubMenu = bank_menu_save;
+		InsertMenuItem(parent_menu_save, i, TRUE, &mii);
+		mii.hSubMenu = bank_menu_load;
+		InsertMenuItem(parent_menu_load, i, TRUE, &mii);
 	}
 #ifdef DEBUGGER
 	if(GUI.hMenu) {
@@ -2778,7 +2691,7 @@ BOOL WinInit( HINSTANCE hInstance)
 #endif
 
     TCHAR buf [100];
-    _stprintf (buf, WINDOW_TITLE, TEXT(VERSION));
+    _stprintf(buf, TEXT("%s %s"), WINDOW_TITLE, TEXT(VERSION));
 
     DWORD dwExStyle;
     DWORD dwStyle;
@@ -2793,7 +2706,7 @@ BOOL WinInit( HINSTANCE hInstance)
     AdjustWindowRectEx (&rect, dwStyle, FALSE, dwExStyle);
     if ((GUI.hWnd = CreateWindowEx (
         dwExStyle,
-        TEXT("Snes9X: WndClass"),
+        TEXT("Snes9x: WndClass"),
         buf,
         WS_CLIPSIBLINGS |
         WS_CLIPCHILDREN |
@@ -2823,6 +2736,13 @@ BOOL WinInit( HINSTANCE hInstance)
 
 void S9xExtraUsage ()
 {
+	S9xMessage(S9X_INFO, S9X_USAGE, "Windows port specific:");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-fullscreen                     Start in fullscreen mode");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-hidemenu                       Initially hide the GUI menu");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-restore                        Reset all settings to default");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-removeregistrykeys             Remove registry keys");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-cartb <filename>               Specify the second cart for multicart, also triggers multicart");
+	MessageBox(NULL, _T("Snes9x command line options have been written to stdout.txt in the same folder as snes9x.exe"), _T("Command line options"), MB_OK | MB_ICONINFORMATION);
 }
 
 // handles joystick hotkey presses
@@ -2835,6 +2755,10 @@ VOID CALLBACK HotkeyTimer( UINT idEvent, UINT uMsg, DWORD dwUser, DWORD dw1, DWO
 
 		if(GUI.JoystickHotkeys)
 		{
+			if (Settings.StopEmulation || (Settings.Paused && !Settings.FrameAdvance) || Settings.ForcedPause)
+			{
+				S9xWinScanJoypads();
+			}
 			static int counter = 0;
 			static uint32 joyState[6][53];
             for(int j = 0 ; j < 6 ; j++)
@@ -2872,7 +2796,12 @@ VOID CALLBACK HotkeyTimer( UINT idEvent, UINT uMsg, DWORD dwUser, DWORD dw1, DWO
 				if(counter%2 && !joyState[i])
 					continue;
 
-				bool active = !S9xGetState(i);
+				// special case for escape since S9xGetState ignores it
+				bool active;
+				if (i == VK_ESCAPE)
+					active = (GetKeyState(VK_ESCAPE) & 0x80) != 0;
+				else
+					active = !S9xGetState(i);
 				if(active)
 				{
 					if(joyState[i] < ULONG_MAX) // 0xffffffffUL
@@ -2890,85 +2819,6 @@ VOID CALLBACK HotkeyTimer( UINT idEvent, UINT uMsg, DWORD dwUser, DWORD dw1, DWO
 			counter++;
 		}
 //		lastTime = timeGetTime();
-	}
-}
-
-void CALLBACK FrameTimer( UINT idEvent, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
-{
-	// QueryPerformanceCounter is unreliable on newfangled frequency-switching computers,
-	// yet is absolutely necessary for best performance on somewhat older computers (even ones that are capable of frequency switching but don't do it very often).
-	// Thus, we keep two timers and use the QueryPerformanceCounter one unless the other (more accurate but less precise)
-	// one differs from it by more than a few milliseconds.
-
-    QueryPerformanceCounter((LARGE_INTEGER*)&PCEnd);
-	PCEndTicks = timeGetTime()*1000;
-
-	const __int64 PCElapsedPrecise = PCEnd - PCStart;
-	const __int64 PCElapsedAccurate = (__int64)(PCEndTicks - PCStartTicks) * PCBase / 1000000;
-	const bool useTicksTimer = (abs((int)(PCElapsedPrecise - PCElapsedAccurate)) > (PCBase >> 7)); // if > 7.8 ms difference, settle for accuracy at the sacrifice of precision
-
-    while ((!useTicksTimer && (PCEnd      - PCStart     ) >= PCFrameTime) ||
-		   ( useTicksTimer && (PCEndTicks - PCStartTicks) >= PCFrameTime * 1000000 / PCBase))
-	{
-        if (GUI.FrameCount == GUI.LastFrameCount)
-            GUI.IdleCount++;
-        else
-        {
-            GUI.IdleCount = 0;
-            GUI.LastFrameCount = GUI.FrameCount;
-        }
-
-#ifdef NETPLAY_SUPPORT
-		//    if (Settings.NetPlay && !Settings.NetPlayServer)
-		//        return;
-        if (Settings.NetPlay && !Settings.NetPlayServer)
-            return;
-
-		//-    if (Settings.NetPlayServer)
-		//-    {
-		//-        if (Settings.Paused || Settings.StopEmulation || Settings.ForcedPause)
-        if (Settings.NetPlayServer)
-		{
-			//-            WaitForSingleObject (GUI.ServerTimerSemaphore, 0);
-            if ((Settings.Paused && !Settings.FrameAdvance) || Settings.StopEmulation || Settings.ForcedPause)
-            {
-                WaitForSingleObject (GUI.ServerTimerSemaphore, 0);
-                return;
-            }
-            ReleaseSemaphore (GUI.ServerTimerSemaphore, 1, NULL);
-
-            if (Settings.NetPlay)
-                return;
-        }
-        else
-#endif
-		{
-			if (Settings.SkipFrames != AUTO_FRAMERATE || Settings.TurboMode ||
-				(Settings.Paused /*&& !Settings.FrameAdvance*/) || Settings.StopEmulation || Settings.ForcedPause)
-			{
-				WaitForSingleObject (GUI.FrameTimerSemaphore, 0);
-				PCStart = PCEnd;
-				PCStartTicks = PCEndTicks;
-				return;
-			}
-			//        ReleaseSemaphore (GUI.ServerTimerSemaphore, 1, NULL);
-			ReleaseSemaphore (GUI.FrameTimerSemaphore, 1, NULL);
-
-			//        if (Settings.NetPlay)
-			//            return;
-			//    }
-			//    else
-			//#endif
-			//    if (Settings.SkipFrames != AUTO_FRAMERATE || Settings.TurboMode ||
-			//        Settings.Paused || Settings.StopEmulation || Settings.ForcedPause)
-			//    {
-			//        WaitForSingleObject (GUI.FrameTimerSemaphore, 0);
-			//        return;
-			//    }
-			//    ReleaseSemaphore (GUI.FrameTimerSemaphore, 1, NULL);
-			PCStart += PCFrameTime;
-			PCStartTicks += (DWORD)(PCFrameTime * 1000000 / PCBase);
-		}
 	}
 }
 
@@ -3031,6 +2881,7 @@ enum
 	k_MO = 0x02000000,
 	k_SS = 0x04000000,
 	k_LG = 0x08000000,
+	k_RF = 0x10000000,
 
 	k_BT = 0x00100000,
 	k_PT = 0x00200000,
@@ -3170,10 +3021,13 @@ enum
 	kWinCMapLGun2Trigger,
 	kWinCMapLGun2Start,
 
+	kWinCMapMacsRifleTrigger  = k_HD | k_BT | k_RF | k_C1,
+
 	kWinCMapMouse1Pointer     = k_HD | k_PT | k_MO | k_C1,
 	kWinCMapMouse2Pointer     = k_HD | k_PT | k_MO | k_C2,
 	kWinCMapSuperscopePointer = k_HD | k_PT | k_SS | k_C1,
 	kWinCMapJustifier1Pointer = k_HD | k_PT | k_LG | k_C1,
+	kWinCMapMacsRiflePointer  = k_HD | k_PT | k_RF | k_C1,
 
 	kWinCMapPseudoPtrBase     = k_HD | k_PS | k_LG | k_C2	// for Justifier 2P
 };
@@ -3313,10 +3167,13 @@ void S9xSetupDefaultKeymap(void)
 	ASSIGN_BUTTONt(kWinCMapLGun2Trigger,   "Justifier2 Trigger");
 	ASSIGN_BUTTONt(kWinCMapLGun2Start,     "Justifier2 Start");
 
+	ASSIGN_BUTTONt(kWinCMapMacsRifleTrigger,  "MacsRifle Trigger");
+
 	ASSIGN_POINTRt(kWinCMapMouse1Pointer,     "Pointer Mouse1");
 	ASSIGN_POINTRt(kWinCMapMouse2Pointer,     "Pointer Mouse2");
 	ASSIGN_POINTRt(kWinCMapSuperscopePointer, "Pointer Superscope");
 	ASSIGN_POINTRt(kWinCMapJustifier1Pointer, "Pointer Justifier1");
+	ASSIGN_POINTRt(kWinCMapMacsRiflePointer,  "Pointer MacsRifle");
 
 	ASSIGN_POINTRf(PseudoPointerBase,         "Pointer Justifier2");
 	ASSIGN_BUTTONf(kWinCMapPseudoPtrBase + 0, "ButtonToPointer 1u Med");
@@ -3362,7 +3219,6 @@ void ControlPadFlagsToS9xPseudoPointer(uint32 p)
 
 static void ProcessInput(void)
 {
-	extern void S9xWinScanJoypads ();	
 #ifdef NETPLAY_SUPPORT
     if (!Settings.NetPlay)
 #endif
@@ -3404,20 +3260,19 @@ int WINAPI WinMain(
 
 	DWORD wSoundTimerRes;
 
-	LoadExts();
-
 	WinRegisterConfigItems ();
 
 	ConfigFile::SetAlphaSort(false);
 	ConfigFile::SetTimeSort(false);
 
-    ChangeInputDevice();
-
     const TCHAR *rom_filename = WinParseCommandLineAndLoadConfigFile (GetCommandLine());
     WinSaveConfigFile ();
 	WinLockConfigFile ();
 
+	LoadExts();
+
     ControllerOptionsFromControllers();
+    ChangeInputDevice();
 
     WinInit (hInstance);
 	if(GUI.HideMenu)
@@ -3434,14 +3289,14 @@ int WINAPI WinMain(
 	InitRenderFilters();
 
     GUI.ControlForced = 0xff;
-    GUI.rewinding = false;
+    Settings.Rewinding = false;
 
     S9xSetRecentGames ();
 
 	RestoreMainWinPos();
 
-	void InitSnes9X (void);
-	InitSnes9X ();
+	void InitSnes9x (void);
+	InitSnes9x ();
 
 	if(GUI.FullScreen) {
 		GUI.FullScreen = false;
@@ -3464,33 +3319,32 @@ int WINAPI WinMain(
         timeBeginPeriod (wSoundTimerRes);
 	}
 
-    QueryPerformanceFrequency((LARGE_INTEGER*)&PCBase);
-    QueryPerformanceCounter((LARGE_INTEGER*)&PCStart);
-	PCEnd = PCStart;
-	PCEndTicks = timeGetTime()*1000;
-	PCStartTicks = timeGetTime()*1000;
-    PCFrameTime = PCFrameTimeNTSC = (__int64)((float)PCBase / 59.948743718592964824120603015098f);
-    PCFrameTimePAL = PCBase / 50;
-
-
     Settings.StopEmulation = TRUE;
-    GUI.hFrameTimer = timeSetEvent (20, 0, (LPTIMECALLBACK)FrameTimer, 0, TIME_PERIODIC);
 
 	if(GUI.JoystickHotkeys || GUI.BackgroundInput)
 	    GUI.hHotkeyTimer = timeSetEvent (32, 0, (LPTIMECALLBACK)HotkeyTimer, 0, TIME_PERIODIC);
 	else
 		GUI.hHotkeyTimer = 0;
 
-    GUI.FrameTimerSemaphore = CreateSemaphore (NULL, 0, 10, NULL);
     GUI.ServerTimerSemaphore = CreateSemaphore (NULL, 0, 10, NULL);
 
-    if (GUI.hFrameTimer == 0)
-    {
-        MessageBox( GUI.hWnd, Languages[ GUI.Language].errFrameTimer, TEXT("Snes9X - Frame Timer"), MB_OK | MB_ICONINFORMATION);
-    }
+	if (rom_filename)
+	{
+		if (Settings.Multi) // we found -cartB parameter
+		{
+			lstrcpy(multiRomA, rom_filename); // for the mutli cart dialog
+			LoadROM(rom_filename, multiRomB);
+		}
+		else
+		{
+			LoadROM(rom_filename);
+		}
 
-	if(rom_filename)
-		LoadROM(rom_filename);
+		if (*Settings.InitialSnapshotFilename)
+		{
+			S9xUnfreezeGame(Settings.InitialSnapshotFilename);
+		}
+	}
 
 	S9xUnmapAllControls();
 	S9xSetupDefaultKeymap();
@@ -3560,43 +3414,6 @@ int WINAPI WinMain(
 				}
 			}
 
-			// the following is a hack to allow frametimes greater than 100ms,
-			// without affecting the responsiveness of the GUI
-			BOOL run_loop=false;
-			do_frame_adjust=false;
-			if (Settings.TurboMode || Settings.FrameAdvance || Settings.SkipFrames != AUTO_FRAMERATE
-#ifdef NETPLAY_SUPPORT
-			|| Settings.NetPlay
-#endif
-			)
-			{
-				run_loop=true;
-			}
-			else
-			{
-				LONG prev;
-				BOOL success;
-				if ((success = ReleaseSemaphore (GUI.FrameTimerSemaphore, 1, &prev)) &&
-					prev == 0)
-				{
-					WaitForSingleObject (GUI.FrameTimerSemaphore, 0);
-					if (WaitForSingleObject (GUI.FrameTimerSemaphore, 100) == WAIT_OBJECT_0)
-					{
-						run_loop=true;
-					}
-				}
-				else
-				{
-					if (success)
-						WaitForSingleObject (GUI.FrameTimerSemaphore, 0);
-					WaitForSingleObject (GUI.FrameTimerSemaphore, 0);
-
-					run_loop=true;
-					do_frame_adjust=true;
-				}
-			}
-
-
 			if(Settings.FrameAdvance)
 			{
 				if(GFX.InfoStringTimeout > 4)
@@ -3608,33 +3425,32 @@ int WINAPI WinMain(
 			if(GUI.FrameAdvanceJustPressed)
 				GUI.FrameAdvanceJustPressed--;
 
-			if(run_loop)
-			{
-				ProcessInput();
+			ProcessInput();
 
-				while(!S9xSyncSound()) {
-                    ResetEvent(GUI.SoundSyncEvent);
-                    if(WaitForSingleObject(GUI.SoundSyncEvent,1000) != WAIT_OBJECT_0)
-                        S9xClearSamples();
-				}
-
-                if(GUI.rewindBufferSize
+			if (GUI.rewindBufferSize
 #ifdef NETPLAY_SUPPORT
-                    &&!Settings.NetPlay
+				&& !Settings.NetPlay
 #endif
-                    ) {
-                    if(GUI.rewinding) {
-                        GUI.rewinding = stateMan.pop();
-                    } else {
-                        if(IPPU.TotalEmulatedFrames % GUI.rewindGranularity == 0)
-                            stateMan.push();
-                    }
-                }
-
-				S9xMainLoop();
-				GUI.FrameCount++;
+				) {
+				if (Settings.Rewinding) {
+					Settings.Rewinding = stateMan.pop();
+				}
+				else {
+					if (IPPU.TotalEmulatedFrames % GUI.rewindGranularity == 0)
+						stateMan.push();
+				}
 			}
 
+			S9xMainLoop();
+			GUI.FrameCount++;
+			if (GUI.CursorTimer)
+			{
+				if (--GUI.CursorTimer == 0)
+				{
+					if (GUI.ControllerOption != SNES_SUPERSCOPE && GUI.ControllerOption != SNES_JUSTIFIER && GUI.ControllerOption != SNES_JUSTIFIER_2 && GUI.ControllerOption != SNES_MACSRIFLE)
+						SetCursor(NULL);
+				}
+			}
 #ifdef NETPLAY_SUPPORT
         }
 #endif
@@ -3643,14 +3459,6 @@ int WINAPI WinMain(
             Settings.Paused = TRUE;
             Settings.FrameAdvance = false;
             CPU.Flags &= ~DEBUG_MODE_FLAG;
-        }
-        if (GUI.CursorTimer)
-        {
-            if (--GUI.CursorTimer == 0)
-            {
-                if (GUI.ControllerOption != SNES_SUPERSCOPE && GUI.ControllerOption != SNES_JUSTIFIER && GUI.ControllerOption != SNES_JUSTIFIER_2)
-                    SetCursor (NULL);
-            }
         }
     }
 
@@ -3664,16 +3472,12 @@ loop_exit:
     if (GUI.hHotkeyTimer)
         timeKillEvent (GUI.hHotkeyTimer);
 
-    if( GUI.hFrameTimer)
-    {
-        timeKillEvent (GUI.hFrameTimer);
-        timeEndPeriod (wSoundTimerRes);
-    }
+    timeEndPeriod(wSoundTimerRes);
 
     if (!Settings.StopEmulation)
     {
-        Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR));
-        S9xSaveCheatFile (S9xGetFilename (".cht", CHEAT_DIR));
+        Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR).c_str());
+        S9xSaveCheatFile (S9xGetFilename (".cht", CHEAT_DIR).c_str());
     }
     //if (!VOODOO_MODE && !GUI.FullScreen)
     //    GetWindowRect (GUI.hWnd, &GUI.window_size);
@@ -3693,22 +3497,83 @@ loop_exit:
 
 	Memory.Deinit();
 
-		S9xGraphicsDeinit();
-		S9xDeinitAPU();
-		WinDeleteRecentGamesList ();
-		DeinitS9x();
+	ClearExts();
 
-#ifdef CHECK_MEMORY_LEAKS
-		_CrtDumpMemoryLeaks();
-#endif
-		return msg.wParam;
+	DeInitRenderFilters();
+
+	S9xGraphicsDeinit();
+	S9xDeinitAPU();
+	WinDeleteRecentGamesList ();
+	DeinitS9x();
+
+	return msg.wParam;
 }
 
-void FreezeUnfreeze (int slot, bool8 freeze)
+void FreezeUnfreezeDialog(bool8 freeze)
 {
-    char filename[_MAX_PATH +1];
-    char ext [_MAX_EXT + 1];
+	if (Settings.StopEmulation)
+		return;
 
+    TCHAR filename[MAX_PATH];
+    OPENFILENAME ofn;
+
+    *filename = TEXT('\0');
+    memset((LPVOID)&ofn, 0, sizeof(OPENFILENAME));
+
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = GUI.hWnd;
+    ofn.lpstrFilter = TEXT("State files\0*.state;*.frz;*.0*\0All Files\0*.*\0\0");
+    ofn.lpstrFile = filename;
+    ofn.lpstrInitialDir = S9xGetDirectoryT(SNAPSHOT_DIR);
+    ofn.lpstrTitle = TEXT("Select State");
+    ofn.lpstrDefExt = TEXT("state");
+    ofn.nMaxFile = MAX_PATH;
+
+    if (freeze) {
+        ofn.Flags = OFN_OVERWRITEPROMPT;
+        if (GetSaveFileName(&ofn)) {
+            FreezeUnfreeze(_tToChar(ofn.lpstrFile), freeze);
+        }
+    } else {
+        ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+        if (GetOpenFileName(&ofn)) {
+            FreezeUnfreeze(_tToChar(ofn.lpstrFile), freeze);
+        }
+    }
+}
+
+void FreezeUnfreezeDialogPreview(bool8 freeze)
+{
+    if(Settings.StopEmulation)
+        return;
+
+    CSaveLoadWithPreviewDlg dlg(freeze);
+    int slot = dlg.show();
+    if(slot >= 0)
+        FreezeUnfreezeSlot(slot, freeze);
+}
+
+void GetSlotFilename(int slot, char filename[_MAX_PATH + 1])
+{
+    char ext[_MAX_EXT + 1];
+
+    if(slot == -1)
+        strcpy(ext, ".oops");
+    else
+        snprintf(ext, _MAX_EXT, ".%03d", slot);
+    strcpy(filename, S9xGetFilename(ext, SNAPSHOT_DIR).c_str());
+}
+
+void FreezeUnfreezeSlot(int slot, bool8 freeze)
+{
+    char filename[_MAX_PATH + 1];
+    GetSlotFilename(slot, filename);
+
+    FreezeUnfreeze(filename, freeze);
+}
+
+void FreezeUnfreeze (const char *filename, bool8 freeze)
+{
 #ifdef NETPLAY_SUPPORT
     if (!freeze && Settings.NetPlay && !Settings.NetPlayServer)
     {
@@ -3718,8 +3583,27 @@ void FreezeUnfreeze (int slot, bool8 freeze)
     }
 #endif
 
-	snprintf(ext, _MAX_EXT, ".%03d", slot);
-	strcpy(filename, S9xGetFilename(ext, SNAPSHOT_DIR));
+    if(Settings.StopEmulation)
+        return;
+
+	if (GUI.ConfirmSaveLoad)
+	{
+		std::string msg, title;
+		if (freeze)
+		{
+			msg = "Are you sure you want to SAVE to\n";
+			title = "Confirm SAVE";
+		}
+		else
+		{
+			msg = "Are you sure you want to LOAD from\n";
+			title = "Confirm LOAD";
+		}
+		msg += filename;
+		int res = MessageBox(GUI.hWnd, _tFromChar(msg.c_str()), _tFromChar(title.c_str()), MB_YESNO | MB_ICONQUESTION);
+		if (res != IDYES)
+			return;
+	}
 
     S9xSetPause (PAUSE_FREEZE_FILE);
 
@@ -3753,13 +3637,21 @@ void FreezeUnfreeze (int slot, bool8 freeze)
     S9xClearPause (PAUSE_FREEZE_FILE);
 }
 
+bool UnfreezeScreenshotSlot(int slot, uint16 **image_buffer, int &width, int &height)
+{
+    char filename[_MAX_PATH + 1];
+    GetSlotFilename(slot, filename);
+
+    return S9xUnfreezeScreenshot(filename, image_buffer, width, height);
+}
+
 void CheckDirectoryIsWritable (const char *filename)
 {
     FILE *fs = fopen (filename, "w+");
 
     if (fs == NULL)
-	MessageBox (GUI.hWnd, TEXT("The folder where Snes9X saves emulated save RAM files and\ngame save positions (freeze files) is currently set to a\nread-only folder.\n\nIf you do not change the game save folder, Snes9X will be\nunable to save your progress in this game. Change the folder\nfrom the Settings Dialog available from the Options menu.\n\nThe default save folder is called Saves, if no value is set.\n"),
-							 TEXT("Snes9X: Unable to save file warning"),
+	MessageBox (GUI.hWnd, TEXT("The folder where Snes9x saves emulated save RAM files and\ngame save positions (freeze files) is currently set to a\nread-only folder.\n\nIf you do not change the game save folder, Snes9x will be\nunable to save your progress in this game. Change the folder\nfrom the Settings Dialog available from the Options menu.\n\nThe default save folder is called Saves, if no value is set.\n"),
+							 TEXT("Snes9x: Unable to save file warning"),
 							 MB_OK | MB_ICONINFORMATION);
     else
     {
@@ -3786,7 +3678,7 @@ static void CheckMenuStates ()
 	mii.fState = GUI.Stretch ? (GUI.AspectRatio ? MFS_CHECKED : MFS_UNCHECKED) : MFS_CHECKED|MFS_DISABLED;
     SetMenuItemInfo (GUI.hMenu, ID_WINDOW_ASPECTRATIO, FALSE, &mii);
 
-	mii.fState = GUI.BilinearFilter ? MFS_CHECKED : MFS_UNCHECKED;
+	mii.fState = Settings.BilinearFilter ? MFS_CHECKED : MFS_UNCHECKED;
 	if(!GUI.Stretch)
 		mii.fState |= MFS_DISABLED;
     SetMenuItemInfo (GUI.hMenu, ID_WINDOW_BILINEAR, FALSE, &mii);
@@ -3805,24 +3697,16 @@ static void CheckMenuStates ()
         mii.fState |= MFS_DISABLED;
 	SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE_SPC_DATA, FALSE, &mii);
     SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE_SRAM_DATA, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE1, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE2, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE3, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE4, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE5, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE6, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE7, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE8, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_SAVE9, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD1, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD2, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD3, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD4, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD5, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD6, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD7, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD8, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_FILE_LOAD9, FALSE, &mii);
+
+	for(int i = ID_FILE_SAVE0; i <= ID_FILE_SAVE_FILE; i++)
+		SetMenuItemInfo (GUI.hMenu, i, FALSE, &mii);
+
+	for (int i = ID_FILE_LOAD0; i <= ID_FILE_LOAD_FILE; i++)
+		SetMenuItemInfo(GUI.hMenu, i, FALSE, &mii);
+
+    SetMenuItemInfo(GUI.hMenu, ID_FILE_SAVE_PREVIEW, FALSE, &mii);
+    SetMenuItemInfo(GUI.hMenu, ID_FILE_LOAD_PREVIEW, FALSE, &mii);
+
     SetMenuItemInfo (GUI.hMenu, ID_FILE_RESET, FALSE, &mii);
     SetMenuItemInfo (GUI.hMenu, ID_CHEAT_ENTER, FALSE, &mii);
     SetMenuItemInfo (GUI.hMenu, ID_CHEAT_SEARCH_MODAL, FALSE, &mii);
@@ -3873,8 +3757,6 @@ static void CheckMenuStates ()
     if (Settings.SoundPlaybackRate == 0 || GUI.Mute)
         mii.fState |= MFS_DISABLED;
 
-    SetMenuItemInfo (GUI.hMenu, ID_SOUND_16BIT, FALSE, &mii);
-    SetMenuItemInfo (GUI.hMenu, ID_SOUND_STEREO, FALSE, &mii);
     SetMenuItemInfo (GUI.hMenu, ID_SOUND_SYNC, FALSE, &mii);
     SetMenuItemInfo (GUI.hMenu, ID_SOUND_INTERPOLATED, FALSE, &mii);
 
@@ -3889,13 +3771,8 @@ static void CheckMenuStates ()
 	SetMenuItemInfo (GUI.hMenu, ID_SOUND_144MS, FALSE, &mii);
 	SetMenuItemInfo (GUI.hMenu, ID_SOUND_160MS, FALSE, &mii);
 	SetMenuItemInfo (GUI.hMenu, ID_SOUND_176MS, FALSE, &mii);
-	SetMenuItemInfo (GUI.hMenu, ID_SOUND_194MS, FALSE, &mii);
-	SetMenuItemInfo (GUI.hMenu, ID_SOUND_210MS, FALSE, &mii);
-
-    if (!Settings.Stereo)
-        mii.fState |= MFS_DISABLED;
-
-    SetMenuItemInfo (GUI.hMenu, ID_SOUND_REVERSE_STEREO, FALSE, &mii);
+	SetMenuItemInfo (GUI.hMenu, ID_SOUND_192MS, FALSE, &mii);
+	SetMenuItemInfo (GUI.hMenu, ID_SOUND_208MS, FALSE, &mii);
 
     mii.fState = MFS_CHECKED;
 	if (GUI.AVIOut)
@@ -3931,27 +3808,20 @@ static void CheckMenuStates ()
 	case 144: id = ID_SOUND_144MS; break;
 	case 160: id = ID_SOUND_160MS; break;
 	case 176: id = ID_SOUND_176MS; break;
-	case 194: id = ID_SOUND_194MS; break;
-	case 210: id = ID_SOUND_210MS; break;
+	case 192: id = ID_SOUND_192MS; break;
+	case 208: id = ID_SOUND_208MS; break;
     }
     SetMenuItemInfo (GUI.hMenu, id, FALSE, &mii);
 
-    if (Settings.SixteenBitSound)
-        SetMenuItemInfo (GUI.hMenu, ID_SOUND_16BIT, FALSE, &mii);
-    if (Settings.Stereo)
-        SetMenuItemInfo (GUI.hMenu, ID_SOUND_STEREO, FALSE, &mii);
     if (Settings.SoundSync)
         SetMenuItemInfo (GUI.hMenu, ID_SOUND_SYNC, FALSE, &mii);
-
-    if (!Settings.Stereo)
-        mii.fState |= MFS_DISABLED;
-    if (Settings.ReverseStereo)
-        SetMenuItemInfo (GUI.hMenu, ID_SOUND_REVERSE_STEREO, FALSE, &mii);
 
 #ifdef DEBUGGER
     mii.fState = (CPU.Flags & TRACE_FLAG) ? MFS_CHECKED : MFS_UNCHECKED;
     SetMenuItemInfo (GUI.hMenu, ID_DEBUG_TRACE, FALSE, &mii);
-	mii.fState = (spc_core->debug_is_enabled()) ? MFS_CHECKED : MFS_UNCHECKED;
+	// TODO: reactivate once APU debugger works again
+	//mii.fState = (spc_core->debug_is_enabled()) ? MFS_CHECKED : MFS_UNCHECKED;
+	mii.fState = MFS_UNCHECKED;
     SetMenuItemInfo (GUI.hMenu, ID_DEBUG_APU_TRACE, FALSE, &mii);
 #endif
 
@@ -3981,6 +3851,11 @@ static void CheckMenuStates ()
 
 	mii.fState = GUI.BackgroundInput ? MFS_CHECKED : MFS_UNCHECKED;
 	SetMenuItemInfo (GUI.hMenu, ID_EMULATION_BACKGROUNDINPUT, FALSE, &mii);
+
+    mii.fState = GUI.BackgroundKeyHotkeys ? MFS_CHECKED : MFS_UNCHECKED;
+    if (!GUI.BackgroundInput)
+        mii.fState |= MFS_DISABLED;
+    SetMenuItemInfo(GUI.hMenu, ID_INPUT_BACKGROUNDKEYBOARDHOTKEYS, FALSE, &mii);
 
 	UINT validFlag;
     ControllerOptionsFromControllers();
@@ -4017,30 +3892,25 @@ static void CheckMenuStates ()
     mii.fState = validFlag | (GUI.ControllerOption == SNES_JUSTIFIER_2 ? MFS_CHECKED : MFS_UNCHECKED);
     SetMenuItemInfo (GUI.hMenu, IDM_JUSTIFIERS, FALSE, &mii);
 
+	validFlag = (((1<<SNES_MACSRIFLE) & GUI.ValidControllerOptions) && (!S9xMovieActive() || !S9xMovieGetFrameCounter())) ? MFS_ENABLED : MFS_DISABLED;
+    mii.fState = validFlag | (GUI.ControllerOption == SNES_MACSRIFLE ? MFS_CHECKED : MFS_UNCHECKED);
+    SetMenuItemInfo (GUI.hMenu, IDM_MACSRIFLE_TOGGLE, FALSE, &mii);
+
 	mii.fState = !Settings.StopEmulation ? MFS_ENABLED : MFS_DISABLED;
 	SetMenuItemInfo (GUI.hMenu, ID_FILE_AVI_RECORDING, FALSE, &mii);
-  
+
 	memset(&mii, 0, sizeof(mii));
 	mii.cbSize = sizeof(mii);
 	mii.fMask = MIIM_STRING;
 
-	mii.dwTypeData = !GUI.AVIOut ? TEXT("Start AVI Recording...") : TEXT("Stop AVI Recording");
+	mii.dwTypeData = (TCHAR *)(!GUI.AVIOut ? TEXT("Start AVI Recording...") : TEXT("Stop AVI Recording"));
 	SetMenuItemInfo (GUI.hMenu, ID_FILE_AVI_RECORDING, FALSE, &mii);
 }
 
 static void ResetFrameTimer ()
 {
-    QueryPerformanceCounter((LARGE_INTEGER*)&PCStart);
-	PCStartTicks = timeGetTime()*1000;
-    if (Settings.FrameTime == Settings.FrameTimeNTSC) PCFrameTime = PCFrameTimeNTSC;
-    else if (Settings.FrameTime == Settings.FrameTimePAL) PCFrameTime = PCFrameTimePAL;
-    else PCFrameTime = (__int64)((double)(PCBase * Settings.FrameTime) * .000001);
-
-
-    if (GUI.hFrameTimer)
-        timeKillEvent (GUI.hFrameTimer);
-
-    GUI.hFrameTimer = timeSetEvent ((Settings.FrameTime+500)/1000, 0, (LPTIMECALLBACK)FrameTimer, 0, TIME_PERIODIC);
+	// determines if we can do sound sync
+	GUI.AllowSoundSync = Settings.PAL ? Settings.FrameTime == Settings.FrameTimePAL : Settings.FrameTime == Settings.FrameTimeNTSC;
 }
 
 static bool LoadROMPlain(const TCHAR *filename)
@@ -4052,13 +3922,26 @@ static bool LoadROMPlain(const TCHAR *filename)
     {
 		S9xStartCheatSearch (&Cheat);
         ReInitSound();
-        ResetFrameTimer ();
+		ResetFrameTimer();
         return (TRUE);
     }
     return (FALSE);
 }
 
-static bool LoadROM(const TCHAR *filename) {
+static bool LoadROMMulti(const TCHAR *filename, const TCHAR *filename2)
+{
+	SetCurrentDirectory(S9xGetDirectoryT(ROM_DIR));
+	if (Memory.LoadMultiCart(_tToChar(filename), _tToChar(filename2)))
+	{
+		S9xStartCheatSearch(&Cheat);
+		ReInitSound();
+		ResetFrameTimer();
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+static bool LoadROM(const TCHAR *filename, const TCHAR *filename2 /*= NULL*/) {
 
 #ifdef NETPLAY_SUPPORT
 	if (Settings.NetPlay && !Settings.NetPlayServer)
@@ -4070,18 +3953,22 @@ static bool LoadROM(const TCHAR *filename) {
 #endif
 
 	if (!Settings.StopEmulation) {
-		Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR));
-		S9xSaveCheatFile (S9xGetFilename (".cht", CHEAT_DIR));
+		Memory.SaveSRAM (S9xGetFilename (".srm", SRAM_DIR).c_str());
+		S9xSaveCheatFile (S9xGetFilename (".cht", CHEAT_DIR).c_str());
 	}
 
-	Settings.StopEmulation = !LoadROMPlain(filename);
+	if(filename2)
+		Settings.StopEmulation = !LoadROMMulti(filename, filename2);
+	else
+		Settings.StopEmulation = !LoadROMPlain(filename);
 
 	if (!Settings.StopEmulation) {
-		bool8 loadedSRAM = Memory.LoadSRAM (S9xGetFilename (".srm", SRAM_DIR));
+		bool8 loadedSRAM = Memory.LoadSRAM (S9xGetFilename (".srm", SRAM_DIR).c_str());
 		if(!loadedSRAM) // help migration from earlier Snes9x versions by checking ROM directory for savestates
-			Memory.LoadSRAM (S9xGetFilename (".srm", ROMFILENAME_DIR));
-		S9xAddToRecentGames (filename);
-		CheckDirectoryIsWritable (S9xGetFilename (".---", SNAPSHOT_DIR));
+			Memory.LoadSRAM (S9xGetFilename (".srm", ROMFILENAME_DIR).c_str());
+		if(!filename2) // no recent for multi cart
+			S9xAddToRecentGames (filename);
+		CheckDirectoryIsWritable (S9xGetFilename (".---", SNAPSHOT_DIR).c_str());
 
 #ifdef NETPLAY_SUPPORT
 		if (NPServer.SendROMImageOnConnect)
@@ -4098,28 +3985,23 @@ static bool LoadROM(const TCHAR *filename) {
 		}
 	}
 
-	if(GUI.ControllerOption == SNES_SUPERSCOPE)
+	if(GUI.ControllerOption == SNES_SUPERSCOPE || GUI.ControllerOption == SNES_MACSRIFLE)
 		SetCursor (GUI.GunSight);
 	else {
 		SetCursor (GUI.Arrow);
 		GUI.CursorTimer = 60;
 	}
 	Settings.Paused = false;
+    S9xRestoreWindowTitle();
+
+	if (GUI.FullscreenOnOpen)
+	{
+		if (!GUI.FullScreen && !GUI.EmulatedFullscreen)
+			ToggleFullScreen();
+		SetMenu(GUI.hWnd, NULL);
+	}
 
 	return !Settings.StopEmulation;
-}
-
-static bool LoadMultiROM (const TCHAR *filename, const TCHAR *filename2)
-{
-	SetCurrentDirectory(S9xGetDirectoryT(ROM_DIR));
-    if (Memory.LoadMultiCart (_tToChar(filename), _tToChar(filename2)))
-    {
-		S9xStartCheatSearch (&Cheat);
-        ReInitSound();
-        ResetFrameTimer ();
-        return (TRUE);
-    }
-    return (FALSE);
 }
 
 bool8 S9xLoadROMImage (const TCHAR *string)
@@ -4246,9 +4128,9 @@ HRESULT Win7_JLSetRecentGames(ICustomDestinationList *pcdl, IObjectArray *poaRem
 		return S_FALSE;
 	}
 	HRESULT hr = CoCreateInstance
-                    (CLSID_EnumerableObjectCollection, 
-                    NULL, 
-                    CLSCTX_INPROC_SERVER, 
+                    (CLSID_EnumerableObjectCollection,
+                    NULL,
+                    CLSCTX_INPROC_SERVER,
                     IID_PPV_ARGS(&poc));
     if (SUCCEEDED(hr)) {
 		UINT max_list = MIN(maxSlots,GUI.MaxRecentGames);
@@ -4272,12 +4154,12 @@ HRESULT Win7_JLSetRecentGames(ICustomDestinationList *pcdl, IObjectArray *poaRem
 }
 
 void Win7_CreateJumpList()
-{    
+{
     ICustomDestinationList *pcdl;
     HRESULT hr = CoCreateInstance(
-                    CLSID_DestinationList, 
-                    NULL, 
-                    CLSCTX_INPROC_SERVER, 
+                    CLSID_DestinationList,
+                    NULL,
+                    CLSCTX_INPROC_SERVER,
                     IID_PPV_ARGS(&pcdl));
     if (SUCCEEDED(hr)) {
         UINT maxSlots;
@@ -4326,7 +4208,7 @@ void S9xSetRecentGames ()
 				// append the game title to name, with formatting modifications as necessary
 				{
 					TCHAR baseName [256];
-					lstrcpy (baseName, _tFromChar(S9xBasename (_tToChar(GUI.RecentGames [i]))));
+					lstrcpy (baseName, _tFromChar(S9xBasename (std::string(_tToChar(GUI.RecentGames [i]))).c_str()));
 					int pos = lstrlen (name), baseNameLen = lstrlen (baseName);
 					for (int j = 0; j < baseNameLen ; j++)
 					{
@@ -4348,6 +4230,19 @@ void S9xSetRecentGames ()
 
                 InsertMenuItem (recent, 0xFF00 + i, FALSE, &mii);
             }
+
+			if (i > 0)
+			{
+				MENUITEMINFO mii_sep = mii;
+				mii_sep.fMask = MIIM_TYPE;
+				mii_sep.fType = MFT_SEPARATOR;
+				InsertMenuItem(recent, 0xFF00 + i + 1, FALSE, &mii_sep);
+
+				mii.dwTypeData = TEXT("Clear List");
+				mii.cch = lstrlen(name) + 1;
+				mii.wID = 0xFF00 + MAX_RECENT_GAMES_LIST_SIZE;
+				InsertMenuItem(recent, mii.wID, FALSE, &mii);
+			}
 #ifdef UNICODE
 			Win7_CreateJumpList();
 #endif
@@ -4365,7 +4260,7 @@ RECT GetWindowMargins(HWND hwnd, UINT width)
 	rcMargins.top = abs(rcMargins.top);
 
 	if (!GUI.HideMenu) {
-		RECT rcTemp = {0,0,width,0x7FFF}; // 0x7FFF="Infinite" height
+		RECT rcTemp = {0,0,(LONG)width,0x7FFF}; // 0x7FFF="Infinite" height
 		SendMessage(hwnd, WM_NCCALCSIZE, FALSE, (LPARAM)&rcTemp);
 
 		// Adjust our previous calculation to compensate for menu
@@ -4388,27 +4283,27 @@ BOOL CreateToolTip(int toolID, HWND hDlg, TCHAR* pText)
     // hDlg:    the handle of the dialog box.
     // pText:   the text that appears in the tooltip.
     // g_hInst: the global instance handle.
-    
+
     if (!toolID || !hDlg || !pText)
     {
         return FALSE;
     }
     // Get the window of the tool.
     HWND hwndTool = GetDlgItem(hDlg, toolID);
-    
+
     // Create the tooltip.
     HWND hwndTip = CreateWindowEx(NULL, TOOLTIPS_CLASS, NULL,
                               WS_POPUP |TTS_ALWAYSTIP | TTS_BALLOON,
                               CW_USEDEFAULT, CW_USEDEFAULT,
                               CW_USEDEFAULT, CW_USEDEFAULT,
-                              hDlg, NULL, 
+                              hDlg, NULL,
                               g_hInst, NULL);
-                              
+
    if (!hwndTool || !hwndTip)
    {
        return FALSE;
-   }                              
-                              
+   }
+
     // Associate the tooltip with the tool.
     TOOLINFO toolInfo = { 0 };
     toolInfo.cbSize = sizeof(toolInfo);
@@ -4421,132 +4316,191 @@ BOOL CreateToolTip(int toolID, HWND hDlg, TCHAR* pText)
     return TRUE;
 }
 
+void UpdateAudioDeviceDropdown(HWND hCtl)
+{
+    std::vector<std::wstring> device_list = GetAvailableSoundDevices();
+
+    ComboBox_ResetContent(hCtl);
+
+    int num_devices = device_list.size();
+
+    if (!num_devices)
+    {
+        ComboBox_AddString(hCtl, _T("Default"));
+    }
+    else
+    {
+        for (int i = 0; i < num_devices; i++)
+        {
+            ComboBox_AddString(hCtl, device_list[i].c_str());
+        }
+    }
+}
+
 INT_PTR CALLBACK DlgSoundConf(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	HWND hTrackbar;
 	TCHAR valTxt[10];
+
+    // temporary GUI state for restoring after switching devices (need to actually switch devices to get output devices)
+    static int prevDriver;
+
 	switch(msg)
 	{
-	case WM_INITDIALOG:
-		WinRefreshDisplay();
+	    case WM_INITDIALOG:
+        {
+            WinRefreshDisplay();
 
-		// FIXME: these strings should come from wlanguage.h
+            prevDriver = GUI.SoundDriver;
 
-		CreateToolTip(IDC_INRATEEDIT,hDlg,TEXT("For each 'Input rate' samples generated by the SNES, 'Playback rate' samples will produced. If you experience crackling you can try to lower this setting."));
-		CreateToolTip(IDC_INRATE,hDlg,TEXT("For each 'Input rate' samples generated by the SNES, 'Playback rate' samples will produced. If you experience crackling you can try to lower this setting."));
-		
-		int pos;
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("Snes9x DirectSound"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_SNES9X_DIRECT_SOUND_DRIVER);
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("XAudio2"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_XAUDIO2_SOUND_DRIVER);
-#ifdef FMOD_SUPPORT
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("FMOD DirectSound"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_FMOD_DIRECT_SOUND_DRIVER);
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("FMOD Windows Multimedia"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_FMOD_WAVE_SOUND_DRIVER);
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("FMOD A3D"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_FMOD_A3D_SOUND_DRIVER);
-#elif defined FMODEX_SUPPORT
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("FMOD Ex Default"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_FMODEX_DEFAULT_DRIVER);
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("FMOD Ex ASIO"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_FMODEX_ASIO_DRIVER);
-		pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING,-1,(LPARAM)TEXT("FMOD Ex OpenAL"));
-		SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA,pos,WIN_FMODEX_OPENAL_DRIVER);
-#endif
-		SendDlgItemMessage(hDlg, IDC_DRIVER,CB_SETCURSEL,0,0);
-		for(pos = 0;pos<SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETCOUNT,0,0);pos++) {
-			if(SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETITEMDATA,pos,0)==GUI.SoundDriver) {
-				SendDlgItemMessage(hDlg, IDC_DRIVER,CB_SETCURSEL,pos,0);
-				break;
-			}
-		}
+            // FIXME: these strings should come from wlanguage.h
 
-		SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETRANGE,TRUE,MAKELONG(0,20));
-		SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETPOS,TRUE,(Settings.SoundInputRate - 31100)/50);
-		SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETTICFREQ,1,0);
-		_sntprintf(valTxt,10,TEXT("%d"),Settings.SoundInputRate);
-		Edit_SetText(GetDlgItem(hDlg, IDC_INRATEEDIT),valTxt);
-		
+            CreateToolTip(IDC_INRATEEDIT, hDlg, TEXT("For each 'Input rate' samples generated by the SNES, 'Playback rate' samples will produced. If you experience crackling you can try to lower this setting."));
+            CreateToolTip(IDC_INRATE, hDlg, TEXT("For each 'Input rate' samples generated by the SNES, 'Playback rate' samples will produced. If you experience crackling you can try to lower this setting."));
+            CreateToolTip(IDC_DYNRATECONTROL, hDlg, TEXT("Try to dynamically adjust the input rate to never overflow or underflow the sound buffer."));
 
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,0,(LPARAM)TEXT("8 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,1,(LPARAM)TEXT("11 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,2,(LPARAM)TEXT("16 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,3,(LPARAM)TEXT("22 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,4,(LPARAM)TEXT("30 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,5,(LPARAM)TEXT("32 KHz (SNES)"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,6,(LPARAM)TEXT("35 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,7,(LPARAM)TEXT("44 KHz"));
-		SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING,8,(LPARAM)TEXT("48 KHz"));
+            HWND output_dropdown = GetDlgItem(hDlg, IDC_OUTPUT_DEVICE);
+            UpdateAudioDeviceDropdown(output_dropdown);
+            ComboBox_SetCurSel(output_dropdown, FindAudioDeviceIndex(GUI.AudioDevice));
 
-		int temp;
-		switch(Settings.SoundPlaybackRate)
-		{
-		case 8000:temp=0;break;
-		case 11025:temp=1;break;
-		case 16000:temp=2;break;
-		case 22050:temp=3;break;
-		case 30000:temp=4;break;
-		case 0:
-		default:
-		case 32000:temp=5;break;
-		case 35000:temp=6;break;
-		case 44000:
-		case 44100:temp=7;break;
-		case 48000:temp=8;break;
-		}
-		SendDlgItemMessage(hDlg,IDC_RATE,CB_SETCURSEL,temp,0);
+            int pos;
+            pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING, -1, (LPARAM)TEXT("WaveOut"));
+            SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA, pos, WIN_WAVEOUT_DRIVER);
+            pos = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_INSERTSTRING, -1, (LPARAM)TEXT("XAudio2"));
+            SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETITEMDATA, pos, WIN_XAUDIO2_SOUND_DRIVER);
+            SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETCURSEL, 0, 0);
+            for (pos = 0; pos < SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETCOUNT, 0, 0); pos++) {
+                if (SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETITEMDATA, pos, 0) == GUI.SoundDriver) {
+                    SendDlgItemMessage(hDlg, IDC_DRIVER, CB_SETCURSEL, pos, 0);
+                    break;
+                }
+            }
 
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,0,(LPARAM)TEXT("16 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,1,(LPARAM)TEXT("32 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,2,(LPARAM)TEXT("48 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,3,(LPARAM)TEXT("64 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,4,(LPARAM)TEXT("80 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,5,(LPARAM)TEXT("96 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,6,(LPARAM)TEXT("112 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,7,(LPARAM)TEXT("128 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,8,(LPARAM)TEXT("144 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,9,(LPARAM)TEXT("160 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,10,(LPARAM)TEXT("176 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,11,(LPARAM)TEXT("194 ms"));
-		SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING,12,(LPARAM)TEXT("210 ms"));
+            if (WinGetAutomaticInputRate() < 1)
+            {
+                EnableWindow(GetDlgItem(hDlg, IDC_AUTOMATICINPUTRATE), 0);
+                GUI.AutomaticInputRate = false;
+            }
 
-		SendDlgItemMessage(hDlg,IDC_BUFLEN,CB_SETCURSEL,((GUI.SoundBufferSize/16)-1),0);
+            EnableWindow(GetDlgItem(hDlg, IDC_INRATEEDIT), !GUI.AutomaticInputRate);
+            EnableWindow(GetDlgItem(hDlg, IDC_INRATE), !GUI.AutomaticInputRate);
 
-		if(Settings.SixteenBitSound)
-			SendDlgItemMessage(hDlg,IDC_16BIT,BM_SETCHECK,BST_CHECKED,0);
-		if(Settings.Stereo)
-			SendDlgItemMessage(hDlg,IDC_STEREO,BM_SETCHECK,BST_CHECKED,0);
-		else EnableWindow(GetDlgItem(hDlg, IDC_REV_STEREO), FALSE);
-		if(Settings.ReverseStereo)
-			SendDlgItemMessage(hDlg,IDC_REV_STEREO,BM_SETCHECK,BST_CHECKED,0);
+            SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETRANGE, TRUE, MAKELONG(0, 20));
+            SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETPOS, TRUE, (Settings.SoundInputRate - 31100) / 50);
+            SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETTICFREQ, 1, 0);
+            _sntprintf(valTxt, 10, TEXT("%d"), Settings.SoundInputRate);
+            Edit_SetText(GetDlgItem(hDlg, IDC_INRATEEDIT), valTxt);
 
-		if(GUI.Mute)
-			SendDlgItemMessage(hDlg,IDC_MUTE,BM_SETCHECK,BST_CHECKED,0);
-		if(GUI.FAMute)
-			SendDlgItemMessage(hDlg,IDC_FAMT,BM_SETCHECK,BST_CHECKED,0);
+            // regular volume
+            SendDlgItemMessage(hDlg, IDC_SLIDER_VOLUME_REGULAR, TBM_SETRANGE, TRUE, MAKELONG(0, 100));
+            SendDlgItemMessage(hDlg, IDC_SLIDER_VOLUME_REGULAR, TBM_SETPOS, TRUE, 100 - GUI.VolumeRegular);
+            SendDlgItemMessage(hDlg, IDC_SLIDER_VOLUME_REGULAR, TBM_SETTICFREQ, 10, 0);
+            _sntprintf(valTxt, 10, TEXT("%d"), GUI.VolumeRegular);
+            Edit_SetText(GetDlgItem(hDlg, IDC_EDIT_VOLUME_REGULAR), valTxt);
 
-		if(Settings.SoundSync)
-			SendDlgItemMessage(hDlg,IDC_SYNC_TO_SOUND_CPU,BM_SETCHECK,BST_CHECKED,0);
+            // turbo volume
+            SendDlgItemMessage(hDlg, IDC_SLIDER_VOLUME_TURBO, TBM_SETRANGE, TRUE, MAKELONG(0, 100));
+            SendDlgItemMessage(hDlg, IDC_SLIDER_VOLUME_TURBO, TBM_SETPOS, TRUE, 100 - GUI.VolumeTurbo);
+            SendDlgItemMessage(hDlg, IDC_SLIDER_VOLUME_TURBO, TBM_SETTICFREQ, 10, 0);
+            _sntprintf(valTxt, 10, TEXT("%d"), GUI.VolumeTurbo);
+            Edit_SetText(GetDlgItem(hDlg, IDC_EDIT_VOLUME_TURBO), valTxt);
 
-		return true;
+
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 0, (LPARAM)TEXT("8 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 1, (LPARAM)TEXT("11 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 2, (LPARAM)TEXT("16 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 3, (LPARAM)TEXT("22 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 4, (LPARAM)TEXT("30 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 5, (LPARAM)TEXT("32 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 6, (LPARAM)TEXT("35 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 7, (LPARAM)TEXT("44 KHz"));
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_INSERTSTRING, 8, (LPARAM)TEXT("48 KHz"));
+
+            int temp;
+            switch (Settings.SoundPlaybackRate)
+            {
+                case 8000:temp = 0; break;
+                case 11025:temp = 1; break;
+                case 16000:temp = 2; break;
+                case 22050:temp = 3; break;
+                case 30000:temp = 4; break;
+                case 0:
+                default:
+                case 32000:temp = 5; break;
+                case 35000:temp = 6; break;
+                case 44000:
+                case 44100:temp = 7; break;
+                case 48000:temp = 8; break;
+            }
+            SendDlgItemMessage(hDlg, IDC_RATE, CB_SETCURSEL, temp, 0);
+
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 0, (LPARAM)TEXT("16 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 1, (LPARAM)TEXT("32 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 2, (LPARAM)TEXT("48 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 3, (LPARAM)TEXT("64 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 4, (LPARAM)TEXT("80 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 5, (LPARAM)TEXT("96 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 6, (LPARAM)TEXT("112 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 7, (LPARAM)TEXT("128 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 8, (LPARAM)TEXT("144 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 9, (LPARAM)TEXT("160 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 10, (LPARAM)TEXT("176 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 11, (LPARAM)TEXT("192 ms"));
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_INSERTSTRING, 12, (LPARAM)TEXT("208 ms"));
+
+            SendDlgItemMessage(hDlg, IDC_BUFLEN, CB_SETCURSEL, ((GUI.SoundBufferSize / 16) - 1), 0);
+
+            if (Settings.DynamicRateControl)
+                SendDlgItemMessage(hDlg, IDC_DYNRATECONTROL, BM_SETCHECK, BST_CHECKED, 0);
+
+            if (GUI.Mute)
+                SendDlgItemMessage(hDlg, IDC_MUTE, BM_SETCHECK, BST_CHECKED, 0);
+            if (GUI.FAMute)
+                SendDlgItemMessage(hDlg, IDC_FAMT, BM_SETCHECK, BST_CHECKED, 0);
+
+            if (Settings.SoundSync)
+                SendDlgItemMessage(hDlg, IDC_SYNC_TO_SOUND_CPU, BM_SETCHECK, BST_CHECKED, 0);
+
+            if (GUI.AutomaticInputRate)
+                SendDlgItemMessage(hDlg, IDC_AUTOMATICINPUTRATE, BM_SETCHECK, BST_CHECKED, 0);
+
+            return true;
+        }
 		case WM_PAINT:
 		{
-		PAINTSTRUCT ps;
-		BeginPaint (hDlg, &ps);
+		    PAINTSTRUCT ps;
+		    BeginPaint (hDlg, &ps);
 
-		EndPaint (hDlg, &ps);
+		    EndPaint (hDlg, &ps);
 		}
 		return true;
 		case WM_HSCROLL:
-			hTrackbar = GetDlgItem(hDlg, IDC_INRATE);
-			if((HWND)lParam==hTrackbar) {
-				int trackValue = 31100 + 50 * SendDlgItemMessage(hDlg,IDC_INRATE,TBM_GETPOS,0,0);
-				_sntprintf(valTxt,10,TEXT("%d"),trackValue);
-				Edit_SetText(GetDlgItem(hDlg, IDC_INRATEEDIT),valTxt);
+		case WM_VSCROLL:
+		{
+			WORD loword_w = LOWORD(wParam);
+			if (loword_w == TB_THUMBPOSITION || loword_w == TB_THUMBTRACK || loword_w == TB_ENDTRACK) {
+				HWND trackHwnd = (HWND)lParam;
+				WORD scrollPos = SendMessage(trackHwnd, TBM_GETPOS, 0, 0);
+				int trackValue = 100 - scrollPos;
+				int editId = 0;
+				if (trackHwnd == GetDlgItem(hDlg, IDC_INRATE))
+				{
+					trackValue = 31100 + 50 * scrollPos;
+					editId = IDC_INRATEEDIT;
+				}
+				else if (trackHwnd == GetDlgItem(hDlg, IDC_SLIDER_VOLUME_REGULAR))
+				{
+					editId = IDC_EDIT_VOLUME_REGULAR;
+				}
+				else if (trackHwnd == GetDlgItem(hDlg, IDC_SLIDER_VOLUME_TURBO))
+				{
+					editId = IDC_EDIT_VOLUME_TURBO;
+				}
+				_sntprintf(valTxt, 10, TEXT("%d"), trackValue);
+				Edit_SetText(GetDlgItem(hDlg, editId), valTxt);
 				return true;
 			}
+		}
 		break;
 		case WM_COMMAND:
 			switch(LOWORD(wParam))
@@ -4555,10 +4509,8 @@ INT_PTR CALLBACK DlgSoundConf(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				{
 					GUI.SoundDriver=SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETITEMDATA,
 										SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETCURSEL, 0,0),0);
-					Settings.SixteenBitSound=IsDlgButtonChecked(hDlg, IDC_16BIT);
+					Settings.DynamicRateControl=IsDlgButtonChecked(hDlg, IDC_DYNRATECONTROL);
 					Settings.SoundSync=IsDlgButtonChecked(hDlg, IDC_SYNC_TO_SOUND_CPU);
-					Settings.Stereo=IsDlgButtonChecked(hDlg, IDC_STEREO);
-					Settings.ReverseStereo=IsDlgButtonChecked(hDlg, IDC_REV_STEREO);
 					GUI.Mute=IsDlgButtonChecked(hDlg, IDC_MUTE);
 					GUI.FAMute=IsDlgButtonChecked(hDlg, IDC_FAMT)!=0;
 
@@ -4577,29 +4529,71 @@ INT_PTR CALLBACK DlgSoundConf(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 					}
 
 					GUI.SoundBufferSize=(16*(1+(SendDlgItemMessage(hDlg,IDC_BUFLEN,CB_GETCURSEL,0,0))));
-					
+
 					Edit_GetText(GetDlgItem(hDlg,IDC_INRATEEDIT),valTxt,10);
 					int sliderVal=_tstoi(valTxt);
 					Settings.SoundInputRate = sliderVal>0?sliderVal:32000;
 
-					WinSaveConfigFile();
-					
-					// already done in WinProc on return
-					// ReInitSound(); 
+					GUI.AutomaticInputRate = IsDlgButtonChecked(hDlg, IDC_AUTOMATICINPUTRATE);
 
-				}	/* FALL THROUGH */
+					// regular volume
+					Edit_GetText(GetDlgItem(hDlg, IDC_EDIT_VOLUME_REGULAR), valTxt, 10);
+					sliderVal = _tstoi(valTxt);
+					GUI.VolumeRegular = (sliderVal >= 0 && sliderVal <= 100) ? sliderVal : 100;
+
+					// turbo volume
+					Edit_GetText(GetDlgItem(hDlg, IDC_EDIT_VOLUME_TURBO), valTxt, 10);
+					sliderVal = _tstoi(valTxt);
+					GUI.VolumeTurbo = (sliderVal >= 0 && sliderVal <= 100) ? sliderVal : 100;
+
+                    // output device
+                    Edit_GetText(GetDlgItem(hDlg, IDC_OUTPUT_DEVICE), GUI.AudioDevice, MAX_AUDIO_NAME_LENGTH);
+
+					WinSaveConfigFile();
+
+					// already done in WinProc on return
+					// ReInitSound();
+
+                    EndDialog(hDlg, 1);
+                    return true;
+				}
 
 				case IDCANCEL:
+                    GUI.SoundDriver = prevDriver;
 					EndDialog(hDlg, 1);
 					return true;
 
+				case IDC_AUTOMATICINPUTRATE:
+                {
+                    bool temp_auto_input_rate = IsDlgButtonChecked(hDlg, IDC_AUTOMATICINPUTRATE);
+                    EnableWindow(GetDlgItem(hDlg, IDC_INRATEEDIT), !temp_auto_input_rate);
+                    EnableWindow(GetDlgItem(hDlg, IDC_INRATE), !temp_auto_input_rate);
+
+                    if (temp_auto_input_rate)
+                    {
+                        int newrate = WinGetAutomaticInputRate();
+                        if (newrate)
+                        {
+                            SendDlgItemMessage(hDlg, IDC_INRATE, TBM_SETPOS, TRUE, (newrate - 31100) / 50);
+                            _sntprintf(valTxt, 10, TEXT("%d"), newrate);
+                            Edit_SetText(GetDlgItem(hDlg, IDC_INRATEEDIT), valTxt);
+                        }
+                        else
+                        {
+                            SendDlgItemMessage(hDlg, IDC_AUTOMATICINPUTRATE, BM_SETCHECK, BST_UNCHECKED, 0);
+                        }
+                    }
+
+                    return true;
+                }
 				case IDC_DRIVER:
 					if(CBN_SELCHANGE==HIWORD(wParam))
 					{
-						int driver=SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETITEMDATA,
+						int driver = SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETITEMDATA,
 										SendDlgItemMessage(hDlg, IDC_DRIVER, CB_GETCURSEL, 0,0),0);
+
 						switch(driver) {
-							case WIN_SNES9X_DIRECT_SOUND_DRIVER:
+							case WIN_WAVEOUT_DRIVER:
 								SendDlgItemMessage(hDlg,IDC_BUFLEN,CB_SETCURSEL,3,0);
 								break;
 							case WIN_XAUDIO2_SOUND_DRIVER:
@@ -4609,23 +4603,18 @@ INT_PTR CALLBACK DlgSoundConf(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 								SendDlgItemMessage(hDlg,IDC_BUFLEN,CB_SETCURSEL,7,0);
 								break;
 						}
+
+                        // get current selected device name, switch driver, try to select the same
+                        HWND output_dropdown = GetDlgItem(hDlg, IDC_OUTPUT_DEVICE);
+                        TCHAR selected_device[MAX_AUDIO_NAME_LENGTH];
+                        Edit_GetText(output_dropdown, selected_device, MAX_AUDIO_NAME_LENGTH);
+                        GUI.SoundDriver = driver;
+                        ReInitSound();
+                        UpdateAudioDeviceDropdown(output_dropdown);
+                        ComboBox_SetCurSel(output_dropdown, FindAudioDeviceIndex(selected_device));
 						return true;
 					}
 					else return false;
-				case IDC_STEREO:
-					{
-						if(BN_CLICKED==HIWORD(wParam)||BN_DBLCLK==HIWORD(wParam))
-						{
-							if(IsDlgButtonChecked(hDlg,IDC_STEREO))
-							{
-								EnableWindow(GetDlgItem(hDlg, IDC_REV_STEREO), TRUE);
-							}
-							else EnableWindow(GetDlgItem(hDlg, IDC_REV_STEREO), FALSE);
-							return true;
-
-						}
-						else return false;
-					}
 				case IDC_INRATEEDIT:
 					if(HIWORD(wParam)==EN_UPDATE) {
 						Edit_GetText(GetDlgItem(hDlg,IDC_INRATEEDIT),valTxt,10);
@@ -4668,7 +4657,7 @@ INT_PTR CALLBACK DlgInfoProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			char temp[100];
 			char romtext[4096];
-			sprintf(romtext, "File: %s\r\nName: %s\r\n", Memory.ROMFilename, Memory.RawROMName);
+            sprintf(romtext, "Name: %s\r\n", Memory.ROMName);
 			sprintf(temp, "Speed: %02X/%s\r\nROM Map: %s\r\nType: %02x\r\n", Memory.ROMSpeed, ((Memory.ROMSpeed&0x10)!=0)?"FastROM":"SlowROM",(Memory.HiROM)?"HiROM":"LoROM",Memory.ROMType);
 			strcat(romtext, temp);
 			strcat(romtext, "Kart contents: ");
@@ -4687,7 +4676,7 @@ INT_PTR CALLBACK DlgInfoProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			strcat(romtext, "\r\nHeader Checksum: ");
 			sprintf(temp, "%04X", Memory.ROMChecksum);
 			strcat(romtext, temp);
-			strcat(romtext, "\r\nHeader Checksum Compliment: ");
+			strcat(romtext, "\r\nHeader Checksum Complement: ");
 			sprintf(temp, "%04X", Memory.ROMComplementChecksum);
 			strcat(romtext, temp);
 			strcat(romtext, "\r\nOutput: ");
@@ -5016,10 +5005,17 @@ INT_PTR CALLBACK DlgInfoProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				case 13:
 					strcat(romtext, "South Korea");
 					break;
-				case 14:strcat(romtext, "Unknown region 14");break;
-				default:strcat(romtext, "Unknown region 15");break;
+				default:
+					sprintf(temp, "Unknown region %d", Memory.ROMRegion);
+					strcat(romtext, temp);
+					break;
 				}
-                SendDlgItemMessage(hDlg, IDC_ROM_DATA, WM_SETTEXT, 0, (LPARAM)((TCHAR *)_tFromMS932(romtext)));
+
+				Utf8ToWide romname(Memory.ROMFilename.c_str());
+				TCHAR rominfo[4096];
+				_stprintf(rominfo, TEXT("File: %s\r\n%s"), (TCHAR *)romname, (TCHAR *)_tFromMS932(romtext));
+
+                SendDlgItemMessage(hDlg, IDC_ROM_DATA, WM_SETTEXT, 0, (LPARAM)((TCHAR *)rominfo));
 				break;
 			}
 			case WM_CTLCOLORSTATIC:
@@ -5089,9 +5085,117 @@ INT_PTR CALLBACK DlgAboutProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 	default:return false;
 	}
 }
+
+INT_PTR CALLBACK DlgEmulatorHacksProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    UDACCEL accel = { 0, 10 };
+    bool must_reset = 0;
+
+    switch (msg)
+    {
+    case WM_INITDIALOG:
+
+        SendDlgItemMessage(hDlg, IDC_SFX_CLOCK_SPEED_SPIN, UDM_SETRANGE, 0, MAKELPARAM((short)400, (short)50));
+        SendDlgItemMessage(hDlg, IDC_SFX_CLOCK_SPEED_SPIN, UDM_SETPOS, 0, Settings.SuperFXClockMultiplier);
+        SendDlgItemMessage(hDlg, IDC_SFX_CLOCK_SPEED_SPIN, UDM_SETACCEL, 1, (LPARAM)&accel);
+
+        SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_ADDSTRING, 0, (LPARAM)TEXT("None"));
+        SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_ADDSTRING, 0, (LPARAM)TEXT("Low"));
+        SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_ADDSTRING, 0, (LPARAM)TEXT("Medium"));
+        SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_ADDSTRING, 0, (LPARAM)TEXT("Max"));
+        SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_SETCURSEL, Settings.OverclockMode, 0);
+
+        SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_ADDSTRING, 0, (LPARAM)TEXT("None"));
+        SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_ADDSTRING, 0, (LPARAM)TEXT("Linear"));
+        SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_ADDSTRING, 0, (LPARAM)TEXT("Gaussian (SNES Hardware)"));
+        SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_ADDSTRING, 0, (LPARAM)TEXT("Cubic"));
+        SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_ADDSTRING, 0, (LPARAM)TEXT("Sinc"));
+        SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_SETCURSEL, Settings.InterpolationMethod, 0);
+
+        CheckDlgButton(hDlg, IDC_INVALID_VRAM, !Settings.BlockInvalidVRAMAccessMaster);
+        CheckDlgButton(hDlg, IDC_SEPARATE_ECHO_BUFFER, Settings.SeparateEchoBuffer);
+        CheckDlgButton(hDlg, IDC_NO_SPRITE_LIMIT, Settings.MaxSpriteTilesPerLine == 128);
+
+        return true;
+        break;
+
+    case WM_COMMAND:
+
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            if (((Settings.BlockInvalidVRAMAccessMaster != !IsDlgButtonChecked(hDlg, IDC_INVALID_VRAM)) ||
+                (Settings.SeparateEchoBuffer != IsDlgButtonChecked(hDlg, IDC_SEPARATE_ECHO_BUFFER)))
+                && !Settings.StopEmulation)
+            {
+
+                if (MessageBoxA(hDlg, "To make the requested changes, the game will need to be reset.", "Reset Required", MB_OKCANCEL) != IDOK)
+                    return false;
+                must_reset = true;
+            }
+
+            Settings.SuperFXClockMultiplier = SendDlgItemMessage(hDlg, IDC_SFX_CLOCK_SPEED_SPIN, UDM_GETPOS, 0, 0);
+            Settings.OverclockMode = SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_GETCURSEL, 0, 0);
+            Settings.InterpolationMethod = SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_GETCURSEL, 0, 0);
+            Settings.BlockInvalidVRAMAccessMaster = !IsDlgButtonChecked(hDlg, IDC_INVALID_VRAM);
+            Settings.SeparateEchoBuffer = IsDlgButtonChecked(hDlg, IDC_SEPARATE_ECHO_BUFFER);
+            Settings.MaxSpriteTilesPerLine = IsDlgButtonChecked(hDlg, IDC_NO_SPRITE_LIMIT) ? 128 : 34;
+
+            switch (Settings.OverclockMode)
+            {
+            default:
+            case 0:
+                Settings.OneClockCycle = 6;
+                Settings.OneSlowClockCycle = 8;
+                Settings.TwoClockCycles = 12;
+                break;
+            case 1:
+                Settings.OneClockCycle = 6;
+                Settings.OneSlowClockCycle = 6;
+                Settings.TwoClockCycles = 12;
+                break;
+            case 2:
+                Settings.OneClockCycle = 4;
+                Settings.OneSlowClockCycle = 6;
+                Settings.TwoClockCycles = 8;
+                break;
+            case 3:
+                Settings.OneClockCycle = 3;
+                Settings.OneSlowClockCycle = 4;
+                Settings.TwoClockCycles = 6;
+                break;
+            }
+
+            EndDialog(hDlg, must_reset);
+            return true;
+
+        case IDCANCEL:
+            EndDialog(hDlg, 0);
+            return true;
+
+		case IDC_SET_DEFAULTS:
+			SendDlgItemMessage(hDlg, IDC_SFX_CLOCK_SPEED_SPIN, UDM_SETPOS, 0, 100);
+			SendDlgItemMessage(hDlg, IDC_CPU_OVERCLOCK, CB_SETCURSEL, 0, 0);
+			SendDlgItemMessage(hDlg, IDC_SOUND_INTERPOLATION, CB_SETCURSEL, 2, 0);
+			CheckDlgButton(hDlg, IDC_INVALID_VRAM, false);
+			CheckDlgButton(hDlg, IDC_SEPARATE_ECHO_BUFFER, false);
+			CheckDlgButton(hDlg, IDC_NO_SPRITE_LIMIT, false);
+			break;
+        default:
+            break;
+        }
+
+        return true;
+        break;
+
+    default:
+        return false;
+    }
+}
+
 INT_PTR CALLBACK DlgEmulatorProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	static TCHAR paths[9][MAX_PATH];
+	static TCHAR paths[10][MAX_PATH];
 	static int which = 0;
 	switch(msg)
 	{
@@ -5121,9 +5225,13 @@ INT_PTR CALLBACK DlgEmulatorProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
             SendDlgItemMessage(hDlg, IDC_REWIND_BUFFER_SPIN,UDM_SETPOS,0, GUI.rewindBufferSize);
             SendDlgItemMessage(hDlg, IDC_REWIND_GRANULARITY_SPIN, UDM_SETRANGE, 0, MAKELPARAM((short)300, (short)1));
             SendDlgItemMessage(hDlg, IDC_REWIND_GRANULARITY_SPIN,UDM_SETPOS,0, GUI.rewindGranularity);
+			SendDlgItemMessage(hDlg, IDC_SFXSPEED_SPIN, UDM_SETRANGE, 0, MAKELPARAM((short)400, (short)50));
+			SendDlgItemMessage(hDlg, IDC_SFXSPEED_SPIN, UDM_SETPOS, 0, Settings.SuperFXClockMultiplier);
 			CheckDlgButton(hDlg,IDC_INACTIVE_PAUSE,GUI.InactivePause ? BST_CHECKED : BST_UNCHECKED);
 			CheckDlgButton(hDlg,IDC_CUSTOMROMOPEN,GUI.CustomRomOpen ? BST_CHECKED : BST_UNCHECKED);
+			CheckDlgButton(hDlg, IDC_ADD_REGISTRY, GUI.AddToRegistry ? BST_CHECKED : BST_UNCHECKED);
 			CheckDlgButton(hDlg,IDC_HIRESAVI,GUI.AVIHiRes ? BST_CHECKED : BST_UNCHECKED);
+			CheckDlgButton(hDlg, IDC_CONFIRMSAVELOAD, GUI.ConfirmSaveLoad ? BST_CHECKED : BST_UNCHECKED);
 
 			int inum = 0;
 			lstrcpy(paths[inum++],GUI.RomDir);
@@ -5139,7 +5247,9 @@ INT_PTR CALLBACK DlgEmulatorProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			lstrcpy(paths[inum++],GUI.SRAMFileDir);
 			SendDlgItemMessage(hDlg,IDC_DIRCOMBO,CB_ADDSTRING,0,(LPARAM)(LPCTSTR)SETTINGS_OPTION_DIRECTORY_SRAM);
 			lstrcpy(paths[inum++],GUI.PatchDir);
-			SendDlgItemMessage(hDlg,IDC_DIRCOMBO,CB_ADDSTRING,0,(LPARAM)(LPCTSTR)SETTINGS_OPTION_DIRECTORY_PATCHESANDCHEATS);
+			SendDlgItemMessage(hDlg,IDC_DIRCOMBO,CB_ADDSTRING,0,(LPARAM)(LPCTSTR)SETTINGS_OPTION_DIRECTORY_PATCHES);
+			lstrcpy(paths[inum++], GUI.CheatDir);
+			SendDlgItemMessage(hDlg, IDC_DIRCOMBO, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)SETTINGS_OPTION_DIRECTORY_CHEATS);
 			lstrcpy(paths[inum++],GUI.BiosDir);
 			SendDlgItemMessage(hDlg,IDC_DIRCOMBO,CB_ADDSTRING,0,(LPARAM)(LPCTSTR)SETTINGS_OPTION_DIRECTORY_BIOS);
 			lstrcpy(paths[inum++],GUI.SatDir);
@@ -5205,17 +5315,24 @@ INT_PTR CALLBACK DlgEmulatorProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 					lstrcpy(GUI.FreezeFileDir,paths[inum++]);
 					lstrcpy(GUI.SRAMFileDir,paths[inum++]);
 					lstrcpy(GUI.PatchDir,paths[inum++]);
+					lstrcpy(GUI.CheatDir, paths[inum++]);
 					lstrcpy(GUI.BiosDir,paths[inum++]);
 					lstrcpy(GUI.SatDir,paths[inum++]);
 
 					GUI.InactivePause = (BST_CHECKED==IsDlgButtonChecked(hDlg, IDC_INACTIVE_PAUSE));
 					GUI.CustomRomOpen = (BST_CHECKED==IsDlgButtonChecked(hDlg, IDC_CUSTOMROMOPEN));
 					GUI.AVIHiRes = (BST_CHECKED==IsDlgButtonChecked(hDlg, IDC_HIRESAVI));
+					GUI.ConfirmSaveLoad = (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_CONFIRMSAVELOAD));
+					bool AddRegistryChecked = (BST_CHECKED == IsDlgButtonChecked(hDlg, IDC_ADD_REGISTRY));
+					if (GUI.AddToRegistry && !AddRegistryChecked)
+						S9xWinRemoveRegistryKeys();
+					GUI.AddToRegistry = AddRegistryChecked;
 
 					Settings.TurboSkipFrames=SendDlgItemMessage(hDlg, IDC_SPIN_TURBO_SKIP, UDM_GETPOS, 0,0);
 					Settings.AutoMaxSkipFrames=SendDlgItemMessage(hDlg, IDC_SPIN_MAX_SKIP, UDM_GETPOS, 0,0);
 					Settings.AutoSaveDelay=SendDlgItemMessage(hDlg, IDC_SRAM_SPIN, UDM_GETPOS, 0,0);
                     GUI.rewindGranularity = SendDlgItemMessage(hDlg, IDC_REWIND_GRANULARITY_SPIN, UDM_GETPOS, 0,0);
+					Settings.SuperFXClockMultiplier = SendDlgItemMessage(hDlg, IDC_SFXSPEED_SPIN, UDM_GETPOS, 0, 0);
                     if(GUI.rewindGranularity==0) GUI.rewindGranularity = 1;
                     unsigned int newRewindBufSize = SendDlgItemMessage(hDlg, IDC_REWIND_BUFFER_SPIN, UDM_GETPOS, 0,0);
                     if(GUI.rewindBufferSize != newRewindBufSize) {
@@ -5312,8 +5429,8 @@ inline int InfoScore(char *Buffer)
 
 inline unsigned short sum(unsigned char *array, unsigned int size = HEADER_SIZE)
 {
-	register unsigned short theSum = 0;
-	for (register unsigned int i = 0; i < size; i++)
+	unsigned short theSum = 0;
+	for (unsigned int i = 0; i < size; i++)
 	{
 		theSum += array[i];
 	}
@@ -5786,6 +5903,139 @@ INT_PTR CALLBACK DlgMultiROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 	return false;
 }
 
+void MoveControlY(HWND hDlg, HWND hCtrl, unsigned int newY)
+{
+	RECT ctrlRect;
+	GetWindowRect(hCtrl, &ctrlRect);
+	POINT pt;
+	pt.x = ctrlRect.left;
+	pt.y = ctrlRect.top;
+	ScreenToClient(hDlg, &pt);
+	MoveWindow(hCtrl, pt.x, newY, ctrlRect.right - ctrlRect.left, ctrlRect.bottom - ctrlRect.top, FALSE);
+}
+
+void MoveOpenRomWindows(HWND hDlg, unsigned int newWidth, int newHeight)
+{
+	RECT rectRomList, rectDirList, rectSplitter, rectStatic, rectCombo, rectOk, rectCancel;
+
+	HWND romList = GetDlgItem(hDlg, IDC_ROMLIST);
+	HWND dirList = GetDlgItem(hDlg, IDC_ROM_DIR);
+	HWND splitter = GetDlgItem(hDlg, IDC_ROM_SPLITTER);
+	HWND memStatic = GetDlgItem(hDlg, IDC_STATIC_MEMORY_TYPE);
+	HWND memCombo = GetDlgItem(hDlg, IDC_MEM_TYPE);
+	HWND okButton = GetDlgItem(hDlg, IDOK);
+	HWND cancelButton = GetDlgItem(hDlg, IDCANCEL);
+
+	GetWindowRect(romList, &rectRomList);
+	GetWindowRect(dirList, &rectDirList);
+	GetWindowRect(splitter, &rectSplitter);
+	GetWindowRect(memStatic, &rectStatic);
+	GetWindowRect(memCombo, &rectCombo);
+	GetWindowRect(okButton, &rectOk);
+	GetWindowRect(cancelButton, &rectCancel);
+
+	unsigned int comboTop = newHeight - (rectCombo.bottom - rectCombo.top) - 5;
+	unsigned int staticTop = comboTop - (rectStatic.bottom - rectStatic.top);
+	unsigned int newListHeight = staticTop - 15;
+	POINT pt;
+	pt.x = rectRomList.left;
+	pt.y = rectRomList.top;
+	ScreenToClient(hDlg, &pt);
+	unsigned int newListWidth = newWidth - pt.x - 5;
+
+	unsigned int buttonTop = newHeight - (rectOk.bottom - rectOk.top) - 5;
+	unsigned int buttonLeft = newWidth - (rectOk.right - rectOk.left) - (rectCancel.right - rectCancel.left) - 5;
+	unsigned int buttonCancelLeft = buttonLeft + (rectOk.right - rectOk.left);
+
+	// only change width / height
+	SetWindowPos(romList, 0, 0, 0, newListWidth, newListHeight, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOREDRAW | SWP_NOZORDER);
+	SetWindowPos(dirList, 0, 0, 0, rectDirList.right - rectDirList.left, newListHeight, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOREDRAW | SWP_NOZORDER);
+	SetWindowPos(splitter, 0, 0, 0, rectSplitter.right - rectSplitter.left, newListHeight, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOREDRAW | SWP_NOZORDER);
+
+	// only change y pos
+	MoveControlY(hDlg, memStatic, staticTop);
+	MoveControlY(hDlg, GetDlgItem(hDlg, IDC_STATIC_INTERLEAVE_MODE), staticTop);
+	MoveControlY(hDlg, GetDlgItem(hDlg, IDC_STATIC_VIDEO_SYSTEM), staticTop);
+	MoveControlY(hDlg, GetDlgItem(hDlg, IDC_STATIC_HEADER), staticTop);
+
+	MoveControlY(hDlg, memCombo, comboTop);
+	MoveControlY(hDlg, GetDlgItem(hDlg, IDC_INTERLEAVE), comboTop);
+	MoveControlY(hDlg, GetDlgItem(hDlg, IDC_VIDEO_MODE), comboTop);
+	MoveControlY(hDlg, GetDlgItem(hDlg, IDC_HEADER), comboTop);
+
+	// only change position
+	SetWindowPos(okButton, 0, buttonLeft, buttonTop, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOREDRAW | SWP_NOZORDER);
+	SetWindowPos(cancelButton, 0, buttonCancelLeft, buttonTop, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOREDRAW | SWP_NOZORDER);
+}
+
+void MoveSplitterRelativeDirList(HWND hDlg, int offset_x)
+{
+	HWND hTree, hList, hSplitter;
+	RECT treeRect;
+	RECT listRect;
+	hTree = GetDlgItem(hDlg, IDC_ROM_DIR);
+	hList = GetDlgItem(hDlg, IDC_ROMLIST);
+	hSplitter = GetDlgItem(hDlg, IDC_ROM_SPLITTER);
+	GetWindowRect(hTree, &treeRect);
+
+	POINT p;
+	p.x = offset_x + treeRect.right;
+
+	p.y = treeRect.top;
+	GetWindowRect(hList, &listRect);
+
+	if (p.x > (listRect.right - 50))
+	{
+		offset_x -= (short)(p.x - (listRect.right - 50));
+		p.x = listRect.right - 50;
+	}
+
+
+	ScreenToClient(hDlg, &p);
+
+	if (p.x < 50)
+	{
+		offset_x += (short)(50 - p.x);
+		p.x = 50;
+	}
+
+	MoveWindow(hSplitter, p.x, p.y, listRect.left - treeRect.right, listRect.bottom - listRect.top, FALSE);
+	MoveWindow(hList, p.x + (listRect.left - treeRect.right), p.y, listRect.right - listRect.left - offset_x, listRect.bottom - listRect.top, TRUE);
+	p.x = treeRect.left;
+	p.y = treeRect.top;
+	ScreenToClient(hDlg, &p);
+	MoveWindow(hTree, p.x, p.y, treeRect.right - treeRect.left + offset_x, treeRect.bottom - treeRect.top, true);
+	InvalidateRect(hSplitter, NULL, true);
+}
+
+void SaveCustomDialogSettings(HWND hDlg)
+{
+	WINDOWPLACEMENT wndPlacement = { 0 };
+	wndPlacement.length = sizeof(WINDOWPLACEMENT);
+	GetWindowPlacement(hDlg, &wndPlacement);
+	GUI.customRomDlgSettings.window_maximized = wndPlacement.showCmd == SW_SHOWMAXIMIZED;
+	GUI.customRomDlgSettings.window_size = wndPlacement.rcNormalPosition;
+
+	HWND dirList = GetDlgItem(hDlg, IDC_ROM_DIR);
+	HWND romList = GetDlgItem(hDlg, IDC_ROMLIST);
+	RECT dirRect;
+	GetWindowRect(dirList, &dirRect);
+	GUI.customRomDlgSettings.folderPaneWidth = dirRect.right - dirRect.left;
+
+	LVCOLUMN col;
+	memset(&col, 0, sizeof(LVCOLUMN));
+	col.mask = LVCF_WIDTH;
+
+	ListView_GetColumn(romList, 0, &col);
+	GUI.customRomDlgSettings.columnFilename = col.cx;
+
+	ListView_GetColumn(romList, 1, &col);
+	GUI.customRomDlgSettings.columnDescription = col.cx;
+
+	ListView_GetColumn(romList, 2, &col);
+	GUI.customRomDlgSettings.columnSize = col.cx;
+}
+
 INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	int rv=0;
@@ -5801,6 +6051,10 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 	static HWND dirList = NULL;
 	switch(msg)
 	{
+	case WM_SIZE:
+		MoveOpenRomWindows(hDlg, LOWORD(lParam), HIWORD(lParam));
+		RedrawWindow(hDlg, NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
+		break;
 	case WM_INITDIALOG:
 		WinRefreshDisplay();
 		{
@@ -5823,8 +6077,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 			wcex.lpszClassName=tempclassname;
 			wcex.hbrBackground=(HBRUSH)GetStockObject(LTGRAY_BRUSH);
 			wcex.hCursor=LoadCursor(NULL, IDC_SIZEWE);
-///			wcex.hCursor=LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE));
-///			ATOM aSplitter=RegisterClassEx(&wcex);
+			ATOM aSplitter=RegisterClassEx(&wcex);
 			GetWindowRect(dirList, &treeRect);
 			GetWindowRect(romList, &listRect);
 			POINT p;
@@ -5834,7 +6087,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 			p.x=treeRect.right;
 			p.y=treeRect.top;
 			ScreenToClient(hDlg, &p);
-			hSplit=CreateWindow(TEXT("S9xSplitter"), TEXT(""),WS_CHILD|WS_VISIBLE , p.x, p.y, listRect.left-treeRect.right , listRect.bottom-listRect.top, hDlg,NULL, g_hInst,0);
+			hSplit=CreateWindow(TEXT("S9xSplitter"), TEXT(""),WS_CHILD|WS_VISIBLE , p.x, p.y, listRect.left-treeRect.right , listRect.bottom-listRect.top, hDlg, (HMENU)IDC_ROM_SPLITTER, g_hInst,0);
 
 			LVCOLUMN col;
 			static const LPTSTR temp1 = ROM_COLUMN_FILENAME;
@@ -5842,7 +6095,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 			col.mask=LVCF_FMT|LVCF_ORDER|LVCF_TEXT|LVCF_WIDTH;
 			col.fmt=LVCFMT_LEFT;
 			col.iOrder=0;
-			col.cx=196;
+			col.cx= GUI.customRomDlgSettings.columnFilename;
 			col.cchTextMax=5;
 			col.pszText=temp1;
 
@@ -5853,7 +6106,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 			col.mask=LVCF_FMT|LVCF_ORDER|LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
 			col.fmt=LVCFMT_LEFT;
 			col.iOrder=1;
-			col.cx=112;
+			col.cx= GUI.customRomDlgSettings.columnDescription;
 			col.cchTextMax=32;
 			col.pszText=temp2;
 			col.iSubItem=1;
@@ -5866,7 +6119,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 			col.mask=LVCF_FMT|LVCF_ORDER|LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
 			col.fmt=LVCFMT_LEFT;
 			col.iOrder=2;
-			col.cx=67;
+			col.cx= GUI.customRomDlgSettings.columnSize;
 			col.cchTextMax=32;
 			col.pszText=temp3;
 			col.iSubItem=2;
@@ -6096,7 +6349,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 						memset(&lvfi, 0, sizeof(LVFINDINFO));
 						TCHAR filename[_MAX_PATH];
 						TCHAR *tmp, *tmp2;
-						lstrcpy(filename,_tFromChar(Memory.ROMFilename));
+						lstrcpy(filename,_tFromChar(Memory.ROMFilename.c_str()));
 						tmp = filename;
 						while(tmp2=_tcsstr(tmp, TEXT("\\")))
 							tmp=tmp2+sizeof(TCHAR);
@@ -6120,6 +6373,17 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 				nextInvalidatedROM = rdl;
 				nextInvalidatedROMCounter = 0;
 				SetTimer(hDlg,42,600,NULL);
+
+				WINDOWPLACEMENT wndPlacement = { 0 };
+				wndPlacement.length = sizeof(WINDOWPLACEMENT);
+				wndPlacement.showCmd = GUI.customRomDlgSettings.window_maximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
+				wndPlacement.rcNormalPosition = GUI.customRomDlgSettings.window_size;
+				SetWindowPlacement(hDlg, &wndPlacement);
+
+				RECT clientRect;
+				GetClientRect(hDlg, &clientRect);
+				MoveOpenRomWindows(hDlg, clientRect.right, clientRect.bottom);
+				MoveSplitterRelativeDirList(hDlg, GUI.customRomDlgSettings.folderPaneWidth - (treeRect.right - treeRect.left));
 
 				return true; //true sets the keyboard focus, in case we need this elsewhere
 		}
@@ -6313,6 +6577,7 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 					}
 				}
 			case IDCANCEL:
+				SaveCustomDialogSettings(hDlg);
 				EndDialog(hDlg, rv);
 				ClearCacheList(rdl);
 				rdl=NULL;
@@ -6482,18 +6747,18 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 
 							if(nmlvdi->item.iSubItem==0)
 							{
-								nmlvdi->item.pszText=curr->fname?curr->fname:TEXT("");
+								nmlvdi->item.pszText = (TCHAR *)(curr->fname?curr->fname:TEXT(""));
 								nmlvdi->item.cchTextMax=MAX_PATH;
 							}
 							if(nmlvdi->item.iSubItem==1)
 							{
-								nmlvdi->item.pszText=curr->rname?curr->rname:TEXT("");
+								nmlvdi->item.pszText = (TCHAR *)(curr->rname?curr->rname:TEXT(""));
 								nmlvdi->item.cchTextMax=24;
 							}
 
 							if(nmlvdi->item.iSubItem==2)
 							{
-								nmlvdi->item.pszText=curr->rmbits?curr->rmbits:TEXT("");
+								nmlvdi->item.pszText = (TCHAR *)(curr->rmbits?curr->rmbits:TEXT(""));
 								nmlvdi->item.cchTextMax=11;
 							}
 							// nmlvdi->item.mask=LVIF_TEXT; // This is bad as wine relies on this to not change.
@@ -6566,7 +6831,9 @@ INT_PTR CALLBACK DlgOpenROMProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 		}
 	default:return false;
 	}
+	return false;
 }
+
 LRESULT CALLBACK DlgChildSplitProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	static bool PaintSpecial;
@@ -6593,87 +6860,26 @@ LRESULT CALLBACK DlgChildSplitProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
 		SetCapture(hWnd);
         return 0;
     case WM_LBUTTONUP:
-		PaintSpecial=false;
-		temp_x=(GET_X_LPARAM(lParam)-drag_x);
-		HWND hDlg,hTree,hList;
-		RECT treeRect;
-		RECT listRect;
-		hDlg=GetParent(hWnd);
-		hTree=GetDlgItem(hDlg, IDC_ROM_DIR);
-		hList=GetDlgItem(hDlg, IDC_ROMLIST);
-		GetWindowRect(hTree, &treeRect);
-
-		POINT p;
-		p.x=temp_x+treeRect.right;
-		p.y=treeRect.top;
-
-		GetWindowRect(hList, &listRect);
-
-		if(p.x>(listRect.right-50))
-		{
-			temp_x-=(short)(p.x-(listRect.right-50));
-			p.x=listRect.right-50;
-		}
-
-
-		ScreenToClient(hDlg, &p);
-
-		if(p.x<50)
-		{
-			temp_x+=(short)(50-p.x);
-			p.x=50;
-		}
-
-
-		MoveWindow( hWnd, p.x, p.y, listRect.left-treeRect.right, listRect.bottom-listRect.top, FALSE);
-		MoveWindow(hList, p.x+(listRect.left-treeRect.right), p.y,listRect.right-listRect.left-temp_x, listRect.bottom-listRect.top, TRUE);
-		p.x=treeRect.left;
-		p.y=treeRect.top;
-		ScreenToClient(hDlg, &p);
-		MoveWindow(hTree, p.x, p.y,treeRect.right-treeRect.left+temp_x,treeRect.bottom-treeRect.top, true);
-		InvalidateRect(hWnd,NULL, true);
+	{
+		PaintSpecial = false;
+		temp_x = (GET_X_LPARAM(lParam) - drag_x);
+		HWND hDlg = GetParent(hWnd);
+		MoveSplitterRelativeDirList(hDlg, temp_x);
 		ReleaseCapture();
-        return 0;
+		return 0;
+	}
     case WM_MOUSEMOVE:
-        if (wParam & MK_LBUTTON)
+	{
+		if (wParam & MK_LBUTTON)
 		{
 			//move paint location
-			PaintSpecial=true;
-			temp_x=(GET_X_LPARAM(lParam)-drag_x);
-			hDlg=GetParent(hWnd);
-			hTree=GetDlgItem(hDlg, IDC_ROM_DIR);
-			hList=GetDlgItem(hDlg, IDC_ROMLIST);
-			GetWindowRect(hTree, &treeRect);
-
-			p.x=temp_x+treeRect.right;
-
-			p.y=treeRect.top;
-			GetWindowRect(hList, &listRect);
-
-			if(p.x>(listRect.right-50))
-			{
-				temp_x-=(short)(p.x-(listRect.right-50));
-				p.x=listRect.right-50;
-			}
-
-
-			ScreenToClient(hDlg, &p);
-
-			if(p.x<50)
-			{
-				temp_x+=(short)(50-p.x);
-				p.x=50;
-			}
-
-			MoveWindow(hWnd, p.x, p.y, listRect.left-treeRect.right, listRect.bottom-listRect.top, FALSE);
-			MoveWindow(hList, p.x+(listRect.left-treeRect.right), p.y,listRect.right-listRect.left-temp_x, listRect.bottom-listRect.top, TRUE);
-			p.x=treeRect.left;
-			p.y=treeRect.top;
-			ScreenToClient(hDlg, &p);
-			MoveWindow(hTree, p.x, p.y,treeRect.right-treeRect.left+temp_x,treeRect.bottom-treeRect.top, true);
-			InvalidateRect(hWnd,NULL, true);
+			PaintSpecial = true;
+			temp_x = (GET_X_LPARAM(lParam) - drag_x);
+			HWND hDlg = GetParent(hWnd);
+			MoveSplitterRelativeDirList(hDlg, temp_x);
 		}
-        return 0;
+		return 0;
+	}
     case WM_CAPTURECHANGED:
 		PaintSpecial=false;
 		ReleaseCapture();
@@ -6838,6 +7044,35 @@ void SetInfoDlgColor(unsigned char r, unsigned char g, unsigned char b)
 		return false;\
 	}
 
+void S9xWinRemoveRegistryKeys() {
+	TCHAR szRegKey[4096] = {};
+
+    if(!valid_ext)
+        LoadExts();
+
+	_stprintf_s(szRegKey, 4095, TEXT("Software\\Classes\\%s"), SNES9XWPROGID);
+	SHDeleteKey(HKEY_CURRENT_USER, szRegKey);
+	_stprintf_s(szRegKey, 4095, TEXT("Software\\RegisteredApplications\\%s"), SNES9XWPROGID);
+	SHDeleteKey(HKEY_CURRENT_USER, szRegKey);
+	_stprintf_s(szRegKey, 4095, TEXT("Software\\Snes9x"), SNES9XWPROGID);
+	SHDeleteKey(HKEY_CURRENT_USER, szRegKey);
+
+	const TCHAR* szExeNames[] = { TEXT("snes9x.exe"), TEXT("snes9x-debug.exe"), TEXT("snes9x-x64.exe"), TEXT("snes9x-debug-x64.exe") };
+	for (auto& szExeName : szExeNames)
+	{
+		_stprintf_s(szRegKey, 4095, TEXT("Software\\Classes\\Applications\\%s"), szExeName);
+		SHDeleteKey(HKEY_CURRENT_USER, szRegKey);
+
+		ExtList* curr = valid_ext;
+		while (curr->next != NULL) {
+			auto ext = curr->extension;
+			_stprintf(szRegKey, TEXT("Software\\Classes\\.%s\\OpenWithList\\%s"), ext, szExeName);
+			SHDeleteKey(HKEY_CURRENT_USER, szRegKey);
+			curr = curr->next;
+		}
+	}
+}
+
 bool RegisterProgid() {
 	LONG	regResult;
 	TCHAR	szRegKey[PATH_MAX];
@@ -6858,7 +7093,7 @@ bool RegisterProgid() {
 
     _stprintf_s(szRegKey,PATH_MAX-1,TEXT("Software\\Classes\\%s\\DefaultIcon"),SNES9XWPROGID);
     REGCREATEKEY(HKEY_CURRENT_USER,szRegKey)
-    _stprintf_s(szRegKey,PATH_MAX-1,TEXT("%s,0"),szExeName);
+    _stprintf_s(szRegKey,PATH_MAX-1,TEXT("%s,0"), szExePath);
     REGSETVALUE(hKey,NULL,REG_SZ,szRegKey,(lstrlen(szRegKey) + 1) * sizeof(TCHAR))
     RegCloseKey(hKey);
 
@@ -6999,7 +7234,7 @@ void LoadExts(void)
 				curr->compressed=true;
 			if(strlen(buffer)>1)
 			{
-				curr->extension=new TCHAR[strlen(buffer)-1];
+				curr->extension=new TCHAR[strlen(buffer)];
 				_tcsncpy(curr->extension, _tFromChar(buffer), strlen(buffer)-1);
 				curr->extension[strlen(buffer)-1]='\0';
 			}
@@ -7011,8 +7246,12 @@ void LoadExts(void)
 	curr=valid_ext;
 	valid_ext=valid_ext->next;
 	delete curr;
-	RegisterProgid();
-	RegisterExts();
+
+	if (GUI.AddToRegistry)
+	{
+		RegisterProgid();
+		RegisterExts();
+	}
 }
 
 void MakeExtFile(void)
@@ -7020,10 +7259,18 @@ void MakeExtFile(void)
 	ofstream out;
 	out.open("Valid.Ext");
 
-	out<<"smcN"<<endl<<"zipY"<<endl<<"gzY" <<endl<<"swcN"<<endl<<"figN"<<endl;
+	out<<"smcN"<<endl;
+#ifdef UNZIP_SUPPORT
+	out<<"zipY"<<endl;
+	out<<"msu1Y"<<endl;
+#endif
+	out<<"gzY"<<endl;
+	out<<"swcN"<<endl;
+	out<<"figN"<<endl;
 	out<<"sfcN"<<endl;
 	out<<"bsN"<<endl;
-	out<<"jmaY";
+	out<<"jmaY"<<endl;
+	out << "stN" << endl;
 	out.close();
 	SetFileAttributes(TEXT("Valid.Ext"), FILE_ATTRIBUTE_ARCHIVE|FILE_ATTRIBUTE_READONLY);
 };
@@ -7205,6 +7452,17 @@ LRESULT CALLBACK GroupBoxCheckBoxTitle(HWND hWnd, UINT message, WPARAM wParam, L
 	return CallWindowProc(lpfnOldWndProc, hWnd, message, wParam, lParam);
 }
 
+void SelectOutputMethodInVideoDropdown(HWND hDlg, OutputMethod method)
+{
+	// select item with corresponding itemdata
+	int item_count = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_GETCOUNT, 0, 0);
+	for (int index = 0; index < item_count; index++) {
+		int item_data = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_GETITEMDATA, index, 0);
+		if (item_data == method)
+			SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_SETCURSEL, index, 0);
+	}
+}
+
 INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	int index;
@@ -7215,7 +7473,7 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	// temporary GUI state for restoring after previewing while selecting options
 	static int prevScale, prevScaleHiRes, prevPPL;
-	static bool prevStretch, prevAspectRatio, prevHeightExtend, prevAutoDisplayMessages, prevBilinearFilter, prevShaderEnabled, prevBlendHires;
+	static bool prevStretch, prevAspectRatio, prevHeightExtend, prevAutoDisplayMessages, prevBilinearFilter, prevShaderEnabled, prevBlendHires, prevIntegerScaling, prevNTSCScanlines;
 	static int prevAspectWidth;
 	static OutputMethod prevOutputMethod;
 	static TCHAR prevD3DShaderFile[MAX_PATH],prevOGLShaderFile[MAX_PATH];
@@ -7235,22 +7493,25 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         CreateToolTip(IDC_HIRES, hDlg, TEXT("Support the hi-res mode that a few games use, otherwise render them in low-res"));
         CreateToolTip(IDC_HEIGHT_EXTEND, hDlg, TEXT("Display an extra 15 pixels at the bottom, which few games use. Also increases AVI output size from 256x224 to 256x240"));
         CreateToolTip(IDC_MESSAGES_IN_IMAGE, hDlg, TEXT("Draw text inside the SNES image (will get into AVIs, screenshots, and filters)"));
+		CreateToolTip(IDC_MESSAGES_SCALE, hDlg, TEXT("Try to scale messages with EPX instead of Simple, only works for 2x and 3x and when displaying after filters"));
 
         prevOutputMethod = GUI.outputMethod;
         prevScale = GUI.Scale;
         prevScaleHiRes = GUI.ScaleHiRes;
         prevPPL = GFX.RealPPL;
         prevStretch = GUI.Stretch;
-        prevBilinearFilter = GUI.BilinearFilter;
+        prevBilinearFilter = Settings.BilinearFilter;
         prevAspectRatio = GUI.AspectRatio;
         prevAspectWidth = GUI.AspectWidth;
-        prevHeightExtend = GUI.HeightExtend;
+		prevIntegerScaling = GUI.IntegerScaling;
+		prevHeightExtend = Settings.ShowOverscan;
         prevAutoDisplayMessages = Settings.AutoDisplayMessages != 0;
         prevShaderEnabled = GUI.shaderEnabled;
         prevBlendHires = GUI.BlendHiRes;
+		prevNTSCScanlines = GUI.NTSCScanlines;
+
         lstrcpy(prevD3DShaderFile, GUI.D3DshaderFileName);
         lstrcpy(prevOGLShaderFile, GUI.OGLshaderFileName);
-
 
         _stprintf(s, TEXT("Current: %dx%d %dbit %dHz"), GUI.FullscreenMode.width, GUI.FullscreenMode.height, GUI.FullscreenMode.depth, GUI.FullscreenMode.rate);
         SendDlgItemMessage(hDlg, IDC_CURRMODE, WM_SETTEXT, 0, (LPARAM)s);
@@ -7259,6 +7520,10 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SendDlgItemMessage(hDlg, IDC_DBLBUFFER, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         if (GUI.Vsync)
             SendDlgItemMessage(hDlg, IDC_VSYNC, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
+		if (GUI.ReduceInputLag)
+			SendDlgItemMessage(hDlg, IDC_REDUCEINPUTLAG, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
+		if (GUI.NTSCScanlines)
+			SendDlgItemMessage(hDlg, IDC_NTSCSCANLINES, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         SendDlgItemMessage(hDlg, IDC_FRAMERATESKIPSLIDER, TBM_SETRANGE, (WPARAM)true, (LPARAM)MAKELONG(0, 9));
         if (Settings.SkipFrames != AUTO_FRAMERATE)
             SendDlgItemMessage(hDlg, IDC_FRAMERATESKIPSLIDER, TBM_SETPOS, (WPARAM)true, (LPARAM)Settings.SkipFrames);
@@ -7266,11 +7531,9 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         if (Settings.Transparency)
             SendDlgItemMessage(hDlg, IDC_TRANS, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
 
-        if (Settings.SupportHiRes)
-            SendDlgItemMessage(hDlg, IDC_HIRES, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         if (GUI.BlendHiRes)
             SendDlgItemMessage(hDlg, IDC_HIRESBLEND, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
-        if (GUI.HeightExtend)
+        if (Settings.ShowOverscan)
             SendDlgItemMessage(hDlg, IDC_HEIGHT_EXTEND, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         if (Settings.AutoDisplayMessages)
             SendDlgItemMessage(hDlg, IDC_MESSAGES_IN_IMAGE, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
@@ -7281,9 +7544,15 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SendDlgItemMessage(hDlg, IDC_STRETCH, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         }
 
-        if (GUI.AspectRatio)
-            SendDlgItemMessage(hDlg, IDC_ASPECT, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
-        SendDlgItemMessage(hDlg, IDC_ASPECTDROP, CB_ADDSTRING, 0, (LPARAM)TEXT("8:7"));
+		if (GUI.AspectRatio)
+			SendDlgItemMessage(hDlg, IDC_ASPECT, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
+
+		EnableWindow(GetDlgItem(hDlg, IDC_INTEGERSCALING), GUI.AspectRatio);
+
+		if (GUI.IntegerScaling)
+			SendDlgItemMessage(hDlg, IDC_INTEGERSCALING, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
+
+		SendDlgItemMessage(hDlg, IDC_ASPECTDROP, CB_ADDSTRING, 0, (LPARAM)TEXT("8:7"));
         SendDlgItemMessage(hDlg, IDC_ASPECTDROP, CB_ADDSTRING, 0, (LPARAM)TEXT("4:3"));
         switch (GUI.AspectWidth) {
         case 256:
@@ -7302,7 +7571,9 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SendDlgItemMessage(hDlg, IDC_FULLSCREEN, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         if (GUI.EmulateFullscreen)
             SendDlgItemMessage(hDlg, IDC_EMUFULLSCREEN, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
-        if (GUI.BilinearFilter)
+        if (GUI.FullscreenOnOpen)
+            SendDlgItemMessage(hDlg, IDC_FULLSCREEN_ON_OPEN, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
+        if (Settings.BilinearFilter)
             SendDlgItemMessage(hDlg, IDC_BILINEAR, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
         if (Settings.DisplayFrameRate)
             SendDlgItemMessage(hDlg, IDC_SHOWFPS, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
@@ -7319,6 +7590,8 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         SendDlgItemMessage(hDlg, IDC_SPIN_MAX_SKIP_DISP, UDM_SETPOS, 0, Settings.AutoMaxSkipFrames);
         SendDlgItemMessage(hDlg, IDC_SPIN_MAX_SKIP_DISP_FIXED, UDM_SETRANGE, 0, MAKELPARAM((short)59, (short)0));
         SendDlgItemMessage(hDlg, IDC_SPIN_MAX_SKIP_DISP_FIXED, UDM_SETPOS, 0, Settings.SkipFrames == AUTO_FRAMERATE ? 0 : Settings.SkipFrames);
+		SendDlgItemMessage(hDlg, IDC_SPIN_OSD_SIZE, UDM_SETRANGE, 0, MAKELPARAM(160, 24));
+		SendDlgItemMessage(hDlg, IDC_SPIN_OSD_SIZE, UDM_SETPOS, 0, GUI.OSDSize);
 
         if (GUI.shaderEnabled) {
             SendDlgItemMessage(hDlg, IDC_SHADER_ENABLED, BM_SETCHECK, (WPARAM)BST_CHECKED, 0);
@@ -7326,6 +7599,7 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EnableWindow(GetDlgItem(hDlg, IDC_SHADER_HLSL_BROWSE), TRUE);
             EnableWindow(GetDlgItem(hDlg, IDC_SHADER_GLSL_FILE), TRUE);
             EnableWindow(GetDlgItem(hDlg, IDC_SHADER_GLSL_BROWSE), TRUE);
+            EnableWindow(GetDlgItem(hDlg, IDC_SHADER_GLSL_PARAMETERS), TRUE);
         }
         SetDlgItemText(hDlg, IDC_SHADER_HLSL_FILE, GUI.D3DshaderFileName);
         SetDlgItemText(hDlg, IDC_SHADER_GLSL_FILE, GUI.OGLshaderFileName);
@@ -7335,23 +7609,18 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         EnableWindow(GetDlgItem(hDlg, IDC_ASPECT), GUI.Stretch);
 
         // add output method to droplist with itemdata set to their enum value
-        int inserted_index = -1;
+        auto InsertOutputMethod = [&](LPARAM text, int value) {
+            auto inserted_index = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_ADDSTRING, 0, text);
+            SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_SETITEMDATA, inserted_index, value);
+        };
 #if DIRECTDRAW_SUPPORT
-        inserted_index = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_ADDSTRING, 0, (LPARAM)TEXT("DirectDraw"));
-        SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_SETITEMDATA, inserted_index, DIRECTDRAW);
+        InsertOutputMethod((LPARAM)TEXT("DirectDraw"), DIRECTDRAW);
 #endif
-        inserted_index = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_ADDSTRING, 0, (LPARAM)TEXT("Direct3D"));
-        SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_SETITEMDATA, inserted_index, DIRECT3D);
-        inserted_index = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_ADDSTRING, 0, (LPARAM)TEXT("OpenGL"));
-        SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_SETITEMDATA, inserted_index, OPENGL);
+        InsertOutputMethod((LPARAM)TEXT("Direct3D"), DIRECT3D);
+        InsertOutputMethod((LPARAM)TEXT("OpenGL"), OPENGL);
+        InsertOutputMethod((LPARAM)TEXT("Vulkan"), VULKAN);
 
-        // select item with corresponding itemdata
-        int item_count = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_GETCOUNT, 0, 0);
-        for (int index = 0; index < item_count; index++) {
-            int item_data = SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_GETITEMDATA, index, 0);
-            if (item_data == GUI.outputMethod)
-                SendDlgItemMessage(hDlg, IDC_OUTPUTMETHOD, CB_SETCURSEL, index, 0);
-        }
+        SelectOutputMethodInVideoDropdown(hDlg, GUI.outputMethod);
 
         // add all the GUI.Scale filters to the combo box
         for (int filter = 0; filter < (int)NUM_FILTERS; filter++)
@@ -7408,7 +7677,7 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		case IDC_BILINEAR:
 
-			GUI.BilinearFilter = (bool)(IsDlgButtonChecked(hDlg,IDC_BILINEAR)==BST_CHECKED);
+			Settings.BilinearFilter = (bool)(IsDlgButtonChecked(hDlg,IDC_BILINEAR)==BST_CHECKED);
 
 			//// refresh screen, so the user can see the new stretch mode
 			WinDisplayApplyChanges();
@@ -7417,21 +7686,34 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case IDC_MESSAGES_IN_IMAGE:
+		case IDC_MESSAGES_SCALE:
 			Settings.AutoDisplayMessages = (bool)(IsDlgButtonChecked(hDlg,IDC_MESSAGES_IN_IMAGE)==BST_CHECKED);
 			if(Settings.AutoDisplayMessages)
 			{
-				if(!GFX.InfoString || !*GFX.InfoString){
+				if(GFX.InfoString.empty()) {
 					GFX.InfoString = "Test message!";
 					GFX.InfoStringTimeout = 1;
 				}
 				S9xDisplayMessages(GFX.Screen, GFX.RealPPL, IPPU.RenderedScreenWidth, IPPU.RenderedScreenHeight, 1);
+				EnableWindow(GetDlgItem(hDlg, IDC_MESSAGES_SCALE), FALSE);
+			}
+			else
+			{
+				EnableWindow(GetDlgItem(hDlg, IDC_MESSAGES_SCALE), TRUE);
 			}
 			// refresh screen, so the user can see the new mode
 			WinRefreshDisplay();
 			break;
 
+		case IDC_INTEGERSCALING:
+			GUI.IntegerScaling = (bool)(IsDlgButtonChecked(hDlg, IDC_INTEGERSCALING) == BST_CHECKED);
+			WinDisplayApplyChanges();
+			WinRefreshDisplay();
+			break;
+
 		case IDC_ASPECT:
 			GUI.AspectRatio = (bool)(IsDlgButtonChecked(hDlg,IDC_ASPECT)==BST_CHECKED);
+			EnableWindow(GetDlgItem(hDlg, IDC_INTEGERSCALING), GUI.AspectRatio);
 			// refresh screen, so the user can see the new mode
 			WinDisplayApplyChanges();
 
@@ -7457,10 +7739,16 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case IDC_HEIGHT_EXTEND:
-			GUI.HeightExtend = (bool)(IsDlgButtonChecked(hDlg,IDC_HEIGHT_EXTEND)==BST_CHECKED);
+			Settings.ShowOverscan = (bool)(IsDlgButtonChecked(hDlg,IDC_HEIGHT_EXTEND)==BST_CHECKED);
 			// refresh screen, so the user can see the new mode
 			WinDisplayApplyChanges();
 
+			WinRefreshDisplay();
+			break;
+
+		case IDC_NTSCSCANLINES:
+			GUI.NTSCScanlines = (bool)(IsDlgButtonChecked(hDlg, IDC_NTSCSCANLINES) == BST_CHECKED);
+			WinDisplayApplyChanges();
 			WinRefreshDisplay();
 			break;
 
@@ -7510,6 +7798,7 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			EnableWindow(GetDlgItem(hDlg, IDC_SHADER_HLSL_BROWSE),GUI.shaderEnabled);
 			EnableWindow(GetDlgItem(hDlg, IDC_SHADER_GLSL_FILE),GUI.shaderEnabled);
 			EnableWindow(GetDlgItem(hDlg, IDC_SHADER_GLSL_BROWSE),GUI.shaderEnabled);
+			EnableWindow(GetDlgItem(hDlg, IDC_SHADER_GLSL_PARAMETERS), GUI.shaderEnabled);
 
 			GetDlgItemText(hDlg,IDC_SHADER_HLSL_FILE,GUI.D3DshaderFileName,MAX_PATH);
 			GetDlgItemText(hDlg,IDC_SHADER_GLSL_FILE,GUI.OGLshaderFileName,MAX_PATH);
@@ -7541,7 +7830,7 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 			ofn.lStructSize = sizeof(OPENFILENAME);
 			ofn.hwndOwner = hDlg;
-			ofn.lpstrFilter = TEXT("Shader Files\0*.shader;*.cg;*.cgp\0All Files\0*.*\0\0");
+			ofn.lpstrFilter = TEXT("Shader Files\0*.shader;*.cg;*.cgp;*.glsl;*.glslp;*.slang;*.slangp\0All Files\0*.*\0\0");
 			ofn.lpstrFile = openFileName;
 			ofn.lpstrTitle = TEXT("Select Shader");
 			ofn.lpstrDefExt = TEXT("shader");
@@ -7554,6 +7843,31 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				WinRefreshDisplay();
 			}
 			break;
+        case IDC_SHADER_GLSL_PARAMETERS:
+        {
+            GetDlgItemText(hDlg, IDC_SHADER_GLSL_FILE, GUI.OGLshaderFileName, MAX_PATH);
+			int len = lstrlen(GUI.OGLshaderFileName);
+            if((len < 6 || _tcsncicmp(&GUI.OGLshaderFileName[len - 6], TEXT(".glslp"), 6)) &&
+			   (len < 7 || _tcsncicmp(&GUI.OGLshaderFileName[len - 7], TEXT(".slangp"), 7))) {
+                MessageBox(GUI.hWnd, TEXT("Parameters are only supported for .glslp and .slangp shaders"), TEXT("No Parameters"), MB_OK | MB_ICONINFORMATION);
+                break;
+            }
+			ShowWindow(hDlg, SW_HIDE);
+			WinDisplayApplyChanges();
+			WinRefreshDisplay();
+			auto shader_parameters = WinGetShaderParameters();
+			if (shader_parameters) {
+				auto save_function = WinGetShaderSaveFunction();
+				CShaderParamDlg dlg(*shader_parameters, save_function);
+				if (dlg.show()) {
+					SetDlgItemText(hDlg, IDC_SHADER_GLSL_FILE, GUI.OGLshaderFileName);
+					WinDisplayApplyChanges();
+					WinRefreshDisplay();
+				}
+			}
+			ShowWindow(hDlg, SW_SHOW);
+            break;
+        }
 		case IDC_FILTERBOX:
 			if(HIWORD(wParam)==CBN_SELCHANGE) {
 				int scale = (int)SendDlgItemMessage(hDlg,IDC_FILTERBOX,CB_GETCURSEL,0,0);
@@ -7562,9 +7876,7 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 				const int oldScaleScale = max(GetFilterScale(GUI.Scale), GetFilterScale(GUI.ScaleHiRes));
 
-//				UpdateScale(GUI.Scale, scale);
 				GUI.Scale = (RenderFilter)scale;
-
 
 				const int newScaleScale = max(GetFilterScale(GUI.Scale), GetFilterScale(GUI.ScaleHiRes));
 
@@ -7574,45 +7886,9 @@ INT_PTR CALLBACK DlgFunky(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				// refresh screen, so the user can see the new filter
 				// (assuming the dialog box isn't completely covering the game window)
 				WinRefreshDisplay();
-
-				// set hi-res combo box to match the lo-res output filter as best as possible
-//				if(GetFilterHiResSupport(GUI.Scale))
-checkUpdateFilterBox2:
-				{
-					char textOriginal [256];
-					SendMessageA(GetDlgItem(hDlg, IDC_FILTERBOX), WM_GETTEXT, 256,(LPARAM)textOriginal);
-					int count = SendDlgItemMessage(hDlg,IDC_FILTERBOX2,CB_GETCOUNT,0,0);
-//					int scale = GUI.Scale;
-					bool switched = false;
-					for(int j=0; j<2 && !switched; j++){
-						if(j){
-							RenderFilter filter; // no match, set default for chosen scale
-							switch(GetFilterScale(GUI.Scale)){
-								case 1: filter = FILTER_SIMPLE1X; break;
-					   default: case 2: filter = FILTER_SIMPLE2X; break;
-								case 3: filter = FILTER_SIMPLE3X; break;
-								case 4: filter = FILTER_SIMPLE4X; break;
-								case 5: case 6: filter = FILTER_SIMPLE4X; break;
-							}
-							strcpy(textOriginal, GetFilterName(filter));
-						}
-						for(int i=0; i<count && !switched; i++){
-							int textLen = SendDlgItemMessageA(hDlg,IDC_FILTERBOX2,CB_GETLBTEXTLEN,(WPARAM)i,0);
-							char* text = new char[textLen+1];
-							SendDlgItemMessageA(hDlg,IDC_FILTERBOX2,CB_GETLBTEXT,(WPARAM)i,(LPARAM)text);
-							if(!stricmp(textOriginal, text)){
-								SendDlgItemMessageA(hDlg,IDC_FILTERBOX2,CB_SETCURSEL,(WPARAM)i,0);
-								switched = true;
-							}
-							delete[] text;
-						}
-					}
-					goto updateFilterBox2;
-				}
 			}
 			break;
 		case IDC_FILTERBOX2: // hi-res
-updateFilterBox2:
 			{
 				char text [256];
 				text[0] = '\0';
@@ -7628,7 +7904,6 @@ updateFilterBox2:
 
 				const int oldScaleScale = max(GetFilterScale(GUI.Scale), GetFilterScale(GUI.ScaleHiRes));
 
-//				UpdateScale(GUI.Scale, scale);
 				GUI.ScaleHiRes = (RenderFilter)scale;
 
 				const int newScaleScale = max(GetFilterScale(GUI.Scale), GetFilterScale(GUI.ScaleHiRes));
@@ -7645,17 +7920,24 @@ updateFilterBox2:
 		case IDOK:
 			bool fullscreenWanted;
  			Settings.Transparency = IsDlgButtonChecked(hDlg, IDC_TRANS);
-			GUI.BilinearFilter = (bool)(IsDlgButtonChecked(hDlg,IDC_BILINEAR)==BST_CHECKED);
-			if(!GUI.FullScreen || (GUI.FullscreenMode.width >= 512 && GUI.FullscreenMode.height >= 478) || GUI.Stretch)
-				Settings.SupportHiRes = IsDlgButtonChecked(hDlg, IDC_HIRES);
-			else
-				Settings.SupportHiRes = false;
-			GUI.HeightExtend = IsDlgButtonChecked(hDlg, IDC_HEIGHT_EXTEND)!=0;
-			Settings.AutoDisplayMessages = IsDlgButtonChecked(hDlg, IDC_MESSAGES_IN_IMAGE);
+			Settings.BilinearFilter = (bool)(IsDlgButtonChecked(hDlg,IDC_BILINEAR)==BST_CHECKED);
+			Settings.ShowOverscan = IsDlgButtonChecked(hDlg, IDC_HEIGHT_EXTEND)!=0;
 			GUI.DoubleBuffered = (bool)(IsDlgButtonChecked(hDlg, IDC_DBLBUFFER)==BST_CHECKED);
+			GUI.ReduceInputLag = (bool)(IsDlgButtonChecked(hDlg, IDC_REDUCEINPUTLAG) == BST_CHECKED);
 			GUI.Vsync = (bool)(IsDlgButtonChecked(hDlg, IDC_VSYNC
-				
+
 				)==BST_CHECKED);
+			{
+				int newOSDSize = SendDlgItemMessage(hDlg, IDC_SPIN_OSD_SIZE, UDM_GETPOS, 0, 0);
+				bool need_reset = ((bool)Settings.AutoDisplayMessages != prevAutoDisplayMessages || newOSDSize != GUI.OSDSize);
+				GUI.OSDSize = newOSDSize;
+				if (need_reset)
+				{
+					WinDisplayReset();
+					WinRefreshDisplay();
+					UpdateWindow(GUI.hWnd);
+				}
+			}
 			if(IsDlgButtonChecked(hDlg, IDC_AUTOFRAME))
 			{
 				Settings.SkipFrames=AUTO_FRAMERATE;
@@ -7669,8 +7951,10 @@ updateFilterBox2:
 
 			GUI.Stretch = (bool)(IsDlgButtonChecked(hDlg, IDC_STRETCH)==BST_CHECKED);
 			GUI.AspectRatio = (bool)(IsDlgButtonChecked(hDlg, IDC_ASPECT)==BST_CHECKED);
+			GUI.IntegerScaling = (bool)(IsDlgButtonChecked(hDlg, IDC_INTEGERSCALING) == BST_CHECKED);
 			fullscreenWanted = (bool)(IsDlgButtonChecked(hDlg, IDC_FULLSCREEN)==BST_CHECKED);
 			GUI.EmulateFullscreen = (bool)(IsDlgButtonChecked(hDlg, IDC_EMUFULLSCREEN)==BST_CHECKED);
+			GUI.FullscreenOnOpen = (bool)(IsDlgButtonChecked(hDlg, IDC_FULLSCREEN_ON_OPEN) == BST_CHECKED);
 			Settings.DisplayFrameRate = IsDlgButtonChecked(hDlg, IDC_SHOWFPS);
 			GUI.BlendHiRes = (bool)(IsDlgButtonChecked(hDlg, IDC_HIRESBLEND)==BST_CHECKED);
 
@@ -7709,31 +7993,29 @@ updateFilterBox2:
 				ToggleFullScreen();
 			}
 
-
 			return false;
 
-
-
 		case IDCANCEL:
-			ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_OUTPUTMETHOD),prevOutputMethod);
+			SelectOutputMethodInVideoDropdown(hDlg, prevOutputMethod);
 			SendMessage(hDlg,WM_COMMAND,MAKEWPARAM(IDC_OUTPUTMETHOD,CBN_SELCHANGE),0);
 
 			{
 				//UpdateScale(GUI.Scale, prevScale);
 				GUI.Scale = (RenderFilter)prevScale;
 				GUI.ScaleHiRes = (RenderFilter)prevScaleHiRes;
-				GFX.RealPPL = prevPPL;
 				GUI.Stretch = prevStretch;
 				Settings.AutoDisplayMessages = prevAutoDisplayMessages;
-				GUI.BilinearFilter = prevBilinearFilter;
+				Settings.BilinearFilter = prevBilinearFilter;
 				GUI.AspectRatio = prevAspectRatio;
 				GUI.AspectWidth = prevAspectWidth;
-				GUI.HeightExtend = prevHeightExtend;
+				GUI.IntegerScaling = prevIntegerScaling;
+				Settings.ShowOverscan = prevHeightExtend;
 				GUI.shaderEnabled = prevShaderEnabled;
 				GUI.BlendHiRes = prevBlendHires;
+				GUI.NTSCScanlines = prevNTSCScanlines;
 				lstrcpy(GUI.D3DshaderFileName,prevD3DShaderFile);
 				lstrcpy(GUI.OGLshaderFileName,prevOGLShaderFile);
-			}	
+			}
 
 			EndDialog(hDlg,0);
 
@@ -8005,138 +8287,117 @@ switch(msg)
 	return FALSE;
 }
 
+struct hotkey_dialog_item {
+    SCustomKey *key_entry;
+    TCHAR *description;
+};
+
+// this structure defines the four sub pages in the hotkey config dialog
+// to keep an entry blank, set the SCustomKey pointer to NULL and the text to an empty string
+static hotkey_dialog_item hotkey_dialog_items[4][MAX_SWITCHABLE_HOTKEY_DIALOG_ITEMS] = {
+    {
+        { &CustomKeys.SpeedUp, HOTKEYS_LABEL_1_1 },
+        { &CustomKeys.SpeedDown, HOTKEYS_LABEL_1_2 },
+        { &CustomKeys.Pause, HOTKEYS_LABEL_1_3 },
+        { &CustomKeys.FastForwardToggle, HOTKEYS_LABEL_1_4 },
+        { &CustomKeys.FastForward, HOTKEYS_LABEL_1_5 },
+        { &CustomKeys.Rewind, HOTKEYS_LABEL_1_6 },
+        { &CustomKeys.SkipUp, HOTKEYS_LABEL_1_7 },
+        { &CustomKeys.SkipDown, HOTKEYS_LABEL_1_8 },
+        { &CustomKeys.Mute, HOTKEYS_LABEL_1_9 },
+        { &CustomKeys.ToggleCheats, HOTKEYS_LABEL_1_10 },
+        { &CustomKeys.QuitS9X, HOTKEYS_LABEL_1_11 },
+        { &CustomKeys.ResetGame, HOTKEYS_LABEL_1_12 },
+        { &CustomKeys.SaveScreenShot, HOTKEYS_LABEL_1_13 },
+		{ &CustomKeys.FrameAdvance, HOTKEYS_LABEL_1_14 },
+    },
+    {
+        { &CustomKeys.BGL1, HOTKEYS_LABEL_2_1 },
+        { &CustomKeys.BGL2, HOTKEYS_LABEL_2_2 },
+        { &CustomKeys.BGL3, HOTKEYS_LABEL_2_3 },
+        { &CustomKeys.BGL4, HOTKEYS_LABEL_2_4 },
+        { &CustomKeys.BGL5, HOTKEYS_LABEL_2_5 },
+        { &CustomKeys.ClippingWindows, HOTKEYS_LABEL_2_6 },
+        { &CustomKeys.Transparency, HOTKEYS_LABEL_2_7 },
+		{ &CustomKeys.ToggleBackdrop, HOTKEYS_LABEL_2_8 },
+        { &CustomKeys.ScopePause, HOTKEYS_LABEL_2_9 },
+        { &CustomKeys.SwitchControllers, HOTKEYS_LABEL_2_10 },
+        { &CustomKeys.JoypadSwap, HOTKEYS_LABEL_2_11 },
+        { &CustomKeys.ShowPressed, HOTKEYS_LABEL_2_12 },
+        { &CustomKeys.FrameCount, HOTKEYS_LABEL_2_13 },
+		{ &CustomKeys.ReadOnly, HOTKEYS_LABEL_2_14 },
+    },
+    {
+        { &CustomKeys.TurboA, HOTKEYS_LABEL_3_1 },
+        { &CustomKeys.TurboB, HOTKEYS_LABEL_3_2 },
+        { &CustomKeys.TurboY, HOTKEYS_LABEL_3_3 },
+        { &CustomKeys.TurboX, HOTKEYS_LABEL_3_4 },
+        { &CustomKeys.TurboL, HOTKEYS_LABEL_3_5 },
+        { &CustomKeys.TurboR, HOTKEYS_LABEL_3_6 },
+        { &CustomKeys.TurboStart, HOTKEYS_LABEL_3_7 },
+        { &CustomKeys.TurboSelect, HOTKEYS_LABEL_3_8 },
+        { &CustomKeys.TurboLeft, HOTKEYS_LABEL_3_9 },
+        { &CustomKeys.TurboUp, HOTKEYS_LABEL_3_10 },
+        { &CustomKeys.TurboRight, HOTKEYS_LABEL_3_11 },
+        { &CustomKeys.TurboDown, HOTKEYS_LABEL_3_12 },
+		{ &CustomKeys.ScopeTurbo, HOTKEYS_LABEL_3_13 },
+		{ NULL, _T("") },
+    },
+    {
+        { &CustomKeys.SelectSave[0], HOTKEYS_LABEL_4_1 },
+        { &CustomKeys.SelectSave[1], HOTKEYS_LABEL_4_2 },
+        { &CustomKeys.SelectSave[2], HOTKEYS_LABEL_4_3 },
+        { &CustomKeys.SelectSave[3], HOTKEYS_LABEL_4_4 },
+        { &CustomKeys.SelectSave[4], HOTKEYS_LABEL_4_5 },
+        { &CustomKeys.SelectSave[5], HOTKEYS_LABEL_4_6 },
+        { &CustomKeys.SelectSave[6], HOTKEYS_LABEL_4_7 },
+        { &CustomKeys.SelectSave[7], HOTKEYS_LABEL_4_8 },
+        { &CustomKeys.SelectSave[8], HOTKEYS_LABEL_4_9 },
+        { &CustomKeys.SelectSave[9], HOTKEYS_LABEL_4_10 },
+        { &CustomKeys.SaveFileSelect, HOTKEYS_LABEL_4_11 },
+        { &CustomKeys.LoadFileSelect, HOTKEYS_LABEL_4_12 },
+		{ NULL, _T("") },
+		{ NULL, _T("") },
+    },
+};
 
 static void set_hotkeyinfo(HWND hDlg)
 {
 	int index = SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_GETCURSEL,0,0);
 
-	switch(index)
-	{
-	case 0:
-		// set page 1 fields
-		SendDlgItemMessage(hDlg,IDC_HOTKEY1,WM_USER+44,CustomKeys.SpeedUp.key,CustomKeys.SpeedUp.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY2,WM_USER+44,CustomKeys.SpeedDown.key,CustomKeys.SpeedDown.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY3,WM_USER+44,CustomKeys.Pause.key,CustomKeys.Pause.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY4,WM_USER+44,CustomKeys.FrameAdvance.key,CustomKeys.FrameAdvance.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY5,WM_USER+44,CustomKeys.FastForward.key,CustomKeys.FastForward.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY6,WM_USER+44,CustomKeys.SkipUp.key,CustomKeys.SkipUp.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY7,WM_USER+44,CustomKeys.SkipDown.key,CustomKeys.SkipDown.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY8,WM_USER+44,CustomKeys.ScopeTurbo.key,CustomKeys.ScopeTurbo.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY9,WM_USER+44,CustomKeys.ScopePause.key,CustomKeys.ScopePause.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY10,WM_USER+44,CustomKeys.ShowPressed.key,CustomKeys.ShowPressed.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY11,WM_USER+44,CustomKeys.FrameCount.key,CustomKeys.FrameCount.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY12,WM_USER+44,CustomKeys.ReadOnly.key,CustomKeys.ReadOnly.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY13,WM_USER+44,CustomKeys.SaveScreenShot.key,CustomKeys.SaveScreenShot.modifiers);
-		break;
-	case 1:
-		SendDlgItemMessage(hDlg,IDC_HOTKEY1,WM_USER+44,CustomKeys.BGL1.key,CustomKeys.BGL1.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY2,WM_USER+44,CustomKeys.BGL2.key,CustomKeys.BGL2.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY3,WM_USER+44,CustomKeys.BGL3.key,CustomKeys.BGL3.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY4,WM_USER+44,CustomKeys.BGL4.key,CustomKeys.BGL4.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY5,WM_USER+44,CustomKeys.BGL5.key,CustomKeys.BGL5.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY6,WM_USER+44,CustomKeys.ClippingWindows.key,CustomKeys.ClippingWindows.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY7,WM_USER+44,CustomKeys.Transparency.key,CustomKeys.Transparency.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY8,WM_USER+44,CustomKeys.FastForwardToggle.key,CustomKeys.FastForwardToggle.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY9,WM_USER+44,CustomKeys.Rewind.key,CustomKeys.Rewind.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY10,WM_USER+44,CustomKeys.SwitchControllers.key,CustomKeys.SwitchControllers.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY11,WM_USER+44,CustomKeys.JoypadSwap.key,CustomKeys.JoypadSwap.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY12,WM_USER+44,CustomKeys.ResetGame.key,CustomKeys.ResetGame.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY13,WM_USER+44,CustomKeys.ToggleCheats.key,CustomKeys.ToggleCheats.modifiers);
-		break;
-	case 2:
-		SendDlgItemMessage(hDlg,IDC_HOTKEY1,WM_USER+44,CustomKeys.TurboA.key,CustomKeys.TurboA.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY2,WM_USER+44,CustomKeys.TurboB.key,CustomKeys.TurboB.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY3,WM_USER+44,CustomKeys.TurboY.key,CustomKeys.TurboY.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY4,WM_USER+44,CustomKeys.TurboX.key,CustomKeys.TurboX.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY5,WM_USER+44,CustomKeys.TurboL.key,CustomKeys.TurboL.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY6,WM_USER+44,CustomKeys.TurboR.key,CustomKeys.TurboR.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY7,WM_USER+44,CustomKeys.TurboStart.key,CustomKeys.TurboStart.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY8,WM_USER+44,CustomKeys.TurboSelect.key,CustomKeys.TurboSelect.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY9,WM_USER+44,CustomKeys.TurboLeft.key,CustomKeys.TurboLeft.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY10,WM_USER+44,CustomKeys.TurboUp.key,CustomKeys.TurboUp.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY11,WM_USER+44,CustomKeys.TurboRight.key,CustomKeys.TurboRight.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY12,WM_USER+44,CustomKeys.TurboDown.key,CustomKeys.TurboDown.modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY13,WM_USER+44,0,0);
-		break;
-	case 3:
-		for(int i = 0 ; i < 10 ; i++)
-			SendDlgItemMessage(hDlg,IDC_HOTKEY1+i,WM_USER+44,CustomKeys.SelectSave[i].key,CustomKeys.SelectSave[i].modifiers);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY11,WM_USER+44,0,0);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY12,WM_USER+44,0,0);
-		SendDlgItemMessage(hDlg,IDC_HOTKEY13,WM_USER+44,CustomKeys.QuitS9X.key,CustomKeys.QuitS9X.modifiers);
-		break;
-	}
+    for (int i = 0; i < MAX_SWITCHABLE_HOTKEY_DIALOG_ITEMS; i++)
+    {
+        int flags = SW_SHOWNOACTIVATE;
+        if (hotkey_dialog_items[index][i].key_entry == NULL)
+            flags = SW_HIDE;
+        ShowWindow(GetDlgItem(hDlg, IDC_HOTKEY1 + i), flags);
+        ShowWindow(GetDlgItem(hDlg, IDC_LABEL_HK1 + i), flags);
+
+        int wParam = 0, lParam = 0;
+        if (hotkey_dialog_items[index][i].key_entry)
+        {
+            wParam = hotkey_dialog_items[index][i].key_entry->key;
+            lParam = hotkey_dialog_items[index][i].key_entry->modifiers;
+        }
+        SendDlgItemMessage(hDlg, IDC_HOTKEY1 + i, WM_USER + 44, wParam, lParam);
+    }
 
 	SendDlgItemMessage(hDlg,IDC_SLOTPLUS,WM_USER+44,CustomKeys.SlotPlus.key,CustomKeys.SlotPlus.modifiers);
 	SendDlgItemMessage(hDlg,IDC_SLOTMINUS,WM_USER+44,CustomKeys.SlotMinus.key,CustomKeys.SlotMinus.modifiers);
 	SendDlgItemMessage(hDlg,IDC_SLOTSAVE,WM_USER+44,CustomKeys.SlotSave.key,CustomKeys.SlotSave.modifiers);
 	SendDlgItemMessage(hDlg,IDC_SLOTLOAD,WM_USER+44,CustomKeys.SlotLoad.key,CustomKeys.SlotLoad.modifiers);
+    SendDlgItemMessage(hDlg, IDC_DIALOGSAVE, WM_USER + 44, CustomKeys.DialogSave.key, CustomKeys.DialogSave.modifiers);
+    SendDlgItemMessage(hDlg, IDC_DIALOGLOAD, WM_USER + 44, CustomKeys.DialogLoad.key, CustomKeys.DialogLoad.modifiers);
+	SendDlgItemMessage(hDlg, IDC_BANKPLUS, WM_USER + 44, CustomKeys.BankPlus.key, CustomKeys.BankPlus.modifiers);
+	SendDlgItemMessage(hDlg, IDC_BANKMINUS, WM_USER + 44, CustomKeys.BankMinus.key, CustomKeys.BankMinus.modifiers);
 	int i;
-	for(i = 0 ; i < 10 ; i++) SendDlgItemMessage(hDlg,IDC_SAVE1+i,WM_USER+44,CustomKeys.Save[i].key,CustomKeys.Save[i].modifiers);
-	for(i = 0 ; i < 10 ; i++) SendDlgItemMessage(hDlg,IDC_SAVE11+i,WM_USER+44,CustomKeys.Load[i].key,CustomKeys.Load[i].modifiers);
+	for(i = 0 ; i < SAVE_SLOTS_PER_BANK; i++) SendDlgItemMessage(hDlg,IDC_SAVE1+i,WM_USER+44,CustomKeys.Save[i].key,CustomKeys.Save[i].modifiers);
+	for(i = 0 ; i < SAVE_SLOTS_PER_BANK; i++) SendDlgItemMessage(hDlg,IDC_SAVE11+i,WM_USER+44,CustomKeys.Load[i].key,CustomKeys.Load[i].modifiers);
 
-	switch(index)
-	{
-	case 0:
-		// set page 1 label text
-		SetDlgItemText(hDlg,IDC_LABEL_HK1,HOTKEYS_LABEL_1_1);
-		SetDlgItemText(hDlg,IDC_LABEL_HK2,HOTKEYS_LABEL_1_2);
-		SetDlgItemText(hDlg,IDC_LABEL_HK3,HOTKEYS_LABEL_1_3);
-		SetDlgItemText(hDlg,IDC_LABEL_HK4,HOTKEYS_LABEL_1_4);
-		SetDlgItemText(hDlg,IDC_LABEL_HK5,HOTKEYS_LABEL_1_5);
-		SetDlgItemText(hDlg,IDC_LABEL_HK6,HOTKEYS_LABEL_1_6);
-		SetDlgItemText(hDlg,IDC_LABEL_HK7,HOTKEYS_LABEL_1_7);
-		SetDlgItemText(hDlg,IDC_LABEL_HK8,HOTKEYS_LABEL_1_8);
-		SetDlgItemText(hDlg,IDC_LABEL_HK9,HOTKEYS_LABEL_1_9);
-		SetDlgItemText(hDlg,IDC_LABEL_HK10,HOTKEYS_LABEL_1_10);
-		SetDlgItemText(hDlg,IDC_LABEL_HK11,HOTKEYS_LABEL_1_11);
-		SetDlgItemText(hDlg,IDC_LABEL_HK12,HOTKEYS_LABEL_1_12);
-		SetDlgItemText(hDlg,IDC_LABEL_HK13,HOTKEYS_LABEL_1_13);
-		break;
-	case 1:
-		SetDlgItemText(hDlg,IDC_LABEL_HK1,HOTKEYS_LABEL_2_1);
-		SetDlgItemText(hDlg,IDC_LABEL_HK2,HOTKEYS_LABEL_2_2);
-		SetDlgItemText(hDlg,IDC_LABEL_HK3,HOTKEYS_LABEL_2_3);
-		SetDlgItemText(hDlg,IDC_LABEL_HK4,HOTKEYS_LABEL_2_4);
-		SetDlgItemText(hDlg,IDC_LABEL_HK5,HOTKEYS_LABEL_2_5);
-		SetDlgItemText(hDlg,IDC_LABEL_HK6,HOTKEYS_LABEL_2_6);
-		SetDlgItemText(hDlg,IDC_LABEL_HK7,HOTKEYS_LABEL_2_7);
-		SetDlgItemText(hDlg,IDC_LABEL_HK8,HOTKEYS_LABEL_2_8);
-		SetDlgItemText(hDlg,IDC_LABEL_HK9,HOTKEYS_LABEL_2_9);
-		SetDlgItemText(hDlg,IDC_LABEL_HK10,HOTKEYS_LABEL_2_10);
-		SetDlgItemText(hDlg,IDC_LABEL_HK11,HOTKEYS_LABEL_2_11);
-		SetDlgItemText(hDlg,IDC_LABEL_HK12,HOTKEYS_LABEL_2_12);
-		SetDlgItemText(hDlg,IDC_LABEL_HK13,HOTKEYS_LABEL_2_13);
-		break;
-	case 2:
-		SetDlgItemText(hDlg,IDC_LABEL_HK1,HOTKEYS_LABEL_3_1);
-		SetDlgItemText(hDlg,IDC_LABEL_HK2,HOTKEYS_LABEL_3_2);
-		SetDlgItemText(hDlg,IDC_LABEL_HK3,HOTKEYS_LABEL_3_3);
-		SetDlgItemText(hDlg,IDC_LABEL_HK4,HOTKEYS_LABEL_3_4);
-		SetDlgItemText(hDlg,IDC_LABEL_HK5,HOTKEYS_LABEL_3_5);
-		SetDlgItemText(hDlg,IDC_LABEL_HK6,HOTKEYS_LABEL_3_6);
-		SetDlgItemText(hDlg,IDC_LABEL_HK7,HOTKEYS_LABEL_3_7);
-		SetDlgItemText(hDlg,IDC_LABEL_HK8,HOTKEYS_LABEL_3_8);
-		SetDlgItemText(hDlg,IDC_LABEL_HK9,HOTKEYS_LABEL_3_9);
-		SetDlgItemText(hDlg,IDC_LABEL_HK10,HOTKEYS_LABEL_3_10);
-		SetDlgItemText(hDlg,IDC_LABEL_HK11,HOTKEYS_LABEL_3_11);
-		SetDlgItemText(hDlg,IDC_LABEL_HK12,HOTKEYS_LABEL_3_12);
-		SetDlgItemText(hDlg,IDC_LABEL_HK13,INPUTCONFIG_LABEL_UNUSED);
-
-		break;
-	case 3:
-		for(int i = 0 ; i < 10 ; i++)
-		{
-			TCHAR temp [64];
-			_stprintf(temp, TEXT("Select Slot %d"), i);
-			SetDlgItemText(hDlg,IDC_LABEL_HK1+i,temp);
-		}
-		for(int i = 10 ; i < 12 ; i++)
-			SetDlgItemText(hDlg,IDC_LABEL_HK1+i,INPUTCONFIG_LABEL_UNUSED);
-		SetDlgItemText(hDlg,IDC_LABEL_HK13,HOTKEYS_LABEL_4_13);
-
-		break;
-	}
+    for(int i = 0; i < MAX_SWITCHABLE_HOTKEY_DIALOG_ITEMS; i++)
+    {
+        SetDlgItemText(hDlg, IDC_LABEL_HK1 + i, hotkey_dialog_items[index][i].description);
+    }
 }
 
 // DlgHotkeyConfig
@@ -8217,84 +8478,6 @@ switch(msg)
 
 		switch(which)
 		{
-		case IDC_HOTKEY1:
-			if(index == 0) CustomKeys.SpeedUp.key = wParam, CustomKeys.SpeedUp.modifiers = modifiers;
-			if(index == 1) CustomKeys.BGL1.key = wParam,    CustomKeys.BGL1.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboA.key = wParam,    CustomKeys.TurboA.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[0].key = wParam,	CustomKeys.SelectSave[0].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY2:
-			if(index == 0) CustomKeys.SpeedDown.key = wParam, CustomKeys.SpeedDown.modifiers = modifiers;
-			if(index == 1) CustomKeys.BGL2.key = wParam,      CustomKeys.BGL2.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboB.key = wParam,    CustomKeys.TurboB.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[1].key = wParam,	CustomKeys.SelectSave[1].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY3:
-			if(index == 0) CustomKeys.Pause.key = wParam, CustomKeys.Pause.modifiers = modifiers;
-			if(index == 1) CustomKeys.BGL3.key = wParam,  CustomKeys.BGL3.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboY.key = wParam,    CustomKeys.TurboY.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[2].key = wParam,	CustomKeys.SelectSave[2].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY4:
-			if(index == 0) CustomKeys.FrameAdvance.key = wParam, CustomKeys.FrameAdvance.modifiers = modifiers;
-			if(index == 1) CustomKeys.BGL4.key = wParam,         CustomKeys.BGL4.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboX.key = wParam,    CustomKeys.TurboX.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[3].key = wParam,	CustomKeys.SelectSave[3].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY5:
-			if(index == 0) CustomKeys.FastForward.key = wParam, CustomKeys.FastForward.modifiers = modifiers;
-			if(index == 1) CustomKeys.BGL5.key = wParam,        CustomKeys.BGL5.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboL.key = wParam,    CustomKeys.TurboL.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[4].key = wParam,	CustomKeys.SelectSave[4].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY6:
-			if(index == 0) CustomKeys.SkipUp.key = wParam,          CustomKeys.SkipUp.modifiers = modifiers;
-			if(index == 1) CustomKeys.ClippingWindows.key = wParam, CustomKeys.ClippingWindows.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboR.key = wParam,    CustomKeys.TurboR.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[5].key = wParam,	CustomKeys.SelectSave[5].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY7:
-			if(index == 0) CustomKeys.SkipDown.key = wParam, CustomKeys.SkipDown.modifiers = modifiers;
-			if(index == 1) CustomKeys.Transparency.key = wParam, CustomKeys.Transparency.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboStart.key = wParam,    CustomKeys.TurboStart.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[6].key = wParam,	CustomKeys.SelectSave[6].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY8:
-			if(index == 0) CustomKeys.ScopeTurbo.key = wParam,  CustomKeys.ScopeTurbo.modifiers = modifiers;
-			if(index == 1) CustomKeys.FastForwardToggle.key = wParam, CustomKeys.FastForwardToggle.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboSelect.key = wParam,    CustomKeys.TurboSelect.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[7].key = wParam,	CustomKeys.SelectSave[7].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY9:
-			if(index == 0) CustomKeys.ScopePause.key = wParam, CustomKeys.ScopePause.modifiers = modifiers;
-            if(index == 1) CustomKeys.Rewind.key = wParam,      CustomKeys.Rewind.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboLeft.key = wParam,    CustomKeys.TurboLeft.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[8].key = wParam,	CustomKeys.SelectSave[8].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY10:
-			if(index == 0) CustomKeys.ShowPressed.key = wParam, CustomKeys.ShowPressed.modifiers = modifiers;
-			if(index == 1) CustomKeys.SwitchControllers.key = wParam, CustomKeys.SwitchControllers.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboUp.key = wParam,    CustomKeys.TurboUp.modifiers = modifiers;
-			if(index == 3) CustomKeys.SelectSave[9].key = wParam,	CustomKeys.SelectSave[9].modifiers = modifiers;
-			break;
-		case IDC_HOTKEY11:
-			if(index == 0) CustomKeys.FrameCount.key = wParam,  CustomKeys.FrameCount.modifiers = modifiers;
-			if(index == 1) CustomKeys.JoypadSwap.key = wParam, CustomKeys.JoypadSwap.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboRight.key = wParam,    CustomKeys.TurboRight.modifiers = modifiers;
-			break;
-		case IDC_HOTKEY12:
-			if(index == 0) CustomKeys.ReadOnly.key = wParam,   CustomKeys.ReadOnly.modifiers = modifiers;
-			if(index == 1) CustomKeys.ResetGame.key = wParam,    CustomKeys.ResetGame.modifiers = modifiers;
-			if(index == 2) CustomKeys.TurboDown.key = wParam,    CustomKeys.TurboDown.modifiers = modifiers;
-//			if(index == 3) CustomKeys.InterpMode7.key = wParam, CustomKeys.InterpMode7.modifiers = modifiers;
-			break;
-		case IDC_HOTKEY13:
-			if(index == 0) CustomKeys.SaveScreenShot.key = wParam,    CustomKeys.SaveScreenShot.modifiers = modifiers;
-			if(index == 1) CustomKeys.ToggleCheats.key = wParam,    CustomKeys.ToggleCheats.modifiers = modifiers;
-//			if(index == 3) CustomKeys.BGLHack.key = wParam,  CustomKeys.BGLHack.modifiers = modifiers;
-			if(index == 3) CustomKeys.QuitS9X.key = wParam,  CustomKeys.QuitS9X.modifiers = modifiers;
-			break;
-
 		case IDC_SLOTPLUS:
 			CustomKeys.SlotPlus.key = wParam;
 			CustomKeys.SlotPlus.modifiers = modifiers;
@@ -8314,7 +8497,34 @@ switch(msg)
 			CustomKeys.SlotSave.key = wParam;
 			CustomKeys.SlotSave.modifiers = modifiers;
 			break;
+
+        case IDC_DIALOGSAVE:
+            CustomKeys.DialogSave.key = wParam;
+            CustomKeys.DialogSave.modifiers = modifiers;
+            break;
+
+        case IDC_DIALOGLOAD:
+            CustomKeys.DialogLoad.key = wParam;
+            CustomKeys.DialogLoad.modifiers = modifiers;
+            break;
+
+		case IDC_BANKPLUS:
+			CustomKeys.BankPlus.key = wParam;
+			CustomKeys.BankPlus.modifiers = modifiers;
+			break;
+
+		case IDC_BANKMINUS:
+			CustomKeys.BankMinus.key = wParam;
+			CustomKeys.BankMinus.modifiers = modifiers;
+			break;
 		}
+
+        if(which >= IDC_HOTKEY1 && which <= IDC_HOTKEY14)
+        {
+            int offset = which - IDC_HOTKEY1;
+            hotkey_dialog_items[index][offset].key_entry->key = wParam;
+            hotkey_dialog_items[index][offset].key_entry->modifiers = modifiers;
+        }
 
 		if(which >= IDC_SAVE1 && which <= IDC_SAVE10)
 		{
@@ -8392,9 +8602,56 @@ enum CheatStatus{
 	Modified
 };
 typedef struct{
-int* index;
-DWORD* state;
+	std::vector<DWORD> state;
 }CheatTracker;
+
+int WinSearchCheatDatabase()
+{
+	std::string filename;
+	int result;
+	int reason = 0;
+
+	filename = S9xGetDirectory(CHEAT_DIR);
+	filename += "\\cheats.bml";
+	if (!(result = S9xImportCheatsFromDatabase(filename.c_str())))
+	{
+		return result;
+	}
+
+	if (result < reason)
+		reason = result;
+
+	filename = S9xGetDirectory(HOME_DIR);
+	filename += "\\cheats.bml";
+	if (!(result = S9xImportCheatsFromDatabase(filename.c_str())))
+	{
+		return result;
+	}
+
+	if (result < reason)
+		reason = result;
+
+	filename = S9xGetDirectory(ROM_DIR);
+	filename += "\\cheats.bml";
+	if (!(result = S9xImportCheatsFromDatabase(filename.c_str())))
+	{
+		return result;
+	}
+
+	if (result < reason)
+		reason = result;
+
+	MessageBox(GUI.hWnd,
+		reason == -1 ?
+			TEXT("The database file cheats.bml was not found. It is normally installed with "
+				"Snes9x, but you may also place a custom copy in your configuration or cheats directory.") :
+			TEXT("No matching game was found in the databases. If you are using a non-official "
+				"translation or modified copy, you may be able to find and manually enter the codes."),
+		reason == -1 ? TEXT("Couldn't Find Cheats Database") : TEXT("No Matching Game Found"),
+		MB_OK | MB_ICONEXCLAMATION);
+
+	return reason;
+}
 
 #define ITEM_QUERY(a, b, c, d, e)  memset(&a, 0, sizeof(LV_ITEM)); \
 						a.iItem= ListView_GetSelectionMark(GetDlgItem(hDlg, b)); \
@@ -8403,6 +8660,7 @@ DWORD* state;
 						a.pszText=d; \
 						a.cchTextMax=e; \
 						ListView_GetItem(GetDlgItem(hDlg, b), &a);
+#define CHEAT_SIZE 1024
 
 INT_PTR CALLBACK DlgCheater(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -8418,93 +8676,62 @@ INT_PTR CALLBACK DlgCheater(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 			ListView_SetExtendedListViewStyle(GetDlgItem(hDlg, IDC_CHEAT_LIST), LVS_EX_FULLROWSELECT|LVS_EX_CHECKBOXES);
 
-			SendDlgItemMessage(hDlg, IDC_CHEAT_CODE, EM_LIMITTEXT, 14, 0);
-			SendDlgItemMessage(hDlg, IDC_CHEAT_DESCRIPTION, EM_LIMITTEXT, 22, 0);
-			SendDlgItemMessage(hDlg, IDC_CHEAT_ADDRESS, EM_LIMITTEXT, 6, 0);
-			SendDlgItemMessage(hDlg, IDC_CHEAT_BYTE, EM_LIMITTEXT, 3, 0);
+			SendDlgItemMessage(hDlg, IDC_CHEAT_CODE, EM_LIMITTEXT, CHEAT_SIZE, 0);
+			SendDlgItemMessage(hDlg, IDC_CHEAT_DESCRIPTION, EM_LIMITTEXT, CHEAT_SIZE, 0);
 
 			LVCOLUMN col;
 			TCHAR temp[32];
-			lstrcpy(temp,SEARCH_COLUMN_ADDRESS);
+			lstrcpy(temp, SEARCH_COLUMN_CODE);
 			memset(&col, 0, sizeof(LVCOLUMN));
 			col.mask=LVCF_FMT|LVCF_ORDER|LVCF_TEXT|LVCF_WIDTH;
 			col.fmt=LVCFMT_LEFT;
 			col.iOrder=0;
-			col.cx=70;
-			col.cchTextMax=7;
+			col.cx=100;
 			col.pszText=temp;
 
 			ListView_InsertColumn(GetDlgItem(hDlg,IDC_CHEAT_LIST),    0,   &col);
-
-			lstrcpy(temp,SEARCH_COLUMN_VALUE);
-			memset(&col, 0, sizeof(LVCOLUMN));
-			col.mask=LVCF_FMT|LVCF_ORDER|LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
-			col.fmt=LVCFMT_LEFT;
-			col.iOrder=1;
-			col.cx=43;
-			col.cchTextMax=3;
-			col.pszText=temp;
-			col.iSubItem=1;
-
-			ListView_InsertColumn(GetDlgItem(hDlg,IDC_CHEAT_LIST),    1,   &col);
 
 			lstrcpy(temp,SEARCH_COLUMN_DESCRIPTION);
 			memset(&col, 0, sizeof(LVCOLUMN));
 			col.mask=LVCF_FMT|LVCF_ORDER|LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
 			col.fmt=LVCFMT_LEFT;
 			col.iOrder=2;
-			col.cx=165;
-			col.cchTextMax=32;
+			col.cx=300;
 			col.pszText=temp;
 			col.iSubItem=2;
 
-			ListView_InsertColumn(GetDlgItem(hDlg,IDC_CHEAT_LIST),    2,   &col);
+			ListView_InsertColumn(GetDlgItem(hDlg,IDC_CHEAT_LIST),    1,   &col);
 
-			ct.index=new int[Cheat.num_cheats];
-			ct.state=new DWORD[Cheat.num_cheats];
+			ct.state.resize(Cheat.group.size());
 
-			uint32 counter;
-			for(counter=0; counter<Cheat.num_cheats; counter++)
+			for(uint32 counter =0; counter < Cheat.group.size(); counter++)
 			{
-				TCHAR buffer[22];
-				int curr_idx=-1;
-				_stprintf(buffer, TEXT("%06X"), Cheat.c[counter].address);
+				std::string code_string;
+				int curr_idx = -1;
+				code_string = S9xCheatGroupToText(counter);
+				Utf8ToWide wstring(code_string.c_str());
+
 				LVITEM lvi;
 				memset(&lvi, 0, sizeof(LVITEM));
-				lvi.mask=LVIF_TEXT;
-				lvi.pszText=buffer;
-				lvi.cchTextMax=7;
-				lvi.iItem=counter;
-				curr_idx=ListView_InsertItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
+				lvi.mask = LVIF_TEXT | LVIF_PARAM;
+				lvi.cchTextMax = CHEAT_SIZE;
+				lvi.pszText = wstring;
+				lvi.lParam = counter; // we save the internal cheat index as lParam of list entry
+				lvi.iItem = counter;
+				curr_idx = ListView_InsertItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
 
-				unsigned int k;
-				for(k=0;k<counter;k++)
-				{
-					if(ct.index[k]>=curr_idx)
-						ct.index[k]++;
-				}
-				ct.index[counter]=curr_idx;
-				ct.state[counter]=Untouched;
+				ct.state[counter] = Untouched;
 
-				_stprintf(buffer, TEXT("%02X"), Cheat.c[counter].byte);
+				Utf8ToWide wstring_name(Cheat.group[counter].name.c_str());
 				memset(&lvi, 0, sizeof(LVITEM));
-				lvi.iItem=curr_idx;
-				lvi.iSubItem=1;
-				lvi.mask=LVIF_TEXT;
-				lvi.pszText=buffer;
-				lvi.cchTextMax=3;
+				lvi.iItem = curr_idx;
+				lvi.iSubItem = 1;
+				lvi.mask = LVIF_TEXT;
+				lvi.cchTextMax = CHEAT_SIZE;
+				lvi.pszText = wstring_name;
 				SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
 
-				lstrcpy(buffer,_tFromChar(Cheat.c[counter].name));
-				memset(&lvi, 0, sizeof(LVITEM));
-				lvi.iItem=curr_idx;
-				lvi.iSubItem=2;
-				lvi.mask=LVIF_TEXT;
-				lvi.pszText=buffer;
-				lvi.cchTextMax=23;
-				SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
-
-				ListView_SetCheckState(GetDlgItem(hDlg,IDC_CHEAT_LIST), curr_idx, Cheat.c[counter].enabled);
+				ListView_SetCheckState(GetDlgItem(hDlg,IDC_CHEAT_LIST), curr_idx, Cheat.group[counter].enabled);
 
 			}
 		return true;
@@ -8535,27 +8762,20 @@ INT_PTR CALLBACK DlgCheater(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 					{
 						new_sel=3;
 						//change
-						TCHAR buf[25];
+						TCHAR buf[CHEAT_SIZE];
 						LV_ITEM lvi;
 
-						ITEM_QUERY (lvi, IDC_CHEAT_LIST, 0, buf, 7);
+						internal_change = true; // do not enable update button
 
-						SetDlgItemText(hDlg, IDC_CHEAT_ADDRESS, lvi.pszText);
+						/* Code */
+						ITEM_QUERY (lvi, IDC_CHEAT_LIST, 0, buf, CHEAT_SIZE);
+						SetDlgItemText(hDlg, IDC_CHEAT_CODE, lvi.pszText);
 
-						ITEM_QUERY (lvi, IDC_CHEAT_LIST, 1, &buf[lstrlen(buf)], 3);
-
-						SetDlgItemText(hDlg, IDC_CHEAT_CODE, buf);
-						TCHAR temp[4];
-						int q;
-						_stscanf(lvi.pszText, TEXT("%02X"), &q);
-						_stprintf(temp, TEXT("%d"), q);
-						SetDlgItemText(hDlg, IDC_CHEAT_BYTE, temp);
-
-						ITEM_QUERY (lvi, IDC_CHEAT_LIST, 2, buf, 24);
-
-						internal_change=true;
+						/* Description */
+						ITEM_QUERY(lvi, IDC_CHEAT_LIST, 1, buf, CHEAT_SIZE);
 						SetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, lvi.pszText);
 
+						internal_change = false;
 					}
 					sel_idx=ListView_GetSelectionMark(GetDlgItem(hDlg, IDC_CHEAT_LIST));
 					has_sel=true;
@@ -8577,294 +8797,154 @@ INT_PTR CALLBACK DlgCheater(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 						if(internal_change)
 						{
-							internal_change=!internal_change;
 							return false;
 						}
 						if(!has_sel)
 							return true;
-							EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), true);
-							return true;
+
+						EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), true);
+						return true;
 					}
 					break;
 
 				}
 			case IDC_ADD_CHEAT:
 				{
-					char temp[24];
-					TCHAR tempDesc[24];
-					GetDlgItemTextA(hDlg, IDC_CHEAT_CODE, temp, 23);
-					if(strcmp(temp, ""))
+					char temp[CHEAT_SIZE];
+					TCHAR tempDesc[CHEAT_SIZE];
+					GetDlgItemTextA(hDlg, IDC_CHEAT_CODE, temp, CHEAT_SIZE);
+					GetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, tempDesc, CHEAT_SIZE);
+
+					std::string valid_cheat = S9xCheatValidate(temp);
+
+					if(!valid_cheat.empty())
 					{
-						int j;
-						bool skip=false;
-						int count=1;
-						uint32 addy;
-						uint8 byte[3];
-						//test game genie
-						if (NULL==S9xGameGenieToRaw (temp, addy, byte[0]))
-							skip=true;
-						//test goldfinger
+						Utf8ToWide wstring(valid_cheat.c_str());
 
-					//	if(!skip
+						int curr_idx = -1;
 
-						//test PAR
-
-						if(!skip)
-						{
-							if(NULL==S9xProActionReplayToRaw(temp, addy, byte[0]))
-								skip=true;
-						}
-
-						if(!skip)
-							return 0;
-
-						for(j=0; j<count; j++)
-						{
-							TCHAR buffer[7];
-							int curr_idx=-1;
-							_stprintf(buffer, TEXT("%06X"), addy);
-							LVITEM lvi;
-							memset(&lvi, 0, sizeof(LVITEM));
-							lvi.mask=LVIF_TEXT;
-							lvi.pszText=buffer;
-							lvi.cchTextMax=6;
-							lvi.iItem=ListView_GetItemCount(GetDlgItem(hDlg,IDC_CHEAT_LIST));
-							curr_idx=ListView_InsertItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
-
-							unsigned int k;
-							for(k=0;k<Cheat.num_cheats;k++)
-							{
-								if(ct.index[k]>=curr_idx)
-									ct.index[k]++;
-							}
-
-
-							_stprintf(buffer, TEXT("%02X"), byte[j]);
-							memset(&lvi, 0, sizeof(LVITEM));
-							lvi.iItem=curr_idx;
-							lvi.iSubItem=1;
-							lvi.mask=LVIF_TEXT;
-							lvi.pszText=buffer;
-							lvi.cchTextMax=2;
-							SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
-
-
-							GetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, tempDesc, 23);
-
-							memset(&lvi, 0, sizeof(LVITEM));
-							lvi.iItem=curr_idx;
-							lvi.iSubItem=2;
-							lvi.mask=LVIF_TEXT;
-							lvi.pszText=tempDesc;
-							lvi.cchTextMax=23;
-							SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
-
-							addy++;
-
-
-						}
-					}
-					else
-					{
-						uint8 byte;
-						TCHAR buffer[7];
-						TCHAR buffer2[7];
-
-						GetDlgItemText(hDlg, IDC_CHEAT_ADDRESS, buffer, 7);
-						GetDlgItemText(hDlg, IDC_CHEAT_BYTE, buffer2, 7);
-
-						int curr_idx=-1;
 						LVITEM lvi;
 						memset(&lvi, 0, sizeof(LVITEM));
-						lvi.mask=LVIF_TEXT;
-						lvi.pszText=buffer;
-						lvi.cchTextMax=6;
-						lvi.iItem=0;
-						curr_idx=ListView_InsertItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
+						lvi.mask = LVIF_TEXT | LVIF_PARAM;
+						lvi.pszText = wstring;
+						lvi.iItem = ListView_GetItemCount(GetDlgItem(hDlg,IDC_CHEAT_LIST));
+						lvi.lParam = -1; // -1 signals this is a new cheat
+						curr_idx = ListView_InsertItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
 
-						int scanres;
-						if(buffer2[0]=='$')
-							_stscanf(buffer2,TEXT("$%2X"), (unsigned int*)&scanres);
-						else _stscanf(buffer2,TEXT("%d"), &scanres);
-						byte = (uint8)(scanres & 0xff);
-
-						_stprintf(buffer2, TEXT("%02X"), byte);
+						SetDlgItemText(hDlg, IDC_CHEAT_CODE, wstring);
 
 						memset(&lvi, 0, sizeof(LVITEM));
-						lvi.iItem=curr_idx;
-						lvi.iSubItem=1;
-						lvi.mask=LVIF_TEXT;
-						lvi.pszText=buffer2;
-						lvi.cchTextMax=2;
-						SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
+						lvi.iItem = curr_idx;
+						lvi.iSubItem = 1;
+						lvi.mask = LVIF_TEXT;
+						lvi.pszText = tempDesc;
+						lvi.cchTextMax = CHEAT_SIZE;
+						ListView_SetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
 
-						GetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, tempDesc, 23);
-
-						memset(&lvi, 0, sizeof(LVITEM));
-						lvi.iItem=curr_idx;
-						lvi.iSubItem=2;
-						lvi.mask=LVIF_TEXT;
-						lvi.pszText=tempDesc;
-						lvi.cchTextMax=23;
-						SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
+						// unselect all items, select new item and make sure it is visible
+						ListView_SetItemState(GetDlgItem(hDlg, IDC_CHEAT_LIST), -1, 0, LVIS_FOCUSED | LVIS_SELECTED);
+						ListView_SetItemState(GetDlgItem(hDlg, IDC_CHEAT_LIST), curr_idx, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+						ListView_EnsureVisible(GetDlgItem(hDlg, IDC_CHEAT_LIST), curr_idx, FALSE);
 					}
 				}
 				break;
 			case IDC_UPDATE_CHEAT:
 				{
-					TCHAR temp[24];
-					char code[24];
-					GetDlgItemText(hDlg, IDC_CHEAT_CODE, temp, 23);
-					strcpy(code,_tToChar(temp));
-					if(strcmp(code, ""))
+					unsigned int j;
+					TCHAR temp[CHEAT_SIZE];
+					char code[CHEAT_SIZE];
+					GetDlgItemTextA(hDlg, IDC_CHEAT_CODE, code, CHEAT_SIZE);
+
+					std::string valid_cheat = S9xCheatValidate(code);
+
+					if(!valid_cheat.empty())
 					{
-						int j;
-						bool skip=false;
-						int count=1;
-						uint32 addy;
-						uint8 byte[3];
-						//test game genie
-						if (NULL==S9xGameGenieToRaw (code, addy, byte[0]))
-							skip=true;
-						//test goldfinger
+						Utf8ToWide wstring(code);
 
-					//	if(!skip
-
-						//test PAR
-
-						if(!skip)
-						{
-							if(NULL==S9xProActionReplayToRaw(code, addy, byte[0]))
-								skip=true;
-						}
-
-						if(!skip)
-							return 0;
-
-						for(j=0;j<(int)Cheat.num_cheats;j++)
-						{
-							if(ct.index[j]==sel_idx)
-								ct.state[j]=Modified;
-						}
-
-						for(j=0; j<count; j++)
-						{
-							TCHAR buffer[7];
-//							int curr_idx=-1;
-							_stprintf(buffer, TEXT("%06X"), addy);
-							LVITEM lvi;
-							memset(&lvi, 0, sizeof(LVITEM));
-							lvi.mask=LVIF_TEXT;
-							lvi.pszText=buffer;
-							lvi.cchTextMax=6;
-							lvi.iItem=sel_idx;
-							ListView_SetItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
-
-							_stprintf(buffer, TEXT("%02X"), byte[j]);
-							memset(&lvi, 0, sizeof(LVITEM));
-							lvi.iItem=sel_idx;
-							lvi.iSubItem=1;
-							lvi.mask=LVIF_TEXT;
-							lvi.pszText=buffer;
-							lvi.cchTextMax=2;
-							SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
-
-							GetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, temp, 23);
-
-							memset(&lvi, 0, sizeof(LVITEM));
-							lvi.iItem=sel_idx;
-							lvi.iSubItem=2;
-							lvi.mask=LVIF_TEXT;
-							lvi.pszText=temp;
-							lvi.cchTextMax=23;
-							SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
-
-							addy++;
-
-
-						}
-					}
-					else
-					{
-												uint8 byte;
-						TCHAR buffer[7];
-
-						GetDlgItemText(hDlg, IDC_CHEAT_ADDRESS, buffer, 7);
-						int j;
-						for(j=0;j<(int)Cheat.num_cheats;j++)
-						{
-							if(ct.index[j]==sel_idx)
-								ct.state[j]=Modified;
-						}
-
-//						int curr_idx=-1;
 						LVITEM lvi;
+
+						// get index in internal cheat list, if present mark as modified
+						memset(&lvi, 0, sizeof(LVITEM));
+						lvi.mask = LVIF_PARAM;
+						lvi.iItem = sel_idx;
+						ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
+						if (lvi.lParam >= 0)
+							ct.state[lvi.lParam] = Modified;
+
 						memset(&lvi, 0, sizeof(LVITEM));
 						lvi.mask=LVIF_TEXT;
-						lvi.pszText=buffer;
-						lvi.cchTextMax=6;
+						lvi.pszText=wstring;
 						lvi.iItem=sel_idx;
+						lvi.cchTextMax = CHEAT_SIZE;
 						ListView_SetItem(GetDlgItem(hDlg,IDC_CHEAT_LIST), &lvi);
+						SetDlgItemText(hDlg, IDC_CHEAT_CODE, wstring);
 
-
-						GetDlgItemText(hDlg, IDC_CHEAT_BYTE, buffer, 7);
-
-						int scanres;
-						if(buffer[0]==TEXT('$'))
-							_stscanf(buffer,TEXT("$%2X"), (unsigned int*)&scanres);
-						else _stscanf(buffer,TEXT("%d"), &scanres);
-						byte = (uint8)(scanres & 0xff);
-
-						_stprintf(buffer, TEXT("%02X"), byte);
+						GetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, temp, CHEAT_SIZE);
 
 						memset(&lvi, 0, sizeof(LVITEM));
 						lvi.iItem=sel_idx;
-						lvi.iSubItem=1;
-						lvi.mask=LVIF_TEXT;
-						lvi.pszText=buffer;
-						lvi.cchTextMax=2;
-						SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
-
-						GetDlgItemText(hDlg, IDC_CHEAT_DESCRIPTION, temp, 23);
-
-						memset(&lvi, 0, sizeof(LVITEM));
-						lvi.iItem=sel_idx;
-						lvi.iSubItem=2;
+						lvi.iSubItem = 1;
 						lvi.mask=LVIF_TEXT;
 						lvi.pszText=temp;
-						lvi.cchTextMax=23;
+						lvi.cchTextMax = CHEAT_SIZE;
 						SendDlgItemMessage(hDlg,IDC_CHEAT_LIST, LVM_SETITEM, 0, (LPARAM)&lvi);
+
+						// update done, disable update button
+						EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
 					}
 				}
 
 				break;
 			case IDC_DELETE_CHEAT:
 				{
-					unsigned int j;
-				for(j=0;j<Cheat.num_cheats;j++)
-				{
-					if(ct.index[j]==sel_idx)
-						ct.state[j]=Deleted;
+					LVITEM lvi;
+
+					// get index in internal cheat list, if present mark as deleted
+					memset(&lvi, 0, sizeof(LVITEM));
+					lvi.mask = LVIF_PARAM;
+					lvi.iItem = sel_idx;
+					ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
+					if (lvi.lParam >= 0)
+						ct.state[lvi.lParam] = Deleted;
+
+					// save index, deleting item removes selection
+					int old_sel = sel_idx;
+					ListView_DeleteItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), sel_idx);
+					ListView_SetItemState(GetDlgItem(hDlg, IDC_CHEAT_LIST), old_sel, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
 				}
-				for(j=0;j<Cheat.num_cheats;j++)
-				{
-					if(ct.index[j]>sel_idx)
-						ct.index[j]--;
-				}
-				}
-				ListView_DeleteItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), sel_idx);
 
 				break;
+			case IDC_DELETE_ALL:
+				if (MessageBox(hDlg,
+					TEXT("This will remove all cheats for this game."),
+					TEXT("Remove all"),
+					MB_OKCANCEL | MB_ICONWARNING) != IDOK)
+				{
+					break;
+				}
+				ListView_DeleteAllItems(GetDlgItem(hDlg, IDC_CHEAT_LIST));
+				for (unsigned int j = 0; j < Cheat.group.size(); j++)
+				{
+					ct.state[j] = Deleted;
+				}
 			case IDC_CLEAR_CHEATS:
 				internal_change = true;
 				SetDlgItemText(hDlg,IDC_CHEAT_CODE,TEXT(""));
-				SetDlgItemText(hDlg,IDC_CHEAT_ADDRESS,TEXT(""));
-				SetDlgItemText(hDlg,IDC_CHEAT_BYTE,TEXT(""));
 				SetDlgItemText(hDlg,IDC_CHEAT_DESCRIPTION,TEXT(""));
+				internal_change = false;
 				ListView_SetItemState(GetDlgItem(hDlg, IDC_CHEAT_LIST),sel_idx, 0, LVIS_SELECTED|LVIS_FOCUSED);
 				ListView_SetSelectionMark(GetDlgItem(hDlg, IDC_CHEAT_LIST), -1);
 				sel_idx=-1;
 				has_sel=false;
+				break;
+			case IDC_SEARCH_DB:
+				if (MessageBox(hDlg,
+					TEXT("This will apply current changes from the cheat dialog, try to import cheats from the cheat database, then reopen the dialog."),
+					TEXT("Search Database"),
+					MB_OKCANCEL | MB_ICONINFORMATION) == IDOK)
+				{
+					PostMessage(hDlg, WM_COMMAND, MAKEWPARAM(IDOK, NC_SEARCHDB), (LPARAM)GetDlgItem(hDlg, IDOK));
+				}
 				break;
 			case IDC_CHEAT_CODE:
 				{
@@ -8876,52 +8956,22 @@ INT_PTR CALLBACK DlgCheater(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 					switch(HIWORD(wParam))
 					{
 					case EN_CHANGE:
-						if(internal_change)
+						if (internal_change)
 						{
-							internal_change=false;
 							return true;
 						}
-						SendMessageA((HWND)lParam, WM_GETTEXT, 15,(LPARAM)buffer);
-						GetCaretPos(&point);
+						char temp[CHEAT_SIZE];
+						char *valid_cheat = NULL;
+						GetDlgItemTextA(hDlg, IDC_CHEAT_CODE, temp, CHEAT_SIZE);
 
-						index = SendMessageA((HWND)lParam,(UINT) EM_CHARFROMPOS, 0, (LPARAM) ((point.x&0x0000FFFF) | (((point.y&0x0000FFFF))<<16)));
-
-						k=0;
-						for(j=0; j<strlen(buffer);j++)
+						if (temp && temp[0] && (!S9xCheatValidate(temp).empty()))
 						{
-							if( (buffer[j]>='0' && buffer[j]<='9') || (buffer[j]>='A' && buffer[j]<='F') || buffer[j]=='-' || buffer[j]=='X')
-							{
-								buffer2[k]=buffer[j];
-								k++;
-							}
-							else index --;
-						}
-						buffer2[k]='\0';
-
-						if(has_sel&&!new_sel&&strlen(buffer2)!=0)
-						{
-							SetDlgItemTextA(hDlg, IDC_CHEAT_ADDRESS, "");
-							SetDlgItemTextA(hDlg, IDC_CHEAT_BYTE, "");
-
-						}
-
-						if(new_sel!=0)
-							new_sel--;
-
-						internal_change=true;
-						SendMessageA((HWND)lParam, WM_SETTEXT, 0,(LPARAM)buffer2);
-						SendMessageA((HWND)lParam,  (UINT) EM_SETSEL, (WPARAM) (index), index);
-
-						uint32 addy;
-						uint8 val;
-						bool8 sram;
-						uint8 bytes[3];
-						if(NULL==S9xGameGenieToRaw(buffer2, addy, val)||NULL==S9xProActionReplayToRaw(buffer2, addy, val)||NULL==S9xGoldFingerToRaw(buffer2, addy, sram, val, bytes))
-						{
-							if(has_sel)
+							if (has_sel)
 								EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), true);
-							else EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
+							else
+								EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
 							EnableWindow(GetDlgItem(hDlg, IDC_ADD_CHEAT), true);
+							delete[] valid_cheat;
 						}
 						else
 						{
@@ -8929,265 +8979,106 @@ INT_PTR CALLBACK DlgCheater(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 							EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
 						}
 
-					//	SetDlgItemText(hDlg, IDC_CHEAT_ADDRESS, "");
-					//	SetDlgItemText(hDlg, IDC_CHEAT_BYTE, "");
 						break;
 					}
 					break;
 				}
-			case IDC_CHEAT_ADDRESS:
+			case IDOK:
 				{
-					uint32 j, k;
-					long index;
-					char buffer[7];
-					char buffer2[7];
-					POINT point;
-					switch(HIWORD(wParam))
+					bool hit;
+					unsigned int scanned;
+					for(int k = 0; k < ListView_GetItemCount(GetDlgItem(hDlg, IDC_CHEAT_LIST)); k++)
 					{
-					case EN_CHANGE:
-						if(internal_change)
-						{
-							internal_change=false;
-							return true;
-						}
-						SendMessageA((HWND)lParam, WM_GETTEXT, 7,(LPARAM)buffer);
-						GetCaretPos(&point);
+						LVITEM lvi;
 
-						index = SendMessageA((HWND)lParam,(UINT) EM_CHARFROMPOS, 0, (LPARAM) ((point.x&0x0000FFFF) | (((point.y&0x0000FFFF))<<16)));
+						// get index in internal cheat list, if present mark as deleted
+						memset(&lvi, 0, sizeof(LVITEM));
+						lvi.mask = LVIF_PARAM;
+						lvi.iItem = k;
+						ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
 
-						k=0;
-						for(j=0; j<strlen(buffer);j++)
+						int internal_index = lvi.lParam;
+
+						if(internal_index >= 0)
 						{
-							if( (buffer[j]>='0' && buffer[j]<='9') || (buffer[j]>='A' && buffer[j]<='F'))
+							if(ct.state[internal_index]==(unsigned long)Modified) // modified in GUI, change in core
 							{
-								buffer2[k]=buffer[j];
-								k++;
+								TCHAR wcode[CHEAT_SIZE];
+								TCHAR wdescription[CHEAT_SIZE];
+
+								memset(&lvi, 0, sizeof(LV_ITEM));
+								lvi.iItem = k;
+								lvi.mask = LVIF_TEXT;
+								lvi.pszText = wcode;
+								lvi.cchTextMax = CHEAT_SIZE;
+								ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
+
+								memset(&lvi, 0, sizeof(LV_ITEM));
+								lvi.iItem = k;
+								lvi.iSubItem = 1;
+								lvi.mask=LVIF_TEXT;
+								lvi.pszText = wdescription;
+								lvi.cchTextMax = CHEAT_SIZE;
+								ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
+
+								WideToUtf8 code(wcode);
+								WideToUtf8 description(wdescription);
+
+								S9xModifyCheatGroup(internal_index, std::string(description), std::string(code));
 							}
-							else index --;
+
+							// set core state according to checkbox
+							if (ListView_GetCheckState(GetDlgItem(hDlg, IDC_CHEAT_LIST), k))
+								S9xEnableCheatGroup(internal_index);
+							else
+								S9xDisableCheatGroup(internal_index);
 						}
-						buffer2[k]='\0';
-
-
-						internal_change=true;
-						SendMessageA((HWND)lParam, WM_SETTEXT, 0,(LPARAM)buffer2);
-						SendMessageA((HWND)lParam,  (UINT) EM_SETSEL, (WPARAM) (index), index);
-
-						SendMessageA(GetDlgItem(hDlg, IDC_CHEAT_BYTE), WM_GETTEXT, 4,(LPARAM)buffer);
-
-						if(has_sel&&!new_sel&&0!=strlen(buffer2))
-							SetDlgItemTextA(hDlg, IDC_CHEAT_CODE, "");
-
-						if(new_sel!=0)
-							new_sel--;
-
-						if(strlen(buffer2)!=0 && strlen(buffer) !=0)
+						else // new cheat, add
 						{
-							if(has_sel)
-								EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), true);
-							else EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
-							EnableWindow(GetDlgItem(hDlg, IDC_ADD_CHEAT), true);
-						}
-						else
-						{
-							EnableWindow(GetDlgItem(hDlg, IDC_ADD_CHEAT), false);
-							EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
-						}
+							TCHAR wcode[CHEAT_SIZE];
+							TCHAR wdescription[CHEAT_SIZE];
 
-						break;
+							LV_ITEM lvi;
+							memset(&lvi, 0, sizeof(LV_ITEM));
+							lvi.iItem = k;
+							lvi.mask = LVIF_TEXT;
+							lvi.pszText = wcode;
+							lvi.cchTextMax = CHEAT_SIZE;
+							ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
+
+							memset(&lvi, 0, sizeof(LV_ITEM));
+							lvi.iItem = k;
+							lvi.iSubItem = 1;
+							lvi.mask = LVIF_TEXT;
+							lvi.pszText = wdescription;
+							lvi.cchTextMax = CHEAT_SIZE;
+							ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
+
+							WideToUtf8 code(wcode);
+							WideToUtf8 description(wdescription);
+
+							int index = S9xAddCheatGroup(std::string(description), std::string(code));
+
+							if (index >= 0)
+								if (ListView_GetCheckState(GetDlgItem(hDlg, IDC_CHEAT_LIST), k))
+									S9xEnableCheatGroup(index);
+						}
 					}
-					break;
+
+					for(int l = ct.state.size() - 1; l >= 0; l-- )
+					{
+						if(ct.state[l]==Deleted)
+						{
+							S9xDeleteCheatGroup(l);
+						}
+					}
 				}
-				case IDC_CHEAT_BYTE:
-				{
-					uint32 j, k;
-					long index;
-					char buffer[4];
-					char buffer2[4];
-					POINT point;
-					switch(HIWORD(wParam))
-					{
-					case EN_CHANGE:
-						if(internal_change)
-						{
-							internal_change=false;
-							return true;
-						}
-						SendMessageA((HWND)lParam, WM_GETTEXT, 4,(LPARAM)buffer);
-						GetCaretPos(&point);
-
-						index = SendMessageA((HWND)lParam,(UINT) EM_CHARFROMPOS, 0, (LPARAM) ((point.x&0x0000FFFF) | (((point.y&0x0000FFFF))<<16)));
-
-						k=0;
-						for(j=0; j<strlen(buffer);j++)
-						{
-							if( (buffer[j]>='0' && buffer[j]<='9') || (buffer[j]>='A' && buffer[j]<='F') || buffer[j]=='$')
-							{
-								buffer2[k]=buffer[j];
-								k++;
-							}
-							else index --;
-						}
-						buffer2[k]='\0';
-
-						if(has_sel&&!new_sel&&0!=strlen(buffer2))
-							SetDlgItemTextA(hDlg, IDC_CHEAT_CODE, "");
-
-						if(new_sel!=0)
-							new_sel--;
-
-						internal_change=true;
-						SendMessageA((HWND)lParam, WM_SETTEXT, 0,(LPARAM)buffer2);
-						SendMessageA((HWND)lParam,  (UINT) EM_SETSEL, (WPARAM) (index), index);
-
-						SendMessageA(GetDlgItem(hDlg, IDC_CHEAT_ADDRESS), WM_GETTEXT, 7,(LPARAM)buffer);
-						if(strlen(buffer2)!=0 && strlen(buffer) !=0)
-						{
-							if(has_sel)
-								EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), true);
-							else EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
-							EnableWindow(GetDlgItem(hDlg, IDC_ADD_CHEAT), true);
-						}
-						else
-						{
-							EnableWindow(GetDlgItem(hDlg, IDC_ADD_CHEAT), false);
-							EnableWindow(GetDlgItem(hDlg, IDC_UPDATE_CHEAT), false);
-						}
-						//SetDlgItemText(hDlg, IDC_CHEAT_CODE, "");
-						break;
-					}
-					break;
-				}
-				case IDOK:
-					{
-						int k,l;
-						bool hit;
-						unsigned int scanned;
-						for(k=0;k<ListView_GetItemCount(GetDlgItem(hDlg, IDC_CHEAT_LIST)); k++)
-						{
-							hit=false;
-							for(l=0;l<(int)Cheat.num_cheats;l++)
-							{
-								if(ct.index[l]==k)
-								{
-									hit=true;
-									Cheat.c[l].enabled=ListView_GetCheckState(GetDlgItem(hDlg, IDC_CHEAT_LIST),l);
-									if(ct.state[l]==Untouched)
-										l=Cheat.num_cheats;
-									else if(ct.state[l]==(unsigned long)Modified)
-									{
-										if(Cheat.c[l].enabled)
-											S9xDisableCheat(l);
-										//update me!
-										//get these!
-
-										TCHAR buf[25];
-										LV_ITEM lvi;
-										memset(&lvi, 0, sizeof(LV_ITEM));
-										lvi.iItem= k;
-										lvi.mask=LVIF_TEXT;
-										lvi.pszText=buf;
-										lvi.cchTextMax=7;
-
-										ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
-
-										ScanAddress(lvi.pszText, scanned);
-										Cheat.c[l].address = scanned;
-
-										memset(&lvi, 0, sizeof(LV_ITEM));
-										lvi.iItem= k;
-										lvi.iSubItem=1;
-										lvi.mask=LVIF_TEXT;
-										lvi.pszText=buf;
-										lvi.cchTextMax=3;
-
-										ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
-
-										_stscanf(lvi.pszText, TEXT("%02X"), &scanned);
-										Cheat.c[l].byte = (uint8)(scanned & 0xff);
-
-										memset(&lvi, 0, sizeof(LV_ITEM));
-										lvi.iItem= k;
-										lvi.iSubItem=2;
-										lvi.mask=LVIF_TEXT;
-										lvi.pszText=buf;
-										lvi.cchTextMax=24;
-
-										ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
-
-										strcpy(Cheat.c[l].name,_tToChar(lvi.pszText));
-
-										Cheat.c[l].enabled=ListView_GetCheckState(GetDlgItem(hDlg, IDC_CHEAT_LIST),k);
-
-										if(Cheat.c[l].enabled)
-											S9xEnableCheat(l);
-									}
-
-								}
-							}
-							if(!hit)
-							{
-								uint32 address;
-								uint8 byte;
-								bool8 enabled;
-								TCHAR buf[25];
-								LV_ITEM lvi;
-								memset(&lvi, 0, sizeof(LV_ITEM));
-								lvi.iItem= k;
-								lvi.mask=LVIF_TEXT;
-								lvi.pszText=buf;
-								lvi.cchTextMax=7;
-
-								ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
-
-								ScanAddress(lvi.pszText, scanned);
-								address = scanned;
-
-								memset(&lvi, 0, sizeof(LV_ITEM));
-								lvi.iItem= k;
-								lvi.iSubItem=1;
-								lvi.mask=LVIF_TEXT;
-								lvi.pszText=buf;
-								lvi.cchTextMax=3;
-
-								ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
-
-								_stscanf(lvi.pszText, TEXT("%02X"), &scanned);
-								byte = (uint8)(scanned & 0xff);
-
-								enabled=ListView_GetCheckState(GetDlgItem(hDlg, IDC_CHEAT_LIST),k);
-
-								S9xAddCheat(enabled,true,address,byte);
-
-								memset(&lvi, 0, sizeof(LV_ITEM));
-								lvi.iItem= k;
-								lvi.iSubItem=2;
-								lvi.mask=LVIF_TEXT;
-								lvi.pszText=buf;
-								lvi.cchTextMax=24;
-
-								ListView_GetItem(GetDlgItem(hDlg, IDC_CHEAT_LIST), &lvi);
-
-								strcpy(Cheat.c[Cheat.num_cheats-1].name, _tToChar(lvi.pszText));
-
-
-							}
-						}
-
-						for(l=(int)Cheat.num_cheats-1;l>=0;l--)
-						{
-							if(ct.state[l]==Deleted)
-							{
-								S9xDeleteCheat(l);
-							}
-						}
-					}
-				case IDCANCEL:
-					delete [] ct.index;
-					delete [] ct.state;
-					EndDialog(hDlg, 0);
-					return true;
-				default:return false;
-					}
+			case IDCANCEL:
+				EndDialog(hDlg, HIWORD(wParam) == NC_SEARCHDB ? NC_SEARCHDB : 0);
+				return true;
+			default:
+				return false;
+			}
 		}
 	default: return false;
 	}
@@ -10339,12 +10230,20 @@ INT_PTR CALLBACK DlgCheatSearchAdd(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lP
 						GetDlgItemText(hDlg, IDC_NC_DESC, tempBuf, 22);
 						strncpy(new_cheat->name,_tToChar(tempBuf),22);
 
-						new_cheat->enabled=TRUE;
-						for(int byteIndex = 0; byteIndex < new_cheat->size; byteIndex++)
+						std::string code_string;
+						char code[10];
+						for (int byteIndex = 0; byteIndex < new_cheat->size; byteIndex++)
 						{
-							S9xAddCheat(new_cheat->enabled,new_cheat->saved_val,new_cheat->address+byteIndex,(new_cheat->new_val>>(8*byteIndex))&0xFF);
-							strcpy(Cheat.c[Cheat.num_cheats-1].name,new_cheat->name);
+							if (byteIndex > 0)
+								code_string += '+';
+							snprintf(code, 10, "%x=%x", new_cheat->address + byteIndex, (new_cheat->new_val >> (8 * byteIndex)) & 0xFF);
+							code_string += code;
 						}
+
+						int index = S9xAddCheatGroup(new_cheat->name, code_string.c_str());
+						if(index >= 0)
+							S9xEnableCheatGroup(index);
+
 						ret=0;
 					}
 				}
@@ -10575,7 +10474,7 @@ INT_PTR CALLBACK DlgOpenMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				TCHAR dir [_MAX_DIR + 1];
 				TCHAR fname [_MAX_FNAME + 1];
 				TCHAR ext [_MAX_EXT + 1];
-				_tsplitpath (_tFromChar(Memory.ROMFilename), drive, dir, fname, ext);
+				_tsplitpath (_tFromChar(Memory.ROMFilename.c_str()), drive, dir, fname, ext);
 				_tmakepath (filename, TEXT(""), TEXT(""), fname, TEXT("smv"));
 				SetWindowText(GetDlgItem(hDlg, IDC_MOVIE_PATH), filename);
 				set_movieinfo(filename, hDlg);
@@ -10672,7 +10571,7 @@ INT_PTR CALLBACK DlgOpenMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 // checks if the currently loaded ROM has an SRAM file in the saves directory that we have write access to
 static bool existsSRAM ()
 {
-  return(!access(S9xGetFilename(".srm", SRAM_DIR), R_OK|W_OK));
+  return(!access(S9xGetFilename(".srm", SRAM_DIR).c_str(), R_OK | W_OK));
 }
 
 INT_PTR CALLBACK DlgCreateMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -10692,7 +10591,7 @@ INT_PTR CALLBACK DlgCreateMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 
 			// have to save here or the SRAM file might not exist when we check for it
 			// (which would cause clear SRAM option to not work)
-			Memory.SaveSRAM(S9xGetFilename (".srm", SRAM_DIR));
+			Memory.SaveSRAM(S9xGetFilename (".srm", SRAM_DIR).c_str());
 
 
 			op=(OpenMovieParams*)lParam;
@@ -10714,7 +10613,7 @@ INT_PTR CALLBACK DlgCreateMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 				TCHAR dir [_MAX_DIR + 1];
 				TCHAR fname [_MAX_FNAME + 1];
 				TCHAR ext [_MAX_EXT + 1];
-				_tsplitpath (_tFromChar(Memory.ROMFilename), drive, dir, fname, ext);
+				_tsplitpath (_tFromChar(Memory.ROMFilename.c_str()), drive, dir, fname, ext);
 				_tmakepath (filename, TEXT(""), TEXT(""), fname, TEXT("smv"));
 				SetWindowText(GetDlgItem(hDlg, IDC_MOVIE_PATH), filename);
 			}
@@ -10802,9 +10701,9 @@ INT_PTR CALLBACK DlgCreateMovie(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPara
 					if(IsDlgButtonChecked(hDlg, IDC_CLEARSRAM) && IsDlgButtonChecked(hDlg, IDC_RECORD_RESET) && existsSRAM())
 					{
 						GUI.MovieClearSRAM = TRUE;
-						remove(S9xGetFilename (".srm", SRAM_DIR)); // delete SRAM if it exists (maybe unnecessary?)
-						remove(S9xGetFilename (".srm", ROMFILENAME_DIR));
-						Memory.LoadSRAM(S9xGetFilename (".srm", SRAM_DIR)); // refresh memory (hard reset)
+						remove(S9xGetFilename (".srm", SRAM_DIR).c_str()); // delete SRAM if it exists (maybe unnecessary?)
+						remove(S9xGetFilename (".srm", ROMFILENAME_DIR).c_str());
+						Memory.LoadSRAM(S9xGetFilename (".srm", SRAM_DIR).c_str()); // refresh memory (hard reset)
 					}
 					else if(!IsDlgButtonChecked(hDlg, IDC_CLEARSRAM) && IsDlgButtonChecked(hDlg, IDC_RECORD_RESET) && existsSRAM())
 					{
@@ -10850,19 +10749,6 @@ void S9xHandlePortCommand(s9xcommand_t cmd, int16 data1, int16 data2)
 {
 	return;
 }
-
-//  NYI
-const char *S9xChooseFilename (bool8 read_only)
-{
-	return NULL;
-}
-
-// NYI
-const char *S9xChooseMovieFilename (bool8 read_only)
-{
-	return NULL;
-}
-
 
 const char * S9xStringInput(const char *msg)
 {
@@ -10930,6 +10816,14 @@ bool S9xPollButton(uint32 id, bool *pressed){
 			}
 		}
 	}
+	else
+	if (id & k_RF)	// macsrifle
+	{
+		switch (id & 0xFF)
+		{
+			case 0:	*pressed = (GUI.MouseButtons & 1) /* Left */ || CHECK_KEY(1,A) || CHECK_KEY(1,L); break;
+		}
+	}
 
 	return (true);
 }
@@ -10961,10 +10855,11 @@ void S9xPostRomInit()
 	// a lingering cheat they don't realize is on
 	if (Settings.ApplyCheats)
 	{
+		S9xCheatsEnable();
 		extern struct SCheatData Cheat;
-	    for (uint32 i = 0; i < Cheat.num_cheats; i++)
+	    for (uint32 i = 0; i < Cheat.group.size(); i++)
 		{
-	        if (Cheat.c [i].enabled)
+	        if (Cheat.group[i].enabled)
 			{
 				char String2 [1024];
 				sprintf(String2, "(CHEATS ARE ON!) %s", String);
@@ -10983,6 +10878,17 @@ void S9xPostRomInit()
         }
 		int prevController = GUI.ControllerOption;
 		GUI.ValidControllerOptions = 0xFFFF;
+
+		// auto-joypad2 creates fast menu flicker
+		if (!Settings.DisableGameSpecificHacks)
+		{
+			if(strncmp(Memory.ROMName, "MAC:Basic Rifle", 15) == 0)
+			{
+				GUI.ControllerOption = SNES_MACSRIFLE;
+
+				ChangeInputDevice();
+			}
+		}
 
 		// NSRT controller settings
 		if (!strncmp((const char *)Memory.NSRTHeader+24, "NSRT", 4))
@@ -11063,7 +10969,7 @@ void S9xPostRomInit()
 					GUI.ValidControllerOptions = (1<<SNES_MOUSE_SWAPPED) | (1<<SNES_MULTIPLAYER5) | (1<<SNES_JOYPAD);
 					break;
 			}
-            ChangeInputDevice();
+			ChangeInputDevice();
 		}
 
 		// update menu and remember what (if anything) the control was forced from

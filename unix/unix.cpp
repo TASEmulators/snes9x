@@ -1,192 +1,8 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -196,12 +12,14 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
+#include <algorithm>
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
 #ifdef USE_THREADS
 #include <sched.h>
 #include <pthread.h>
+#include <vector>
 #endif
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -209,10 +27,16 @@
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
+
 #ifndef NOSOUND
+#ifndef ALSA
 #include <sys/soundcard.h>
 #include <sys/mman.h>
+#else
+#include <alsa/asoundlib.h>
 #endif
+#endif
+
 #ifdef JOYSTICK_SUPPORT
 #include <linux/joystick.h>
 #endif
@@ -225,9 +49,9 @@
 #include "controls.h"
 #include "cheats.h"
 #include "movie.h"
-#include "logger.h"
 #include "display.h"
 #include "conffile.h"
+#include "fscompat.h"
 #ifdef NETPLAY_SUPPORT
 #include "netplay.h"
 #endif
@@ -278,7 +102,7 @@ static const char	dirNames[13][32] =
 	"screenshot",	// SCREENSHOT_DIR
 	"spc",			// SPC_DIR
 	"cheat",		// CHEAT_DIR
-	"patch",		// IPS_DIR
+	"patch",		// PATCH_DIR
 	"bios",			// BIOS_DIR
 	"log",			// LOG_DIR
 	""
@@ -296,27 +120,21 @@ struct SUnixSettings
 
 struct SoundStatus
 {
+#ifndef ALSA
 	int		sound_fd;
 	uint32	fragment_size;
-	uint32	err_counter;
-	uint32	err_rate;
-	int32	samples_mixed_so_far;
-	int32	play_position;
+#else
+    snd_pcm_t *pcm_handle;
+    int output_buffer_size;
+#endif
 };
 
+
+static int frame_advance = 0;
 static SUnixSettings	unixSettings;
 static SoundStatus		so;
 
 static bool8	rewinding;
-
-#ifndef NOSOUND
-static uint8			Buf[SOUND_BUFFER_SIZE];
-#endif
-
-#ifdef USE_THREADS
-static pthread_t		thread;
-static pthread_mutex_t	mutex;
-#endif
 
 #ifdef JOYSTICK_SUPPORT
 static uint8		js_mod[8]     = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -338,79 +156,13 @@ bool S9xDisplayPollButton (uint32, bool *);
 bool S9xDisplayPollAxis (uint32, int16 *);
 bool S9xDisplayPollPointer (uint32, int16 *, int16 *);
 
-static long log2 (long);
-static void SoundTrigger (void);
-static void InitTimer (void);
 static void NSRTControllerSetup (void);
 static int make_snes9x_dirs (void);
-#ifndef NOSOUND
-static void * S9xProcessSound (void *);
-#endif
 #ifdef JOYSTICK_SUPPORT
 static void InitJoysticks (void);
-static void ReadJoysticks (void);
+static bool8 ReadJoysticks (void);
+void S9xLatchJSEvent();
 #endif
-
-
-void _splitpath (const char *path, char *drive, char *dir, char *fname, char *ext)
-{
-	*drive = 0;
-
-	const char	*slash = strrchr(path, SLASH_CHAR),
-				*dot   = strrchr(path, '.');
-
-	if (dot && slash && dot < slash)
-		dot = NULL;
-
-	if (!slash)
-	{
-		*dir = 0;
-
-		strcpy(fname, path);
-
-		if (dot)
-		{
-			fname[dot - path] = 0;
-			strcpy(ext, dot + 1);
-		}
-		else
-			*ext = 0;
-	}
-	else
-	{
-		strcpy(dir, path);
-		dir[slash - path] = 0;
-
-		strcpy(fname, slash + 1);
-
-		if (dot)
-		{
-			fname[dot - slash - 1] = 0;
-			strcpy(ext, dot + 1);
-		}
-		else
-			*ext = 0;
-	}
-}
-
-void _makepath (char *path, const char *, const char *dir, const char *fname, const char *ext)
-{
-	if (dir && *dir)
-	{
-		strcpy(path, dir);
-		strcat(path, SLASH_STR);
-	}
-	else
-		*path = 0;
-
-	strcat(path, fname);
-
-	if (ext && *ext)
-	{
-		strcat(path, ".");
-		strcat(path, ext);
-	}
-}
 
 static long log2 (long num)
 {
@@ -420,6 +172,169 @@ static long log2 (long num)
 		n++;
 
 	return (n);
+}
+
+namespace {
+
+#if ! defined(NOSOUND) && ! defined(ALSA)
+	class S9xAudioOutput
+	{
+	public:
+		S9xAudioOutput(int fd, uint32 sampleRateHz, bool isThreaded)
+		{
+			m_FD = fd;
+			uint32 bufferSizeMS = unixSettings.SoundBufferSize; // milliseconds
+			// 4 = sizeof(uint16) * STEREO
+			m_BufferSize = int(uint64(sampleRateHz) * bufferSizeMS / 1000 * 4);
+
+#if defined(USE_THREADS)
+			m_WrittenSize = 0;
+			m_Thread = pthread_t();
+			m_isExit = false;
+			if (isThreaded)
+			{
+				m_BufferMutex = PTHREAD_MUTEX_INITIALIZER;
+				m_hasBuffer = PTHREAD_COND_INITIALIZER;
+				if (pthread_create(&m_Thread, NULL, AudioOutputThreadEntry, this))
+				{
+					return;
+				}
+			}
+#endif
+		}
+
+		~S9xAudioOutput()
+		{
+#if defined(USE_THREADS)
+			if (m_Thread)
+			{
+				pthread_mutex_lock(&m_BufferMutex);
+				{
+					m_isExit = true;
+					pthread_cond_signal(&m_hasBuffer);
+				}
+				pthread_mutex_unlock(&m_BufferMutex);
+
+				pthread_join(m_Thread, NULL);
+				pthread_mutex_destroy(&m_BufferMutex);
+				pthread_cond_destroy(&m_hasBuffer);
+			}
+#endif
+		}
+
+		void Write(void* data, int size)
+		{
+#if defined(USE_THREADS)
+			if (m_Thread)
+			{
+				pthread_mutex_lock(&m_BufferMutex);
+				{
+					if (int(m_Buffering.size()) < m_BufferSize)
+					{
+						size_t oldSize = m_Buffering.size();
+						size_t newSize = oldSize + size;
+						m_WrittenSize = newSize;
+						m_Buffering.resize(newSize);
+						memcpy(&m_Buffering[oldSize], data, size);
+						pthread_cond_signal(&m_hasBuffer);
+					}
+				}
+				pthread_mutex_unlock(&m_BufferMutex);
+			}
+			else
+#endif
+			{
+				WriteImpl(data, size);
+			}
+		}
+
+		int GetFreeBufferSize()
+		{
+#if defined(USE_THREADS)
+			if (m_Thread)
+			{
+				int writtenSize;
+				pthread_mutex_lock(&m_BufferMutex);
+				{
+					writtenSize = m_WrittenSize;
+				}
+				pthread_mutex_unlock(&m_BufferMutex);
+				return m_BufferSize - writtenSize;
+			}
+			else
+#endif
+			{
+				audio_buf_info info;
+				ioctl(m_FD, SNDCTL_DSP_GETOSPACE, &info);
+				int writtenSize = info.fragsize * info.fragstotal - info.bytes;
+				return std::max(0, m_BufferSize - writtenSize);
+			}
+		}
+
+	private:
+		void WriteImpl(const void* data, int size)
+		{
+			const char* p = reinterpret_cast<const char*>(data);
+			while (size > 0)
+			{
+				int result = write(m_FD, p, size);
+				if (result < 0)
+				{
+					return;
+				}
+				p += result;
+				size -= result;
+			}
+		}
+
+		int m_FD;
+		int m_BufferSize;
+
+#if defined(USE_THREADS)
+		pthread_t m_Thread;
+		volatile bool m_isExit;
+		pthread_mutex_t m_BufferMutex;
+		pthread_cond_t m_hasBuffer;
+		std::vector<uint8> m_PlayingBuffer;
+		std::vector<uint8> m_Buffering;
+		int m_WrittenSize; // for dynamic rate control
+
+		static void* AudioOutputThreadEntry(void* arg)
+		{
+			S9xAudioOutput* obj = reinterpret_cast<S9xAudioOutput*>(arg);
+			obj->AudioOutputThread();
+			return NULL;
+		}
+
+		void AudioOutputThread()
+		{
+			while (true)
+			{
+				pthread_mutex_lock(&m_BufferMutex);
+				{
+					pthread_cond_wait(&m_hasBuffer, &m_BufferMutex);
+					if (m_isExit)
+					{
+						return;
+					}
+					m_PlayingBuffer.swap(m_Buffering);
+					m_WrittenSize = 0;
+				}
+				pthread_mutex_unlock(&m_BufferMutex);
+
+				if (! m_PlayingBuffer.empty())
+				{
+					WriteImpl(&m_PlayingBuffer[0], m_PlayingBuffer.size());
+					m_PlayingBuffer.resize(0);
+				}
+			}
+		}
+#endif // USE_THREADS
+	};
+
+	S9xAudioOutput* s_AudioOutput = NULL;
+#endif // NOSOUND
+
 }
 
 void S9xExtraUsage (void)
@@ -434,20 +349,27 @@ void S9xExtraUsage (void)
 #ifdef JOYSTICK_SUPPORT
 	S9xMessage(S9X_INFO, S9X_USAGE, "-nogamepad                      Disable gamepad reading");
 	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev1 <string>               Specify gamepad device 1");
-	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev1 <string>               Specify gamepad device 2");
-	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev1 <string>               Specify gamepad device 3");
-	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev1 <string>               Specify gamepad device 4");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev2 <string>               Specify gamepad device 2");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev3 <string>               Specify gamepad device 3");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev4 <string>               Specify gamepad device 4");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev5 <string>               Specify gamepad device 5");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev6 <string>               Specify gamepad device 6");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev7 <string>               Specify gamepad device 7");
+	S9xMessage(S9X_INFO, S9X_USAGE, "-paddev8 <string>               Specify gamepad device 8");
 	S9xMessage(S9X_INFO, S9X_USAGE, "");
 #endif
 
-#ifdef USE_THREADS
+#ifndef NOSOUND
+#if defined(USE_THREADS) && !defined(ALSA)
 	S9xMessage(S9X_INFO, S9X_USAGE, "-threadsound                    Use a separate thread to output sound");
 #endif
 	S9xMessage(S9X_INFO, S9X_USAGE, "-buffersize                     Sound generating buffer size in millisecond");
+#ifndef ALSA
 	S9xMessage(S9X_INFO, S9X_USAGE, "-fragmentsize                   Sound playback buffer fragment size in bytes");
+#endif
 	S9xMessage(S9X_INFO, S9X_USAGE, "-sounddev <string>              Specify sound device");
 	S9xMessage(S9X_INFO, S9X_USAGE, "");
-
+#endif
 	S9xMessage(S9X_INFO, S9X_USAGE, "-loadsnapshot                   Load snapshot file at start");
 	S9xMessage(S9X_INFO, S9X_USAGE, "-playmovie <filename>           Start emulator playing the .smv file");
 	S9xMessage(S9X_INFO, S9X_USAGE, "-recordmovie <filename>         Start emulator recording the .smv file");
@@ -471,7 +393,7 @@ void S9xParseArg (char **argv, int &i, int argc)
 	if (!strcasecmp(argv[i], "-carta"))
 	{
 		if (i + 1 < argc)
-			strncpy(Settings.CartAName, argv[++i], _MAX_PATH);
+			strncpy(Settings.CartAName, argv[++i], PATH_MAX);
 		else
 			S9xUsage();
 	}
@@ -479,7 +401,7 @@ void S9xParseArg (char **argv, int &i, int argc)
 	if (!strcasecmp(argv[i], "-cartb"))
 	{
 		if (i + 1 < argc)
-			strncpy(Settings.CartBName, argv[++i], _MAX_PATH);
+			strncpy(Settings.CartBName, argv[++i], PATH_MAX);
 		else
 			S9xUsage();
 	}
@@ -680,8 +602,11 @@ void S9xParsePortConfig (ConfigFile &conf, int pass)
 #endif
 	unixSettings.SoundBufferSize   = conf.GetUInt     ("Unix::SoundBufferSize",     100);
 	unixSettings.SoundFragmentSize = conf.GetUInt     ("Unix::SoundFragmentSize",   2048);
+#ifndef ALSA
 	sound_device                   = conf.GetStringDup("Unix::SoundDevice",         "/dev/dsp");
-
+#else
+	sound_device                   = conf.GetStringDup("Unix::SoundDevice",         "default");
+#endif
 	keymaps.clear();
 	if (!conf.GetBool("Unix::ClearAllControls", false))
 	{
@@ -746,78 +671,65 @@ static int make_snes9x_dirs (void)
 	return (0);
 }
 
-const char * S9xGetDirectory (enum s9x_getdirtype dirtype)
+std::string S9xGetDirectory (enum s9x_getdirtype dirtype)
 {
-	static char	s[PATH_MAX + 1];
+    std::string retval = Memory.ROMFilename;
+    size_t pos;
 
-	if (dirNames[dirtype][0])
-		snprintf(s, PATH_MAX + 1, "%s%s%s", s9x_base_dir, SLASH_STR, dirNames[dirtype]);
+    if (dirNames[dirtype][0])
+		return std::string(s9x_base_dir) + SLASH_STR + dirNames[dirtype];
 	else
 	{
 		switch (dirtype)
 		{
 			case DEFAULT_DIR:
-				strncpy(s, s9x_base_dir, PATH_MAX + 1);
-				s[PATH_MAX] = 0;
+				retval = s9x_base_dir;
 				break;
 
 			case HOME_DIR:
-				strncpy(s, getenv("HOME"), PATH_MAX + 1);
-				s[PATH_MAX] = 0;
+				retval = std::string(getenv("HOME"));
 				break;
 
 			case ROMFILENAME_DIR:
-				strncpy(s, Memory.ROMFilename, PATH_MAX + 1);
-				s[PATH_MAX] = 0;
-
-				for (int i = strlen(s); i >= 0; i--)
-				{
-					if (s[i] == SLASH_CHAR)
-					{
-						s[i] = 0;
-						break;
-					}
-				}
-
+				retval = Memory.ROMFilename;
+				pos = retval.rfind("/");
+				if (pos != std::string::npos)
+					retval = retval.substr(pos);
 				break;
 
 			default:
-				s[0] = 0;
 				break;
 		}
 	}
-
-	return (s);
+	return retval;
 }
 
-const char * S9xGetFilename (const char *ex, enum s9x_getdirtype dirtype)
+std::string S9xGetFilenameInc (std::string ex, enum s9x_getdirtype dirtype)
 {
-	static char	s[PATH_MAX + 1];
-	char		drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
+	struct stat buf;
 
-	_splitpath(Memory.ROMFilename, drive, dir, fname, ext);
-	snprintf(s, PATH_MAX + 1, "%s%s%s%s", S9xGetDirectory(dirtype), SLASH_STR, fname, ex);
+	SplitPath path = splitpath(Memory.ROMFilename);
+	std::string directory = S9xGetDirectory(dirtype);
 
-	return (s);
-}
+	if (ex[0] != '.')
+	{
+		ex = "." + ex;
+	}
 
-const char * S9xGetFilenameInc (const char *ex, enum s9x_getdirtype dirtype)
-{
-	static char	s[PATH_MAX + 1];
-	char		drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
-
-	unsigned int	i = 0;
-	const char		*d;
-	struct stat		buf;
-
-	_splitpath(Memory.ROMFilename, drive, dir, fname, ext);
-	d = S9xGetDirectory(dirtype);
-
+	std::string new_filename;
+	unsigned int i = 0;
 	do
-		snprintf(s, PATH_MAX + 1, "%s%s%s.%03d%s", d, SLASH_STR, fname, i++, ex);
-	while (stat(s, &buf) == 0 && i < 1000);
+	{
+		std::string new_extension = std::to_string(i);
+		while (new_extension.length() < 3)
+			new_extension = "0" + new_extension;
+		new_extension += ex;
 
-	return (s);
+		new_filename = path.stem + new_extension;
+		i++;
+	} while (stat(new_filename.c_str(), &buf) == 0 && i < 1000);
+
+	return new_filename;
 }
 
 const char * S9xBasename (const char *f)
@@ -830,66 +742,30 @@ const char * S9xBasename (const char *f)
 	return (f);
 }
 
-const char * S9xChooseFilename (bool8 read_only)
-{
-	char	s[PATH_MAX + 1];
-	char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
-
-	const char	*filename;
-	char		title[64];
-
-	_splitpath(Memory.ROMFilename, drive, dir, fname, ext);
-	snprintf(s, PATH_MAX + 1, "%s.frz", fname);
-	sprintf(title, "%s snapshot filename", read_only ? "Select load" : "Choose save");
-
-	S9xSetSoundMute(TRUE);
-	filename = S9xSelectFilename(s, S9xGetDirectory(SNAPSHOT_DIR), "frz", title);
-	S9xSetSoundMute(FALSE);
-
-	return (filename);
-}
-
-const char * S9xChooseMovieFilename (bool8 read_only)
-{
-	char	s[PATH_MAX + 1];
-	char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
-
-	const char	*filename;
-	char		title[64];
-
-	_splitpath(Memory.ROMFilename, drive, dir, fname, ext);
-	snprintf(s, PATH_MAX + 1, "%s.smv", fname);
-	sprintf(title, "Choose movie %s filename", read_only ? "playback" : "record");
-
-	S9xSetSoundMute(TRUE);
-	filename = S9xSelectFilename(s, S9xGetDirectory(HOME_DIR), "smv", title);
-	S9xSetSoundMute(FALSE);
-
-	return (filename);
-}
-
 bool8 S9xOpenSnapshotFile (const char *filename, bool8 read_only, STREAM *file)
 {
-	char	s[PATH_MAX + 1];
-	char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
+    if (read_only)
+    {
+        if ((*file = OPEN_STREAM(filename, "rb")))
+            return (true);
+        else
+            fprintf(stderr, "Failed to open file stream for reading.\n");
+    }
+    else
+    {
+        if ((*file = OPEN_STREAM(filename, "wb")))
+        {
+            return (true);
+        }
+        else
+        {
+            fprintf(stderr, "Couldn't open stream with zlib.\n");
+        }
+    }
 
-	_splitpath(filename, drive, dir, fname, ext);
+    fprintf(stderr, "Couldn't open snapshot file:\n%s\n", filename);
 
-	if (*drive || *dir == SLASH_CHAR || (strlen(dir) > 1 && *dir == '.' && *(dir + 1) == SLASH_CHAR))
-	{
-		strncpy(s, filename, PATH_MAX + 1);
-		s[PATH_MAX] = 0;
-	}
-	else
-		snprintf(s, PATH_MAX + 1, "%s%s%s", S9xGetDirectory(SNAPSHOT_DIR), SLASH_STR, fname);
-
-	if (!*ext && strlen(s) <= PATH_MAX - 4)
-		strcat(s, ".frz");
-
-	if ((*file = OPEN_STREAM(s, read_only ? "rb" : "wb")))
-		return (TRUE);
-
-	return (FALSE);
+    return false;
 }
 
 void S9xCloseSnapshotFile (STREAM file)
@@ -927,7 +803,7 @@ void S9xToggleSoundChannel (int c)
 
 void S9xAutoSaveSRAM (void)
 {
-	Memory.SaveSRAM(S9xGetFilename(".srm", SRAM_DIR));
+	Memory.SaveSRAM(S9xGetFilename(".srm", SRAM_DIR).c_str());
 }
 
 void S9xSyncSpeed (void)
@@ -935,8 +811,7 @@ void S9xSyncSpeed (void)
 #ifndef NOSOUND
 	if (Settings.SoundSync)
 	{
-		while (!S9xSyncSound())
-			usleep(0);
+		return;
 	}
 #endif
 
@@ -1186,6 +1061,12 @@ s9xcommand_t S9xGetPortCommandT (const char *n)
 
 		return (cmd);
 	}
+        else if (!strcmp(n, "Advance"))
+        {
+                cmd.type = S9xButtonPort;
+                cmd.port[1] = 3;
+                return (cmd);
+        }
 
 	return (S9xGetDisplayCommandT(n));
 }
@@ -1218,6 +1099,9 @@ char * S9xGetPortCommandName (s9xcommand_t cmd)
 
 				case 2:
 					return (strdup("Rewind"));
+
+                                case 3:
+                                        return (strdup("Advance"));
 			}
 
 			break;
@@ -1258,6 +1142,9 @@ void S9xHandlePortCommand (s9xcommand_t cmd, int16 data1, int16 data2)
 				case 2:
 					rewinding = (bool8) data1;
 					break;
+
+                                case 3:
+                                        frame_advance = (bool8) data1;
 			}
 
 			break;
@@ -1376,8 +1263,10 @@ static void InitJoysticks (void)
 #endif
 }
 
-static void ReadJoysticks (void)
+static bool8 ReadJoysticks (void)
 {
+	// track if ANY joystick event happened this frame
+	int js_latch = FALSE;
 #ifdef JSIOCGVERSION
 	struct js_event	js_ev;
 
@@ -1391,6 +1280,7 @@ static void ReadJoysticks (void)
 			{
 				fprintf(stderr,"Joystick %d reconnected.\n",i);
 				js_unplugged[i] = FALSE;
+				js_latch = TRUE;
 			}
 		}
 
@@ -1404,12 +1294,14 @@ static void ReadJoysticks (void)
 				case JS_EVENT_AXIS:
 					S9xReportAxis(0x8000c000 | (i << 24) | js_ev.number, js_ev.value);
 					S9xReportAxis(0x80008000 | (i << 24) | (js_mod[i] << 16) | js_ev.number, js_ev.value);
+					js_latch = TRUE;
 					break;
 
 				case JS_EVENT_BUTTON:
 				case JS_EVENT_BUTTON | JS_EVENT_INIT:
 					S9xReportButton(0x80004000 | (i << 24) | js_ev.number, js_ev.value);
 					S9xReportButton(0x80000000 | (i << 24) | (js_mod[i] << 16) | js_ev.number, js_ev.value);
+					js_latch = TRUE;
 					break;
 			}
 		}
@@ -1431,60 +1323,124 @@ static void ReadJoysticks (void)
 				S9xReportButton(0x80004000 | (i << 24) | j, 0);
 				S9xReportButton(0x80000000 | (i << 24) | (js_mod[i] << 16) | j, 0);
 			}
+
+			js_latch = TRUE;
 		}
 	}
 #endif
+	return js_latch;
 }
 
 #endif
 
-static void SoundTrigger (void)
+void S9xSamplesAvailable(void *data)
 {
 #ifndef NOSOUND
-	S9xProcessSound(NULL);
-#endif
-}
 
-static void InitTimer (void)
-{
-#ifndef NOSOUND
-	struct itimerval	timeout;
-#endif
-	struct sigaction	sa;
+    int samples_to_write;
+	static uint8 *sound_buffer = NULL;
+	static int sound_buffer_size = 0;
 
-#ifdef USE_THREADS
-	if (unixSettings.ThreadSound)
-	{
-		pthread_mutex_init(&mutex, NULL);
-		pthread_create(&thread, NULL, S9xProcessSound, NULL);
-		return;
-	}
+#ifdef ALSA
+    snd_pcm_sframes_t frames_written, frames;
+    frames = snd_pcm_avail(so.pcm_handle);
+
+    if (frames < 0)
+    {
+        frames = snd_pcm_recover(so.pcm_handle, frames, 1);
+        return;
+    }
 #endif
 
-	sa.sa_handler = (SIG_PF) SoundTrigger;
-
-#ifdef SA_RESTART
-	sa.sa_flags = SA_RESTART;
+    if (Settings.DynamicRateControl)
+    {
+#ifndef ALSA
+        S9xUpdateDynamicRate(s_AudioOutput->GetFreeBufferSize(), so.fragment_size * 4);
 #else
-	sa.sa_flags = 0;
+        S9xUpdateDynamicRate(snd_pcm_frames_to_bytes(so.pcm_handle, frames),
+                             so.output_buffer_size);
+#endif
+    }
+
+    samples_to_write = S9xGetSampleCount();
+
+    if (samples_to_write < 0)
+        return;
+
+#ifdef ALSA
+    if (Settings.DynamicRateControl && !Settings.SoundSync)
+    {
+        // Using rate control, we should always keep the emulator's sound buffers empty to
+        // maintain an accurate measurement.
+        if (frames < samples_to_write/2)
+        {
+            S9xClearSamples();
+            return;
+        }
+    }
+
+    if (Settings.SoundSync && !Settings.TurboMode && !Settings.Mute)
+    {
+        snd_pcm_nonblock(so.pcm_handle, 0);
+        frames = samples_to_write/2;
+    } else {
+        snd_pcm_nonblock(so.pcm_handle, 1);
+        frames = MIN(frames, samples_to_write/2);
+    }
+
+    int bytes = snd_pcm_frames_to_bytes(so.pcm_handle, frames);
+    if (bytes <= 0)
+        return;
+
+    if (sound_buffer_size < bytes || sound_buffer == NULL)
+    {
+        sound_buffer = (uint8 *)realloc(sound_buffer, bytes);
+        sound_buffer_size = bytes;
+    }
+#else //OSS
+    if (sound_buffer_size < samples_to_write * 2)
+    {
+        sound_buffer = (uint8 *)realloc(sound_buffer, samples_to_write * 2);
+        sound_buffer_size = samples_to_write * 2;
+    }
 #endif
 
-#ifndef NOSOUND // FIXME: Kludge to get calltree running. Remove later.
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGALRM, &sa, NULL);
+#ifndef ALSA
+    S9xMixSamples(sound_buffer, samples_to_write);
+    s_AudioOutput->Write(sound_buffer, samples_to_write * 2);
+#else
+    S9xMixSamples(sound_buffer, frames*2);
+    frames_written = 0;
 
-	timeout.it_interval.tv_sec  = 0;
-	timeout.it_interval.tv_usec = 10000;
-	timeout.it_value.tv_sec     = 0;
-	timeout.it_value.tv_usec    = 10000;
-	if (setitimer(ITIMER_REAL, &timeout, NULL) < 0)
-		perror("setitimer");
-#endif
+    while (frames_written < frames) {
+        int result;
+
+        result = snd_pcm_writei(so.pcm_handle,
+                                sound_buffer +
+                                    snd_pcm_frames_to_bytes(so.pcm_handle, frames_written),
+                                frames - frames_written);
+        if (result < 0)
+        {
+            result = snd_pcm_recover(so.pcm_handle, result, 1);
+
+            if (result < 0)
+            {
+                break;
+            }
+        }
+        else
+        {
+            frames_written += result;
+        }
+    }
+#endif //ALSA
+#endif //NOSOUND
 }
 
 bool8 S9xOpenSoundDevice (void)
 {
 #ifndef NOSOUND
+#ifndef ALSA
 	int	J, K;
 
 	so.sound_fd = open(sound_device, O_WRONLY | O_NONBLOCK);
@@ -1494,15 +1450,21 @@ bool8 S9xOpenSoundDevice (void)
 		return (FALSE);
 	}
 
-	J = log2(unixSettings.SoundFragmentSize) | (3 << 16);
+	s_AudioOutput = new S9xAudioOutput(
+		so.sound_fd,
+		Settings.SoundPlaybackRate,
+		bool(unixSettings.ThreadSound)
+	);
+
+	J = log2(unixSettings.SoundFragmentSize) | (4 << 16);
 	if (ioctl(so.sound_fd, SNDCTL_DSP_SETFRAGMENT, &J) == -1)
 		return (FALSE);
 
-	J = K = Settings.SixteenBitSound ? AFMT_S16_NE : AFMT_U8;
+	J = K = AFMT_S16_NE;
 	if (ioctl(so.sound_fd, SNDCTL_DSP_SETFMT,      &J) == -1 || J != K)
 		return (FALSE);
 
-	J = K = Settings.Stereo ? 1 : 0;
+	J = K = 1;
 	if (ioctl(so.sound_fd, SNDCTL_DSP_STEREO,      &J) == -1 || J != K)
 		return (FALSE);
 
@@ -1516,93 +1478,108 @@ bool8 S9xOpenSoundDevice (void)
 
 	so.fragment_size = J;
 	printf("fragment size: %d\n", J);
-#endif
+
+#else
+
+    int err;
+    unsigned int periods = 8;
+    unsigned int buffer_size =  unixSettings.SoundBufferSize * 1000;
+    snd_pcm_sw_params_t *sw_params;
+    snd_pcm_hw_params_t *hw_params;
+    snd_pcm_uframes_t alsa_buffer_size, alsa_period_size;
+    unsigned int min = 0;
+    unsigned int max = 0;
+
+    unsigned int rate = Settings.SoundPlaybackRate;
+
+    err = snd_pcm_open(&so.pcm_handle, sound_device, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK);
+    if (err < 0) {
+        printf("Failed: %s\n", snd_strerror(err));
+        return (FALSE);
+    }
+
+    snd_pcm_hw_params_alloca(&hw_params);
+    snd_pcm_hw_params_any(so.pcm_handle, hw_params);
+    snd_pcm_hw_params_set_format(so.pcm_handle, hw_params, SND_PCM_FORMAT_S16);
+    snd_pcm_hw_params_set_access(so.pcm_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED);
+    snd_pcm_hw_params_set_rate_resample(so.pcm_handle, hw_params, 0);
+    snd_pcm_hw_params_set_channels(so.pcm_handle, hw_params, 2);
+
+    snd_pcm_hw_params_get_rate_min(hw_params, &min, NULL);
+    snd_pcm_hw_params_get_rate_max(hw_params, &max, NULL);
+    fprintf(stderr, "Alsa available rates: %d to %d\n", min, max);
+
+    if (rate > max && rate < min)
+    {
+        fprintf(stderr, "Rate %d not available. Using %d instead.\n", rate, max);
+        rate = max;
+    }
+    snd_pcm_hw_params_set_rate_near(so.pcm_handle, hw_params, &rate, NULL);
+
+
+    snd_pcm_hw_params_get_buffer_time_min(hw_params, &min, NULL);
+    snd_pcm_hw_params_get_buffer_time_max(hw_params, &max, NULL);
+    fprintf(stderr, "Alsa available buffer sizes: %dms to %dms\n", min / 1000, max / 1000);
+    if (buffer_size < min && buffer_size > max)
+    {
+        fprintf(stderr, "Buffer size %dms not available. Using %d instead.\n", buffer_size / 1000, (min + max) / 2000);
+        buffer_size = (min + max) / 2;
+    }
+    snd_pcm_hw_params_set_buffer_time_near(so.pcm_handle, hw_params, &buffer_size, NULL);
+
+
+    snd_pcm_hw_params_get_periods_min(hw_params, &min, NULL);
+    snd_pcm_hw_params_get_periods_max(hw_params, &max, NULL);
+    fprintf(stderr, "Alsa period ranges: %d to %d blocks\n", min, max);
+    if (periods > max)
+        periods = max;
+    snd_pcm_hw_params_set_periods_near(so.pcm_handle, hw_params, &periods, NULL);
+
+    err = snd_pcm_hw_params(so.pcm_handle, hw_params);
+    if (err < 0)
+    {
+        fprintf(stderr, "Alsa error: unable to install hw params\n");
+        snd_pcm_drain(so.pcm_handle);
+        snd_pcm_close(so.pcm_handle);
+        so.pcm_handle = NULL;
+        return (FALSE);
+    }
+
+
+    snd_pcm_sw_params_alloca(&sw_params);
+    snd_pcm_sw_params_current(so.pcm_handle, sw_params);
+    snd_pcm_get_params(so.pcm_handle, &alsa_buffer_size, &alsa_period_size);
+
+    /* Don't start until we're [nearly] full */
+    snd_pcm_sw_params_set_start_threshold(so.pcm_handle, sw_params, (alsa_buffer_size / 2));
+
+
+    err = snd_pcm_sw_params(so.pcm_handle, sw_params);
+    if (err < 0) {
+        fprintf(stderr, "Alsa error: unable to install sw params\n");
+        snd_pcm_drain(so.pcm_handle);
+        snd_pcm_close(so.pcm_handle);
+        so.pcm_handle = NULL;
+        return (FALSE);
+    }
+
+    err = snd_pcm_prepare(so.pcm_handle);
+    if (err < 0) {
+        fprintf(stderr, "Alsa error: unable to prepare audio: %s\n", snd_strerror(err));
+        snd_pcm_drain(so.pcm_handle);
+        snd_pcm_close(so.pcm_handle);
+        so.pcm_handle = NULL;
+        return (FALSE);
+    }
+
+    so.output_buffer_size = snd_pcm_frames_to_bytes(so.pcm_handle, alsa_buffer_size);
+#endif //ALSA
+#endif //NOSOUND
+	S9xSetSamplesAvailableCallback(S9xSamplesAvailable, NULL);
 
 	return (TRUE);
 }
 
-#ifndef NOSOUND
-
-static void * S9xProcessSound (void *)
-{
-	// If threads in use, this is to loop indefinitely.
-	// If not, this will be called by timer.
-
-	audio_buf_info	info;
-	if (!unixSettings.ThreadSound && (ioctl(so.sound_fd, SNDCTL_DSP_GETOSPACE, &info) == -1 || info.bytes < (int) so.fragment_size))
-		return (NULL);
-
-#ifdef USE_THREADS
-	do
-	{
-#endif
-
-	int	sample_count = so.fragment_size;
-	if (Settings.SixteenBitSound)
-		sample_count >>= 1;
-
-#ifdef USE_THREADS
-	if (unixSettings.ThreadSound)
-		pthread_mutex_lock(&mutex);
-	else
-#endif
-	if (block_signal)
-		return (NULL);
-
-	block_generate_sound = TRUE;
-
-	if (so.samples_mixed_so_far < sample_count)
-	{
-		unsigned	ofs = so.play_position + (Settings.SixteenBitSound ? (so.samples_mixed_so_far << 1) : so.samples_mixed_so_far);
-		S9xMixSamples(Buf + (ofs & SOUND_BUFFER_SIZE_MASK), sample_count - so.samples_mixed_so_far);
-		so.samples_mixed_so_far = sample_count;
-	}
-
-	unsigned	bytes_to_write = sample_count;
-	if (Settings.SixteenBitSound)
-		bytes_to_write <<= 1;
-
-	unsigned	byte_offset = so.play_position;
-	so.play_position += bytes_to_write;
-	so.play_position &= SOUND_BUFFER_SIZE_MASK;
-
-#ifdef USE_THREADS
-	if (unixSettings.ThreadSound)
-		pthread_mutex_unlock(&mutex);
-#endif
-
-	block_generate_sound = FALSE;
-
-	for (;;)
-	{
-		int	I = bytes_to_write;
-		if (byte_offset + I > SOUND_BUFFER_SIZE)
-			I = SOUND_BUFFER_SIZE - byte_offset;
-		if (I == 0)
-			break;
-
-		I = write(so.sound_fd, (char *) Buf + byte_offset, I);
-		if (I > 0)
-		{
-			bytes_to_write -= I;
-			byte_offset += I;
-			byte_offset &= SOUND_BUFFER_SIZE_MASK;
-		}
-		else
-		if (I < 0 && errno != EINTR)
-			break;
-	}
-
-	so.samples_mixed_so_far -= sample_count;
-
-#ifdef USE_THREADS
-	} while (unixSettings.ThreadSound);
-#endif
-
-	return (NULL);
-}
-
-#endif
 
 void S9xExit (void)
 {
@@ -1616,10 +1593,13 @@ void S9xExit (void)
 		S9xNPDisconnect();
 #endif
 
-	Memory.SaveSRAM(S9xGetFilename(".srm", SRAM_DIR));
-	S9xSaveCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
-	S9xResetSaveTimer(FALSE);
+#if !defined(NOSOUND) && !defined(ALSA)
+	delete s_AudioOutput;
+#endif
 
+	Memory.SaveSRAM(S9xGetFilename(".srm", SRAM_DIR).c_str());
+	S9xResetSaveTimer(FALSE);
+	S9xSaveCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
 	S9xUnmapAllControls();
 	S9xDeinitDisplay();
 	Memory.Deinit();
@@ -1655,9 +1635,8 @@ int main (int argc, char **argv)
 	Settings.FrameTimeNTSC = 16667;
 	Settings.SixteenBitSound = TRUE;
 	Settings.Stereo = TRUE;
-	Settings.SoundPlaybackRate = 32000;
-	Settings.SoundInputRate = 32000;
-	Settings.SupportHiRes = TRUE;
+	Settings.SoundPlaybackRate = 48000;
+	Settings.SoundInputRate = 31950;
 	Settings.Transparency = TRUE;
 	Settings.AutoDisplayMessages = TRUE;
 	Settings.InitialInfoStringTimeout = 120;
@@ -1696,6 +1675,7 @@ int main (int argc, char **argv)
 
 	S9xLoadConfigFiles(argv, argc);
 	rom_filename = S9xParseArgs(argv, argc);
+	S9xDeleteCheats();
 
 	make_snes9x_dirs();
 
@@ -1707,14 +1687,10 @@ int main (int argc, char **argv)
 		exit(1);
 	}
 
-	S9xInitSound(unixSettings.SoundBufferSize, 0);
+	S9xInitSound(0);
 	S9xSetSoundMute(TRUE);
 
 	S9xReportControllers();
-
-#ifdef GFX_MULTI_FORMAT
-	S9xSetRenderPixelFormat(RGB565);
-#endif
 
 	uint32	saved_flags = CPU.Flags;
 	bool8	loaded = FALSE;
@@ -1725,34 +1701,21 @@ int main (int argc, char **argv)
 
 		if (!loaded)
 		{
-			char	s1[PATH_MAX + 1], s2[PATH_MAX + 1];
-			char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
-
-			s1[0] = s2[0] = 0;
+			std::string s1, s2;
 
 			if (Settings.CartAName[0])
 			{
-				_splitpath(Settings.CartAName, drive, dir, fname, ext);
-				snprintf(s1, PATH_MAX + 1, "%s%s%s", S9xGetDirectory(ROM_DIR), SLASH_STR, fname);
-				if (ext[0] && (strlen(s1) <= PATH_MAX - 1 - strlen(ext)))
-				{
-					strcat(s1, ".");
-					strcat(s1, ext);
-				}
+				SplitPath path = splitpath(Settings.CartAName);
+				s1 = makepath("", S9xGetDirectory(ROM_DIR), path.stem, path.ext);
 			}
 
 			if (Settings.CartBName[0])
 			{
-				_splitpath(Settings.CartBName, drive, dir, fname, ext);
-				snprintf(s2, PATH_MAX + 1, "%s%s%s", S9xGetDirectory(ROM_DIR), SLASH_STR, fname);
-				if (ext[0] && (strlen(s2) <= PATH_MAX - 1 - strlen(ext)))
-				{
-					strcat(s2, ".");
-					strcat(s2, ext);
-				}
+				SplitPath path = splitpath(Settings.CartBName);
+				s2 = makepath("", S9xGetDirectory(ROM_DIR), path.stem, path.ext);
 			}
 
-			loaded = Memory.LoadMultiCart(s1, s2);
+			loaded = Memory.LoadMultiCart(s1.c_str(), s2.c_str());
 		}
 	}
 	else
@@ -1762,18 +1725,9 @@ int main (int argc, char **argv)
 
 		if (!loaded && rom_filename[0])
 		{
-			char	s[PATH_MAX + 1];
-			char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
-
-			_splitpath(rom_filename, drive, dir, fname, ext);
-			snprintf(s, PATH_MAX + 1, "%s%s%s", S9xGetDirectory(ROM_DIR), SLASH_STR, fname);
-			if (ext[0] && (strlen(s) <= PATH_MAX - 1 - strlen(ext)))
-			{
-				strcat(s, ".");
-				strcat(s, ext);
-			}
-
-			loaded = Memory.LoadROM(s);
+			SplitPath path = splitpath(rom_filename);
+			std::string s = makepath("", S9xGetDirectory(ROM_DIR), path.stem, path.ext);
+			loaded = Memory.LoadROM(s.c_str());
 		}
 	}
 
@@ -1783,9 +1737,17 @@ int main (int argc, char **argv)
 		exit(1);
 	}
 
+	S9xDeleteCheats();
+	S9xCheatsEnable();
 	NSRTControllerSetup();
-	Memory.LoadSRAM(S9xGetFilename(".srm", SRAM_DIR));
-	S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
+	Memory.LoadSRAM(S9xGetFilename(".srm", SRAM_DIR).c_str());
+
+	if (Settings.ApplyCheats)
+	{
+		S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
+	}
+
+	S9xParseArgsForCheats(argv, argc);
 
 	CPU.Flags = saved_flags;
 	Settings.StopEmulation = FALSE;
@@ -1880,7 +1842,6 @@ int main (int argc, char **argv)
 	uint32	JoypadSkip = 0;
 #endif
 
-	InitTimer();
 	S9xSetSoundMute(FALSE);
 
 #ifdef NETPLAY_SUPPORT
@@ -1928,12 +1889,26 @@ int main (int argc, char **argv)
 	#endif
 		{
 			if(rewinding)
+			{
+				uint16 joypads[8];
+				for (int i = 0; i < 8; i++)
+					joypads[i] = MovieGetJoypad(i);
+
 				rewinding = stateMan.pop();
+
+				for (int i = 0; i < 8; i++)
+					MovieSetJoypad (i, joypads[i]);
+			}
 			else if(IPPU.TotalEmulatedFrames % unixSettings.rewindGranularity == 0)
 				stateMan.push();
 
 			S9xMainLoop();
 		}
+                if (Settings.Paused && frame_advance)
+                {
+                        S9xMainLoop();
+                        frame_advance = 0;
+                }
 
 	#ifdef NETPLAY_SUPPORT
 		if (NP_Activated)
@@ -1963,7 +1938,11 @@ int main (int argc, char **argv)
 
 	#ifdef JOYSTICK_SUPPORT
 		if (unixSettings.JoystickEnabled && (JoypadSkip++ & 1) == 0)
-			ReadJoysticks();
+		{
+			if (ReadJoysticks() == TRUE) {
+				S9xLatchJSEvent();
+			}
+		}
 	#endif
 
 		S9xProcessEvents(FALSE);

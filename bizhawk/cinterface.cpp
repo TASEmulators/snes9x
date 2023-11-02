@@ -11,7 +11,6 @@
 #include "controls.h"
 #include "cheats.h"
 #include "movie.h"
-#include "logger.h"
 #include "display.h"
 #include "conffile.h"
 #include <stdio.h>
@@ -39,7 +38,10 @@
 
 static void log_cb(int level, const char *fmt, ...)
 {
-	_debug_puts(fmt);
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(stderr, fmt, args);
+	va_end(args);
 }
 
 static bool use_overscan = false;
@@ -133,6 +135,10 @@ static void retro_set_controller_port_device(unsigned port, unsigned device)
 		int offset = snes_devices[0] == RETRO_DEVICE_JOYPAD_MULTITAP ? 4 : 1;
 		switch (device)
 		{
+		case RETRO_DEVICE_NONE:
+			S9xSetController(port, CTL_NONE, 0, 0, 0, 0);
+			snes_devices[port] = RETRO_DEVICE_NONE;
+			break;
 		case RETRO_DEVICE_JOYPAD:
 			S9xSetController(port, CTL_JOYPAD, port * offset, 0, 0, 0);
 			snes_devices[port] = RETRO_DEVICE_JOYPAD;
@@ -246,10 +252,7 @@ ECL_EXPORT int biz_load_rom(const void *data, int size)
 {
 	rom_loaded = Memory.LoadROMMem((const uint8_t *)data, size);
 
-	int pixel_format = RGB565;
-
 	S9xGraphicsDeinit();
-	S9xSetRenderPixelFormat(pixel_format);
 	S9xGraphicsInit();
 
 	return rom_loaded;
@@ -325,11 +328,13 @@ ECL_EXPORT int biz_init()
 	Settings.SoundPlaybackRate = 44100;
 	Settings.SoundInputRate = 32040;
 	Settings.SoundSync = TRUE;
-	Settings.SupportHiRes = TRUE;
+	Settings.InterpolationMethod = 2;
 	Settings.Transparency = TRUE;
 	Settings.AutoDisplayMessages = TRUE;
 	Settings.InitialInfoStringTimeout = 120;
+	Settings.SuperFXClockMultiplier = 100;
 	Settings.HDMATimingHack = 100;
+	Settings.MaxSpriteTilesPerLine = 34;
 	Settings.BlockInvalidVRAMAccessMaster = TRUE;
 	Settings.WrongMovieStateProtection = TRUE;
 	Settings.DumpStreamsMaxFrames = -1;
@@ -339,6 +344,7 @@ ECL_EXPORT int biz_init()
 	Settings.CartBName[0] = 0;
 	Settings.AutoSaveDelay = 1;
 	Settings.DontSaveOopsSnapshot = TRUE;
+	Settings.UpAndDown = TRUE;
 
 	CPU.Flags = 0;
 
@@ -348,12 +354,10 @@ ECL_EXPORT int biz_init()
 		return 0;
 	}
 
-	S9xInitSound(24, 0); // 16, 0)
+	S9xInitSound(0); // 16, 0)
 	S9xSetSoundMute(FALSE);
 	//S9xSetSamplesAvailableCallback(S9xAudioCallback, NULL);
 
-	GFX.Pitch = MAX_SNES_WIDTH * sizeof(uint16);
-	GFX.Screen = (uint16 *)alloc_invisible(GFX.Pitch * MAX_SNES_HEIGHT);
 	S9xGraphicsInit();
 
 	S9xInitInputDevices();
@@ -378,6 +382,8 @@ ECL_EXPORT void biz_post_load_state()
 	memset(IPPU.TileCached[TILE_2BIT_ODD], 0, MAX_2BIT_TILES);
 	memset(IPPU.TileCached[TILE_4BIT_EVEN], 0, MAX_4BIT_TILES);
 	memset(IPPU.TileCached[TILE_4BIT_ODD], 0, MAX_4BIT_TILES);
+
+	S9xMSU1PostLoadState();
 }
 
 #define MAP_BUTTON(id, name) S9xMapButton((id), S9xGetCommandT((name)), false)
@@ -447,7 +453,7 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_1, BTN_UP), "Joypad1 Up");
 	MAP_BUTTON(MAKE_BUTTON(PAD_1, BTN_DOWN), "Joypad1 Down");
 	S9xMapPointer((BTN_POINTER), S9xGetCommandT("Pointer Mouse1+Superscope+Justifier1"), false);
-	S9xMapPointer((BTN_POINTER2), S9xGetCommandT("Pointer Mouse2"), false);
+	S9xMapPointer((BTN_POINTER2), S9xGetCommandT("Pointer Mouse2+Justifier2"), false);
 
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_A), "Joypad2 A");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_B), "Joypad2 B");
@@ -457,7 +463,7 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_START), "{Joypad2 Start,Mouse2 R,Superscope Cursor,Justifier1 Start}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_L), "Joypad2 L");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_R), "Joypad2 R");
-	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_LEFT), "Joypad2 Left,Superscope AimOffscreen");
+	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_LEFT), "{Joypad2 Left,Superscope AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_RIGHT), "Joypad2 Right");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_UP), "{Joypad2 Up,Superscope ToggleTurbo,Justifier1 AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_2, BTN_DOWN), "{Joypad2 Down,Superscope Pause}");
@@ -466,13 +472,13 @@ static void map_buttons()
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_B), "Joypad3 B");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_X), "Joypad3 X");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_Y), "Joypad3 Y");
-	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_SELECT), "Joypad3 Select");
-	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_START), "Joypad3 Start");
+	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_SELECT), "{Joypad3 Select,Justifier2 Trigger}");
+	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_START), "{Joypad3 Start,Justifier2 Start}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_L), "Joypad3 L");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_R), "Joypad3 R");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_LEFT), "Joypad3 Left");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_RIGHT), "Joypad3 Right");
-	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_UP), "Joypad3 Up");
+	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_UP), "{Joypad3 Up,Justifier2 AimOffscreen}");
 	MAP_BUTTON(MAKE_BUTTON(PAD_3, BTN_DOWN), "Joypad3 Down");
 
 	MAP_BUTTON(MAKE_BUTTON(PAD_4, BTN_A), "Joypad4 A");
@@ -550,6 +556,9 @@ static void report_buttons()
 	{
 		switch (snes_devices[port])
 		{
+		case RETRO_DEVICE_NONE:
+			break;
+
 		case RETRO_DEVICE_JOYPAD:
 			for (int i = BTN_FIRST; i <= BTN_LAST; i++)
 				S9xReportButton(MAKE_BUTTON(port * offset + 1, i), input_state_cb(port * offset, RETRO_DEVICE_JOYPAD, 0, i));
@@ -606,6 +615,30 @@ ECL_EXPORT void SetInputCallback(void (*callback)())
 	InputCallback = callback;
 }
 
+typedef bool (*MsuOpenAudio)(uint16 track_id);
+typedef void (*MsuSeekAudio)(int64 offset, bool relative);
+typedef uint8 (*MsuReadAudio)(void);
+typedef bool (*MsuAudioEnd)(void);
+
+MsuOpenAudio OpenAudio;
+MsuSeekAudio SeekAudio;
+MsuReadAudio ReadAudio;
+MsuAudioEnd AudioEnd;
+
+ECL_EXPORT void SetMsu1Callbacks(MsuOpenAudio openAudio, MsuSeekAudio seekAudio, MsuReadAudio readAudio, MsuAudioEnd audioEnd)
+{
+	OpenAudio = openAudio;
+	SeekAudio = seekAudio;
+	ReadAudio = readAudio;
+	AudioEnd = audioEnd;
+}
+
+bool BizHawkOpenMsuAudioFile(uint16 id) { return OpenAudio(id); }
+void BizHawkCloseMsuAudioFile(void) { /* do nothing; OpenMsuAudioFile disposes any existing file in frontend */ }
+void BizHawkSeekMsuAudioFile(int64 offset, bool relative) { SeekAudio(offset, relative); }
+uint8 BizHawkReadMsuAudioFile(void) { return ReadAudio(); }
+bool BizHawkMsuAudioFileEnd(void) { return AudioEnd(); }
+
 static int actual_width;
 static int actual_height;
 
@@ -617,9 +650,9 @@ static void Blit(const uint16_t *src, uint8_t *dst)
 		for (int i = 0; i < actual_width; i++)
 		{
 			auto c = *src++;
-			*dst++ = c << 3 & 0xf8 | c >> 2 & 7;
-			*dst++ = c >> 3 & 0xfa | c >> 9 & 3;
-			*dst++ = c >> 8 & 0xf8 | c >> 13 & 7;
+			*dst++ = (c << 3 & 0xf8) | (c >> 2 & 7);
+			*dst++ = (c >> 3 & 0xfa) | (c >> 9 & 3);
+			*dst++ = (c >> 8 & 0xf8) | (c >> 13 & 7);
 			*dst++ = 0xff;
 		}
 		src += vinc;
@@ -637,7 +670,7 @@ ECL_EXPORT void FrameAdvance(FrameInfo *frame)
 {
 	pad_read = FALSE;
 	S9xMainLoop();
-	S9xFinalizeSamples();
+	S9xLandSamples();
 	frame->Lagged = !pad_read;
 
 	size_t avail = S9xGetSampleCount();
@@ -730,18 +763,16 @@ bool8 S9xContinueUpdate(int width, int height)
 }
 
 // Dummy functions that should probably be implemented correctly later.
+std::string S9xGetDirectory(s9x_getdirtype) { return ""; }
+std::string S9xGetFilenameInc(std::string in, s9x_getdirtype) { return ""; }
 void S9xParsePortConfig(ConfigFile &, int) {}
 void S9xSyncSpeed() {}
 const char *S9xStringInput(const char *in) { return in; }
-const char *S9xGetFilename(const char *in, s9x_getdirtype) { return in; }
-const char *S9xGetDirectory(s9x_getdirtype) { return ""; }
 void S9xInitInputDevices() {}
 const char *S9xChooseFilename(unsigned char) { return ""; }
 void S9xHandlePortCommand(s9xcommand_t, short, short) {}
 bool S9xPollButton(unsigned int, bool *) { return false; }
 void S9xToggleSoundChannel(int) {}
-const char *S9xGetFilenameInc(const char *in, s9x_getdirtype) { return ""; }
-const char *S9xBasename(const char *in) { return in; }
 bool8 S9xInitUpdate() { return TRUE; }
 void S9xExtraUsage() {}
 bool8 S9xOpenSoundDevice() { return TRUE; }
@@ -781,69 +812,6 @@ void S9xAutoSaveSRAM()
 {
 	return;
 }
-
-#ifndef __WIN32__
-// S9x weirdness.
-void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext)
-{
-	*drive = 0;
-
-	const char *slash = strrchr(path, SLASH_CHAR),
-			   *dot = strrchr(path, '.');
-
-	if (dot && slash && dot < slash)
-		dot = NULL;
-
-	if (!slash)
-	{
-		*dir = 0;
-
-		strcpy(fname, path);
-
-		if (dot)
-		{
-			fname[dot - path] = 0;
-			strcpy(ext, dot + 1);
-		}
-		else
-			*ext = 0;
-	}
-	else
-	{
-		strcpy(dir, path);
-		dir[slash - path] = 0;
-
-		strcpy(fname, slash + 1);
-
-		if (dot)
-		{
-			fname[dot - slash - 1] = 0;
-			strcpy(ext, dot + 1);
-		}
-		else
-			*ext = 0;
-	}
-}
-
-void _makepath(char *path, const char *, const char *dir, const char *fname, const char *ext)
-{
-	if (dir && *dir)
-	{
-		strcpy(path, dir);
-		strcat(path, SLASH_STR);
-	}
-	else
-		*path = 0;
-
-	strcat(path, fname);
-
-	if (ext && *ext)
-	{
-		strcat(path, ".");
-		strcat(path, ext);
-	}
-}
-#endif // __WIN32__
 
 int main(void)
 {

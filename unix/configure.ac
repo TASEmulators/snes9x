@@ -1,6 +1,6 @@
-AC_PREREQ([2.60])
-AC_INIT([Snes9x], [1.55], [], [snes9x])
-AC_REVISION([$Revision: 1.55 $])
+AC_PREREQ([2.71])
+AC_INIT([Snes9x],[1.62.3],[],[snes9x])
+AC_REVISION([$Revision: 1.62.3 $])
 
 AC_CONFIG_SRCDIR([unix.cpp])
 
@@ -23,8 +23,7 @@ AC_DEFUN([AC_S9X_COMPILER_FLAG],
 		OLD_CXXFLAGS="[$]CXXFLAGS"
 		CXXFLAGS="[$]OLD_CXXFLAGS $1"
 
-		AC_TRY_RUN(
-		[
+		AC_RUN_IFELSE([AC_LANG_SOURCE([[
 			int	foo;
 
 			int	main (int argc, char **argv)
@@ -37,8 +36,7 @@ AC_DEFUN([AC_S9X_COMPILER_FLAG],
 
 				return (argc);
 			}
-		],
-		[snes9x_cv_option_$2="yes"], [snes9x_cv_option_$2="no"])
+		]])],[snes9x_cv_option_$2="yes"],[snes9x_cv_option_$2="no"],[snes9x_cv_option_$2="yes"])
 	])
 
 	CXXFLAGS="[$]OLD_CXXFLAGS"
@@ -55,18 +53,6 @@ AC_DEFUN([AC_S9X_COMPILER_FLAG],
 # *****************************
 # *** Execution begins here ***
 # *****************************
-
-# Remove -g and -O2 flags manually.
-
-if test "x$CFLAGS" != "x"; then
-	CFLAGS="`echo \"$CFLAGS\" | sed -e 's/-g//'`"
-	CFLAGS="`echo \"$CFLAGS\" | sed -e 's/-O2//'`"
-fi
-
-if test "x$CXXFLAGS" != "x"; then
-	CXXFLAGS="`echo \"$CXXFLAGS\" | sed -e 's/-g//'`"
-	CXXFLAGS="`echo \"$CXXFLAGS\" | sed -e 's/-O2//'`"
-fi
 
 # Test what compiler flags we should use.
 
@@ -106,13 +92,52 @@ AC_S9X_COMPILER_FLAG([-Wall],                 [Wall])
 AC_S9X_COMPILER_FLAG([-W],                    [W])
 AC_S9X_COMPILER_FLAG([-Wno-unused-parameter], [Wno_unused_parameter])
 
+# Enable SSE4.1
+AC_ARG_ENABLE([sse41],
+	[AS_HELP_STRING([--enable-sse41],
+		[enable SSE4.1 if available (default: no)])],
+	[], [enable_sse41="no"])
+
+if test "x$enable_sse41" = "xyes"; then
+	AC_S9X_COMPILER_FLAG([-msse4.1], [sse41])
+	if test "x$snes9x_cv_option_sse41" != "xyes"; then
+		enable_sse41="no"
+	fi
+fi
+
+# Enable AVX2
+AC_ARG_ENABLE([avx2],
+	[AS_HELP_STRING([--enable-avx2],
+		[enable AVX2 if available (default: no)])],
+	[], [enable_avx2="no"])
+
+if test "x$enable_avx2" = "xyes"; then
+	AC_S9X_COMPILER_FLAG([-mavx2], [avx2])
+	if test "x$snes9x_cv_option_avx2" != "xyes"; then
+		enable_avx2="no"
+	fi
+fi
+
+# Enable ARM NEON
+AC_ARG_ENABLE([neon],
+	[AS_HELP_STRING([--enable-neon],
+		[enable NEON if available (default: no)])],
+	[], [enable_neon="no"])
+
+if test "x$enable_neon" = "xyes"; then
+	AC_S9X_COMPILER_FLAG([-mfpu=neon], [neon])
+	if test "x$snes9x_cv_option_neon" != "xyes"; then
+		enable_neon="no"
+	fi
+fi
+
 # Check if the OS is Linux.
 
 AC_MSG_CHECKING([whether the OS is Linux])
 
 AC_CACHE_VAL([snes9x_cv_linux_os],
 [
-	case "$target" in
+	case "$host" in
 		*-*-linux*)
 			snes9x_cv_linux_os="yes"
 			;;
@@ -323,14 +348,12 @@ AC_CHECK_HEADERS([unistd.h sys/socket.h])
 if test "x$snes9x_have_stdint_h" = "x"; then
 	AC_MSG_CHECKING([whether the size of pointer is int])
 	
-	AC_TRY_RUN(
-	[
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 		int main (void)
 		{
 			return (!(sizeof(void *) == sizeof(int)));
 		}
-	],
-	[snes9x_ptr_is_int="yes"], [snes9x_ptr_is_int="no"])
+	]])],[snes9x_ptr_is_int="yes"],[snes9x_ptr_is_int="no"],[])
 	
 	if test "x$snes9x_ptr_is_int" = "xyes"; then
 		AC_MSG_RESULT(yes)
@@ -349,8 +372,7 @@ AC_DEFUN([AC_S9X_CHECK_SAR],
 	OLD_CXXFLAGS="[$]CXXFLAGS"
 	CXXFLAGS="[$]OLD_CXXFLAGS $snes9x_have_stdint_h"
 
-	AC_TRY_RUN(
-	[
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 		#ifdef HAVE_STDINT_H
 		#include <stdint.h>
 		typedef int8_t			int8;
@@ -376,8 +398,7 @@ AC_DEFUN([AC_S9X_CHECK_SAR],
 
 			return (i < 0 ? 0 : 1);
 		}
-	],
-	[snes9x_sar_$1="yes"], [snes9x_sar_$1="no"])
+	]])],[snes9x_sar_$1="yes"],[snes9x_sar_$1="no"],[snes9x_sar_$1=$GCC])
 
 	CXXFLAGS="[$]OLD_CXXFLAGS"
 
@@ -418,6 +439,38 @@ if test "x$enable_xvideo" = "xyes"; then
 	])
 fi
 
+# Check if we can build with libyuv hardware acceleration I420 conversion support
+AC_ARG_ENABLE([libyuv],
+    [AS_HELP_STRING([--enable-libyuv],
+        [enable libyuv I420 conversion support if available (default: yes)])],
+    [], [enable_libyuv="yes"])
+
+if test "x$enable_libyuv" = "xyes"; then
+    enable_libyuv="no"
+    AC_CHECK_HEADER([libyuv.h],
+    [
+        enable_libyuv="yes"
+        S9XLIBS="$S9XLIBS -lyuv"
+        S9XDEFS="$S9XDEFS -DUSE_LIBYUV"
+    ])
+fi
+
+# Check if we can build with Xinerama multi-monitor support
+AC_ARG_ENABLE([xinerama],
+	[AS_HELP_STRING([--enable-xinerama],
+		[enable Xinerama if available (default: yes)])],
+	[], [enable_xinerama="yes"])
+
+if test "x$enable_xinerama" = "xyes"; then
+	enable_xinerama="no"
+	AC_CHECK_HEADER([X11/extensions/Xinerama.h],
+	[
+		enable_xinerama="yes"
+		S9XLIBS="$S9XLIBS -lXinerama"
+		S9XDEFS="$S9XDEFS -DUSE_XINERAMA"
+	])
+fi
+
 # Check if we have sound code for this platform.
 
 AC_ARG_ENABLE([sound],
@@ -446,9 +499,28 @@ else
 	S9XDEFS="$S9XDEFS -DNOSOUND"
 fi
 
+# Check if we can build with alsa support
+AC_ARG_ENABLE([sound-alsa],
+    [AS_HELP_STRING([--enable-sound-alsa],
+        [enable Alsa if available (default: yes)])],
+    [], [enable_sound_alsa="yes"])
+
+if test "x$enable_sound_alsa" = "xyes"; then
+    enable_sound_alsa="no"
+    AC_CHECK_HEADER([alsa/asoundlib.h],
+    [
+        enable_sound_alsa="yes"
+        enable_sound="yes"
+        S9XLIBS="$S9XLIBS -lasound"
+        #in case '--disable-sound' and 'enable-sound-alsa'
+        S9XDEFS=$(echo $S9XDEFS|sed 's/-DNOSOUND//g; s/-DUSE_THREADS//g')
+        S9XDEFS="$S9XDEFS -DALSA"
+    ])
+fi
+
 # Output.
 
-S9XFLGS="$CXXFLAGS $CPPFLAGS $S9XFLGS"
+S9XFLGS="$CXXFLAGS $CPPFLAGS $LDFLAGS $S9XFLGS"
 S9XLIBS="$LIBS $S9XLIBS"
 
 S9XFLGS="`echo \"$S9XFLGS\" | sed -e 's/  */ /g'`"
@@ -483,7 +555,10 @@ libs................. $S9XLIBS
 
 features:
 Xvideo support....... $enable_xvideo
+libyuv support....... $enable_libyuv
+Xinerama support..... $enable_xinerama
 sound support........ $enable_sound
+alsa support......... $enable_sound_alsa
 screenshot support... $enable_screenshot
 netplay support...... $enable_netplay
 gamepad support...... $enable_gamepad
@@ -491,10 +566,14 @@ GZIP support......... $enable_gzip
 ZIP support.......... $enable_zip
 SYSTEM_ZIP........... $with_system_zip
 JMA support.......... $enable_jma
+SSE4.1............... $enable_sse41
+AVX2................. $enable_avx2
+NEON................. $enable_neon
 debugger............. $enable_debugger
 
 EOF
 
 cat config.info
 
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

@@ -1,194 +1,8 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
-
-
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 /* Render.CPP
  * ----------
@@ -207,7 +21,7 @@
 #include "../gfx.h"
 #include "../filter/2xsai.h"
 #include "../filter/hq2x.h"
-#include "snes_ntsc.h"
+#include "../filter/snes_ntsc.h"
 #include "../filter/xbrz.h"
 #include <vector>
 #include <intrin.h>
@@ -238,6 +52,7 @@ void RenderSimple3X (SSurface Src, SSurface Dst, RECT *);
 void RenderSimple4X (SSurface Src, SSurface Dst, RECT *);
 void RenderTVMode3X (SSurface Src, SSurface Dst, RECT *);
 void RenderDotMatrix3X (SSurface Src, SSurface Dst, RECT *);
+void RenderBlarggNTSCRF(SSurface Src, SSurface Dst, RECT *);
 void RenderBlarggNTSCComposite(SSurface Src, SSurface Dst, RECT *);
 void RenderBlarggNTSCSvideo(SSurface Src, SSurface Dst, RECT *);
 void RenderBlarggNTSCRgb(SSurface Src, SSurface Dst, RECT *);
@@ -251,22 +66,25 @@ TRenderMethod _RenderMethod = RenderPlain;
 TRenderMethod _RenderMethodHiRes = RenderPlain;
 
 // Used as change log
-static uint8 ChangeLog1 [EXT_PITCH * MAX_SNES_HEIGHT];
-static uint8 ChangeLog2 [EXT_PITCH * MAX_SNES_HEIGHT];
-static uint8 ChangeLog3 [EXT_PITCH * MAX_SNES_HEIGHT];
+static uint8 ChangeLog1 [2 * MAX_SNES_WIDTH * MAX_SNES_HEIGHT];
+static uint8 ChangeLog2 [2 * MAX_SNES_WIDTH * MAX_SNES_HEIGHT];
+static uint8 ChangeLog3 [2 * MAX_SNES_WIDTH * MAX_SNES_HEIGHT];
 
-BYTE *BlendBuf = NULL;
 BYTE *BlendBuffer = NULL;
 
 uint8 *ChangeLog [3] = {
     ChangeLog1, ChangeLog2, ChangeLog3
 };
 
-START_EXTERN_C
 uint8 snes9x_clear_change_log = 0;
-END_EXTERN_C
 
-enum BlarggMode { UNINITIALIZED,BLARGGCOMPOSITE,BLARGGSVIDEO,BLARGGRGB };
+enum BlarggMode {
+    UNINITIALIZED,
+    BLARGGRF,
+    BLARGGCOMPOSITE,
+    BLARGGSVIDEO,
+    BLARGGRGB
+};
 
 snes_ntsc_t *ntsc = NULL;
 BlarggMode blarggMode = UNINITIALIZED;
@@ -324,6 +142,7 @@ TRenderMethod FilterToMethod(RenderFilter filterID)
         case FILTER_LQ3XBOLD:   return RenderLQ3XB;
         case FILTER_EPX3:       return RenderEPX3;
         case FILTER_3XBRZ:      return Render3xBRZ;
+		case FILTER_BLARGGRF:   return RenderBlarggNTSCRF;
 		case FILTER_BLARGGCOMP: return RenderBlarggNTSCComposite;
 		case FILTER_BLARGGSVID: return RenderBlarggNTSCSvideo;
 		case FILTER_BLARGGRGB:  return RenderBlarggNTSCRgb;
@@ -345,6 +164,7 @@ const char* GetFilterName(RenderFilter filterID)
 		case FILTER_SIMPLE2X: return "Simple 2X";
 		case FILTER_SCANLINES: return "Scanlines";
 		case FILTER_TVMODE: return "TV Mode";
+		case FILTER_BLARGGRF: return "Blargg's NTSC (RF)";
 		case FILTER_BLARGGCOMP: return "Blargg's NTSC (Composite)";
 		case FILTER_BLARGGSVID: return "Blargg's NTSC (S-Video)";
 		case FILTER_BLARGGRGB: return "Blargg's NTSC (RGB)";
@@ -394,6 +214,7 @@ int GetFilterScale(RenderFilter filterID)
 		case FILTER_HQ3XBOLD:
 		case FILTER_LQ3XBOLD:
 		case FILTER_EPX3:
+        case FILTER_BLARGGRF:
 		case FILTER_BLARGGCOMP:
 		case FILTER_BLARGGSVID:
 		case FILTER_BLARGGRGB:
@@ -418,6 +239,7 @@ bool GetFilterHiResSupport(RenderFilter filterID)
 		case FILTER_SIMPLE1X:
 		case FILTER_SIMPLE2X:
 		case FILTER_SCANLINES:
+        case FILTER_BLARGGRF:
 		case FILTER_BLARGGCOMP:
 		case FILTER_BLARGGSVID:
 		case FILTER_BLARGGRGB:
@@ -465,6 +287,7 @@ inline static bool GetFilterBlendSupport(RenderFilter filterID)
 	switch(filterID)
 	{
 		case FILTER_SIMPLE1X:
+        case FILTER_BLARGGRF:
 		case FILTER_BLARGGCOMP:
 		case FILTER_BLARGGSVID:
 		case FILTER_BLARGGRGB:
@@ -473,6 +296,62 @@ inline static bool GetFilterBlendSupport(RenderFilter filterID)
 		default:
 			return false;
 	}
+}
+
+void AdjustHeightExtend(unsigned int &height)
+{
+    if(Settings.ShowOverscan)
+    {
+        if(height == SNES_HEIGHT)
+            height = SNES_HEIGHT_EXTENDED;
+        else if(height == SNES_HEIGHT * 2)
+            height = SNES_HEIGHT_EXTENDED * 2;
+    }
+    else
+    {
+        if(height == SNES_HEIGHT_EXTENDED)
+            height = SNES_HEIGHT;
+        else if(height == SNES_HEIGHT_EXTENDED * 2)
+            height = SNES_HEIGHT * 2;
+    }
+}
+
+inline void SetRect(RECT* rect, unsigned int width, unsigned int height, int scale)
+{
+    AdjustHeightExtend(height);
+	rect->left = 0;
+	rect->right = width * scale;
+	rect->top = 0;
+	rect->bottom = height * scale;
+}
+
+RECT GetFilterOutputSize(SSurface Src)
+{
+	RECT rect;
+	RenderFilter filterID = GUI.Scale;
+	if (Src.Height > SNES_HEIGHT_EXTENDED || Src.Width == 512) {
+		filterID = GUI.ScaleHiRes;
+	}
+	// default to fixed factor
+	SetRect(&rect, SNES_WIDTH, SNES_HEIGHT_EXTENDED, GetFilterScale(filterID));
+
+	// handle special cases
+	switch (filterID)
+	{
+	case FILTER_NONE:
+		SetRect(&rect, Src.Width, Src.Height, 1);
+		break;
+	case FILTER_BLARGGRF:
+	case FILTER_BLARGGCOMP:
+	case FILTER_BLARGGSVID:
+	case FILTER_BLARGGRGB:
+		SetRect(&rect, SNES_WIDTH, SNES_HEIGHT_EXTENDED, 2);
+		rect.right = SNES_NTSC_OUT_WIDTH(256);
+		break;
+	default:
+		break;
+	}
+	return rect;
 }
 
 void SelectRenderMethod()
@@ -498,9 +377,10 @@ void SelectRenderMethod()
 
 void RenderMethod(SSurface Src, SSurface Dst, RECT * rect)
 {
+    AdjustHeightExtend(Src.Height);
 	if(Src.Height > SNES_HEIGHT_EXTENDED || Src.Width == 512) {
 		if(GUI.BlendHiRes && Src.Width == 512 && !GetFilterBlendSupport(GUI.ScaleHiRes)) {
-			RenderMergeHires(Src.Surface,Src.Pitch,BlendBuffer,EXT_PITCH,Src.Width,Src.Height);
+			RenderMergeHires(Src.Surface,Src.Pitch,BlendBuffer,GFX.Pitch,Src.Width,Src.Height);
 			Src.Surface = BlendBuffer;
 		}
 		_RenderMethodHiRes(Src,Dst,rect);
@@ -515,10 +395,8 @@ void InitRenderFilters(void)
 	if(!ntsc) {
 		ntsc =  new snes_ntsc_t;
 	}
-	if(!BlendBuf) {
-		BlendBuf = new BYTE [EXT_PITCH * EXT_HEIGHT];
-		BlendBuffer = BlendBuf + EXT_OFFSET;
-		memset(BlendBuf, 0, EXT_PITCH * EXT_HEIGHT);
+	if(!BlendBuffer) {
+		BlendBuffer = new BYTE [GFX.Pitch * MAX_SNES_HEIGHT];
 	}
 
     SYSTEM_INFO sysinfo;
@@ -534,6 +412,23 @@ void InitRenderFilters(void)
             xbrz_sync_handles[i] = xbrz_thread_sync_data[i].xbrz_sync_event;
         }
     }
+}
+
+void DeInitRenderFilters()
+{
+	if (ntsc) {
+		delete ntsc;
+	}
+	if (BlendBuffer) {
+		delete[] BlendBuffer;
+	}
+	if (xbrz_thread_sync_data) {
+		delete[] xbrz_thread_sync_data;
+		delete[] xbrz_sync_handles;
+	}
+
+	S9xBlit2xSaIFilterDeinit();
+	S9xBlitHQ2xFilterDeinit();
 }
 
 #define R5G6B5 // windows port uses RGB565
@@ -682,26 +577,17 @@ inline void ThreeHalfLine32( uint32 *lpDst, uint16 *lpSrc, unsigned int Width){
     }
 }
 
-
-inline void SetRect(RECT* rect, int width, int height, int scale)
-{
-	rect->left = 0;
-	rect->right = width * scale;
-	rect->top = 0;
-	rect->bottom = (height - (GUI.HeightExtend?0:15)) * scale;
-}
-
 #define AVERAGE_565(el0, el1) (((el0) & (el1)) + ((((el0) ^ (el1)) & 0xF7DE) >> 1))
 void RenderMergeHires(void *src, int srcPitch , void* dst, int dstPitch, unsigned int width, unsigned int height)
 {
-    for (register int y = 0; y < height; y++)
+    for (int y = 0; y < height; y++)
     {
-        register uint16 *input = (uint16 *) ((uint8 *) src + y * srcPitch);
-        register uint16 *output = (uint16 *) ((uint8 *) dst + y * dstPitch);
-        register uint16 l, r;
+        uint16 *input = (uint16 *) ((uint8 *) src + y * srcPitch);
+        uint16 *output = (uint16 *) ((uint8 *) dst + y * dstPitch);
+        uint16 l, r;
 
         l = 0;
-        for (register int x = 0; x < (width >> 1); x++)
+        for (int x = 0; x < (width >> 1); x++)
         {
             r = *input++;
             *output++ = AVERAGE_565 (l, r);
@@ -721,8 +607,6 @@ void RenderMergeHires(void *src, int srcPitch , void* dst, int dstPitch, unsigne
 void RenderPlain (SSurface Src, SSurface Dst, RECT *rect)
 {
 	SetRect(rect, Src.Width, Src.Height, 1);
-	if(Src.Height > SNES_HEIGHT_EXTENDED)
-		rect->bottom -= (GUI.HeightExtend?0:15);
 	const uint32 srcHeight = (rect->bottom - rect->top);
 
 	uint16 *lpSrc = reinterpret_cast<uint16 *>(Src.Surface);
@@ -982,6 +866,9 @@ void RenderTVMode ( SSurface Src, SSurface Dst, RECT *rect)
         RenderSimple2X (Src, Dst, rect);
         return;
     }
+
+    if (GUI.outputMethod != DIRECTDRAW)
+        snes9x_clear_change_log = 1;
 
     uint8 *nextLine, *finish;
     uint32 colorMask = ~(RGB_LOW_BITS_MASK | (RGB_LOW_BITS_MASK << 16));
@@ -1605,9 +1492,9 @@ void RenderDotMatrix3X (SSurface Src, SSurface Dst, RECT *rect)
 
 	#define DrawPix(on00,on01,on10,on11) /* on00 on01 */  \
 	{                                    /* on10 on11 */  \
-		const uint16 colorXA = COLOR_ADD(colorX,colorX);  \
-		const uint16 colorXS = COLOR_SUB(colorXA,colorX); \
-		const uint16 colorX2 = COLOR_SUB(colorX,colorXS); \
+		const uint16 colorXA = COLOR_ADD::fn(colorX,colorX);  \
+		const uint16 colorXS = COLOR_SUB::fn(colorXA,colorX); \
+		const uint16 colorX2 = COLOR_SUB::fn(colorX,colorXS); \
 		*dP1++ = _THREE_PIX(colorX2, colorX,  colorX2);   \
 		*dP2++ = _THREE_PIX(colorX,  colorXA, colorX);    \
 		*dP3++ = _THREE_PIX(colorX2, colorX,  colorX2);   \
@@ -2817,6 +2704,17 @@ void RenderxBRZ(SSurface Src, SSurface Dst, RECT* rect, int scalingFactor)
 }
 /*#################### /XBRZ support ####################*/
 
+void RenderBlarggNTSCRF( SSurface Src, SSurface Dst, RECT *rect)
+{
+	if(blarggMode!=BLARGGRF) {
+		snes_ntsc_setup_t setup = snes_ntsc_composite;
+		setup.merge_fields = 0;
+		snes_ntsc_init( ntsc, &setup );
+		blarggMode=BLARGGRF;
+	}
+	RenderBlarggNTSC(Src,Dst,rect);
+}
+
 void RenderBlarggNTSCComposite( SSurface Src, SSurface Dst, RECT *rect)
 {
 	if(blarggMode!=BLARGGCOMPOSITE) {
@@ -2850,36 +2748,31 @@ void RenderBlarggNTSCRgb( SSurface Src, SSurface Dst, RECT *rect)
 	RenderBlarggNTSC(Src,Dst,rect);
 }
 
-void RenderBlarggNTSC( SSurface Src, SSurface Dst, RECT *rect)
+extern unsigned int snes_ntsc_scanline_offset;
+extern unsigned short snes_ntsc_scanline_mask;
+
+void RenderBlarggNTSC(SSurface Src, SSurface Dst, RECT *rect)
 {
-	SetRect(rect, 256, 239, 2);
-	rect->right = SNES_NTSC_OUT_WIDTH(256);
+    static int burst_phase = 0;
 
-	const unsigned int srcRowPixels = Src.Pitch/2;
+    SetRect(rect, 256, 239, 2);
+    rect->right = SNES_NTSC_OUT_WIDTH(256);
 
-	if(Src.Width == 512)
-		snes_ntsc_blit_hires( ntsc, (unsigned short *)Src.Surface, srcRowPixels, 0,Src.Width, Src.Height, Dst.Surface, Dst.Pitch );
-	else
-		snes_ntsc_blit( ntsc, (unsigned short *)Src.Surface, srcRowPixels, 0,Src.Width, Src.Height, Dst.Surface, Dst.Pitch );
+    const unsigned int srcRowPixels = Src.Pitch / 2;
 
-	//Blargg's filter produces half-height output, so we have to double the height again (unless we have double height hi-res)
-	if(Src.Height <= SNES_HEIGHT_EXTENDED)
-		for (int y = rect->bottom / 2; --y >= 0; )
-		{
-			unsigned char const* in = Dst.Surface + y * Dst.Pitch;
-			unsigned char* out = Dst.Surface + y * 2 * Dst.Pitch;
-			for (int n = rect->right; n; --n )
-			{
-				unsigned prev = *(unsigned short*) in;
-				unsigned next = *(unsigned short*) (in + Dst.Pitch);
-				/* mix 16-bit rgb without losing low bits */
-				unsigned mixed = prev + next + ((prev ^ next) & 0x0821);
-				/* darken by 12% */
-				*(unsigned short*) out = prev;
-				*(unsigned short*) (out + Dst.Pitch) = (mixed >> 1) - (mixed >> 4 & 0x18E3);
-				in += 2;
-				out += 2;
-			}
-		}
+    snes_ntsc_scanline_offset = 0;
+    snes_ntsc_scanline_mask = 0;
 
+    if (GUI.NTSCScanlines)
+    {
+        snes_ntsc_scanline_offset = 3;
+        snes_ntsc_scanline_mask = 0x18E3;
+    }
+
+    burst_phase = (burst_phase + 1) % 3;
+
+    if (Src.Width == 512)
+        snes_ntsc_blit_hires_scanlines(ntsc, (unsigned short *)Src.Surface, srcRowPixels, burst_phase, Src.Width, Src.Height, Dst.Surface, Dst.Pitch);
+    else
+        snes_ntsc_blit_scanlines(ntsc, (unsigned short *)Src.Surface, srcRowPixels, burst_phase, Src.Width, Src.Height, Dst.Surface, Dst.Pitch);
 }

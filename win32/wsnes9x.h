@@ -1,198 +1,11 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2016  BearOso,
-                             OV2
-
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  S-SMP emulator code used in 1.54+
-  (c) Copyright 2016         byuu
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2016  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2016  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-  Libretro port
-  (c) Copyright 2011 - 2016  Hans-Kristian Arntzen,
-                             Daniel De Matteis
-                             (Under no circumstances will commercial rights be given)
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
-
-
-
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 /*****************************************************************************/
-/*  Snes9X: Win32                                                            */
+/*  Snes9x: Win32                                                            */
 /*****************************************************************************/
 #if !defined(SNES9X_H_INCLUDED)
 #define SNES9X_H_INCLUDED
@@ -213,12 +26,18 @@
 #include <dsound.h>
 #endif
 #include "rsrc/resource.h"
+#include "port.h"
 
 #define COUNT(a) (sizeof (a) / sizeof (a[0]))
-#define GUI_VERSION 1008
+#define MAX_AUDIO_NAME_LENGTH 1024
 
 #define MAX_RECENT_GAMES_LIST_SIZE 32
 #define MAX_RECENT_HOSTS_LIST_SIZE 16
+
+#define SAVE_SLOTS_PER_BANK 10
+#define LAST_SAVE_SLOT_IN_BANK (SAVE_SLOTS_PER_BANK - 1)
+#define NUM_SAVE_BANKS 10
+#define LAST_SAVE_BANK (NUM_SAVE_BANKS - 1)
 
 #include "_tfwopen.h"
 #ifdef UNICODE
@@ -252,6 +71,7 @@ enum RenderFilter{
 	FILTER_SIMPLE2X,
 	FILTER_SCANLINES,
 	FILTER_TVMODE,
+	FILTER_BLARGGRF,
 	FILTER_BLARGGCOMP,
 	FILTER_BLARGGSVID,
 	FILTER_BLARGGRGB,
@@ -289,7 +109,8 @@ enum RenderFilter{
 enum OutputMethod {
 	DIRECTDRAW = 0,
 	DIRECT3D,
-	OPENGL
+	OPENGL,
+	VULKAN
 };
 
 struct dMode
@@ -300,15 +121,33 @@ struct dMode
 	long rate;
 };
 
+struct ShaderParam
+{
+    std::string name;
+    std::string id;
+    float min;
+    float max;
+    float val;
+    float step;
+    int significant_digits;
+};
+
+struct sCustomRomDlgSettings {
+	int columnFilename;
+	int columnDescription;
+	int columnSize;
+	int folderPaneWidth;
+	RECT window_size;
+	bool window_maximized;
+};
+
 struct sGUI {
     HWND hWnd;
     HMENU hMenu;
     HINSTANCE hInstance;
 
-    DWORD hFrameTimer;
     DWORD hHotkeyTimer;
     HANDLE ClientSemaphore;
-    HANDLE FrameTimerSemaphore;
     HANDLE ServerTimerSemaphore;
 
     BYTE Language;
@@ -321,26 +160,31 @@ struct sGUI {
 	bool AVIHiRes;
     bool DoubleBuffered;
     bool FullScreen;
+	bool FullscreenOnOpen;
     bool Stretch;
-    bool HeightExtend;
     bool AspectRatio;
+	bool IntegerScaling;
 	OutputMethod outputMethod;
 	int AspectWidth;
 	bool AlwaysCenterImage;
 	bool EmulateFullscreen;
 	bool EmulatedFullscreen;
-	bool BilinearFilter;
 	bool LocalVidMem;
-	bool Vsync;	
+	bool Vsync;
+	bool ReduceInputLag;
 	bool shaderEnabled;
+    bool DWMSync;
 	TCHAR D3DshaderFileName[MAX_PATH];
 	TCHAR OGLshaderFileName[MAX_PATH];
 
 	bool OGLdisablePBOs;
+	int OSDSize;
 
     bool IgnoreNextMouseMove;
     RECT window_size;
 	bool window_maximized;
+	sCustomRomDlgSettings customRomDlgSettings;
+
     int  MouseX;
     int  MouseY;
     unsigned int MouseButtons;
@@ -355,9 +199,11 @@ struct sGUI {
     HACCEL Accelerators;
     bool NeedDepthConvert;
     bool DepthConverted;
+	bool NTSCScanlines;
 
 	bool InactivePause;
 	bool CustomRomOpen;
+	bool ConfirmSaveLoad;
     bool FASkipsNonInput;
     bool FAMute;
     int  ScreenDepth;
@@ -366,11 +212,13 @@ struct sGUI {
     int  BlueShift;
     int  ControlForced;
 	int  CurrentSaveSlot;
+	int  CurrentSaveBank;
     int  MaxRecentGames;
 	int  ControllerOption;
 	int  ValidControllerOptions;
 	int  SoundChannelEnable;
 	bool BackgroundInput;
+    bool BackgroundKeyHotkeys;
 	bool JoystickHotkeys;
 	bool MovieClearSRAM;
 	bool MovieStartFromReset;
@@ -382,9 +230,14 @@ struct sGUI {
 	int SoundDriver;
 	int SoundBufferSize;
 	bool Mute;
+	unsigned int VolumeRegular;
+	unsigned int VolumeTurbo;
+	bool AutomaticInputRate;
 	// used for sync sound synchronization
 	CRITICAL_SECTION SoundCritSect;
     HANDLE SoundSyncEvent;
+    TCHAR AudioDevice[MAX_AUDIO_NAME_LENGTH];
+    bool AllowSoundSync;
 
     TCHAR RomDir [_MAX_PATH];
     TCHAR ScreensDir [_MAX_PATH];
@@ -393,6 +246,7 @@ struct sGUI {
     TCHAR FreezeFileDir [_MAX_PATH];
     TCHAR SRAMFileDir [_MAX_PATH];
     TCHAR PatchDir [_MAX_PATH];
+	TCHAR CheatDir [_MAX_PATH];
     TCHAR BiosDir [_MAX_PATH];
 	TCHAR SatDir [_MAX_PATH];
 	bool LockDirectories;
@@ -413,9 +267,10 @@ struct sGUI {
     unsigned long IdleCount;
 
     // rewinding
-    bool rewinding;
     unsigned int rewindBufferSize;
     unsigned int rewindGranularity;
+
+	bool AddToRegistry;
 };
 
 //TURBO masks
@@ -438,7 +293,6 @@ struct sLanguages {
     TCHAR *errModeDD;
     TCHAR *errInitDS;
     TCHAR *ApplyNeedRestart;
-    TCHAR *errFrameTimer;
 };
 
 #define CUSTKEY_ALT_MASK   0x01
@@ -461,8 +315,8 @@ struct SCustomKeys {
 	SCustomKey ScopePause;
 	SCustomKey FrameCount;
 	SCustomKey ReadOnly;
-	SCustomKey Save [10];
-	SCustomKey Load [10];
+	SCustomKey Save [SAVE_SLOTS_PER_BANK];
+	SCustomKey Load [SAVE_SLOTS_PER_BANK];
 	SCustomKey FastForward;
 	SCustomKey FastForwardToggle;
 	SCustomKey ShowPressed;
@@ -471,25 +325,29 @@ struct SCustomKeys {
 	SCustomKey SlotMinus;
 	SCustomKey SlotSave;
 	SCustomKey SlotLoad;
+	SCustomKey BankPlus;
+	SCustomKey BankMinus;
+    SCustomKey DialogSave;
+    SCustomKey DialogLoad;
 	SCustomKey BGL1;
 	SCustomKey BGL2;
 	SCustomKey BGL3;
 	SCustomKey BGL4;
 	SCustomKey BGL5;
+	SCustomKey ToggleBackdrop;
 	SCustomKey ClippingWindows;
-//	SCustomKey BGLHack;
 	SCustomKey Transparency;
-//  SCustomKey GLCube;
-//	SCustomKey HDMA;
-//	SCustomKey InterpMode7;
 	SCustomKey JoypadSwap;
 	SCustomKey SwitchControllers;
 	SCustomKey TurboA, TurboB, TurboY, TurboX, TurboL, TurboR, TurboStart, TurboSelect, TurboLeft, TurboUp, TurboRight, TurboDown;
-	SCustomKey SelectSave [10];
+	SCustomKey SelectSave [SAVE_SLOTS_PER_BANK];
 	SCustomKey ResetGame;
 	SCustomKey ToggleCheats;
 	SCustomKey QuitS9X;
     SCustomKey Rewind;
+    SCustomKey SaveFileSelect;
+    SCustomKey LoadFileSelect;
+    SCustomKey Mute;
 };
 
 struct SJoypad {
@@ -563,6 +421,7 @@ enum
 	SNES_MOUSE_SWAPPED,
 	SNES_MULTIPLAYER8,
 	SNES_JUSTIFIER_2,
+	SNES_MACSRIFLE,
 	SNES_MAX_CONTROLLER_OPTIONS
 };
 
@@ -586,19 +445,12 @@ enum
 	WIN_XAUDIO2_SOUND_DRIVER,
 	WIN_FMODEX_DEFAULT_DRIVER,
 	WIN_FMODEX_ASIO_DRIVER,
-	WIN_FMODEX_OPENAL_DRIVER
+	WIN_FMODEX_OPENAL_DRIVER,
+    WIN_WAVEOUT_DRIVER
 };
 
 #define S9X_REG_KEY_BASE MY_REG_KEY
 #define S9X_REG_KEY_VERSION REG_KEY_VER
-
-#define EXT_WIDTH (MAX_SNES_WIDTH + 4)
-#define EXT_PITCH (EXT_WIDTH * 2)
-#define EXT_HEIGHT (MAX_SNES_HEIGHT + 4)
-// Offset into buffer to allow a two pixel border around the whole rendered
-// SNES image. This is a speed up hack to allow some of the image processing
-// routines to access black pixel data outside the normal bounds of the buffer.
-#define EXT_OFFSET (EXT_PITCH * 2 + 2 * 2)
 
 #define WIN32_WHITE RGB(255,255,255)
 
@@ -615,5 +467,12 @@ int GetFilterScale(RenderFilter filterID);
 bool GetFilterHiResSupport(RenderFilter filterID);
 const TCHAR * S9xGetDirectoryT (enum s9x_getdirtype);
 RECT GetWindowMargins(HWND hwnd, UINT width);
+void GetSlotFilename(int slot, char filename[_MAX_PATH + 1]);
+void FreezeUnfreezeSlot(int slot, bool8 freeze);
+void FreezeUnfreezeDialog(bool8 freeze);
+void FreezeUnfreezeDialogPreview(bool8 freeze);
+void FreezeUnfreeze(const char *filename, bool8 freeze);
+bool UnfreezeScreenshotSlot(int slot, uint16 **image_buffer, int &width, int &height);
+void S9xWinRemoveRegistryKeys();
 
 #endif // !defined(SNES9X_H_INCLUDED)
