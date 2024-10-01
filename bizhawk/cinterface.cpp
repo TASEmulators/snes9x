@@ -692,9 +692,9 @@ ECL_EXPORT void GetMemoryAreas(MemoryArea* m)
 {
 	m[0].Data = Memory.SRAM; // sram, or sufami A sram
 	m[0].Name = "CARTRAM";
-	m[0].Size = (unsigned)(Memory.SRAMSize ? (1 << (Memory.SRAMSize + 3)) * 128 : 0);
-	if (m[0].Size > 0x20000)
-		m[0].Size = 0x20000;
+	m[0].Size = (unsigned)(Memory.SRAMSize ? Memory.SRAMMask + 1 : 0);
+	if (m[0].Size > Memory.SRAM_SIZE)
+		m[0].Size = Memory.SRAM_SIZE;
 	m[0].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2 | MEMORYAREA_FLAGS_SAVERAMMABLE;
 
 	m[1].Data = Multi.sramB; // sufami B sram
@@ -720,7 +720,15 @@ ECL_EXPORT void GetMemoryAreas(MemoryArea* m)
 	m[5].Data = Memory.ROM;
 	m[5].Name = "CARTROM";
 	m[5].Size = Memory.CalculatedSize;
-	m[5].Flags = MEMORYAREA_FLAGS_WORDSIZE2;
+	m[5].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2;
+
+	if (Settings.SA1)
+	{
+		m[6].Data = &Memory.FillRAM[0x3000];
+		m[6].Name = "SA1 IRAM";
+		m[6].Size = 2 * 1024;
+		m[6].Flags = MEMORYAREA_FLAGS_WRITABLE | MEMORYAREA_FLAGS_WORDSIZE2;
+	}
 }
 
 bool8 S9xDeinitUpdate(int width, int height)
