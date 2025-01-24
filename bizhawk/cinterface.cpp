@@ -354,7 +354,7 @@ ECL_EXPORT int biz_init()
 		return 0;
 	}
 
-	S9xInitSound(0); // 16, 0)
+	S9xInitSound(21);
 	S9xSetSoundMute(FALSE);
 	//S9xSetSamplesAvailableCallback(S9xAudioCallback, NULL);
 

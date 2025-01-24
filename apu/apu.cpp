@@ -184,7 +184,7 @@ bool8 S9xInitSound(int buffer_ms)
 {
     // The resampler and spc unit use samples (16-bit short) as arguments.
     int buffer_size_samples = MINIMUM_BUFFER_SIZE;
-    int requested_buffer_size_samples = Settings.SoundPlaybackRate * buffer_ms * 2 / 1000;
+    int requested_buffer_size_samples = Settings.SoundInputRate * buffer_ms * 2 / 1000;
 
     if (requested_buffer_size_samples > buffer_size_samples)
         buffer_size_samples = requested_buffer_size_samples;
